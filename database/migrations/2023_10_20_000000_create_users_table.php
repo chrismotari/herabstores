@@ -22,13 +22,10 @@ return new class extends Migration
             $table->string('alt_email')->unique()->nullable();
             $table->string('address');
             $table->string('city');
-            $table->foreignUuid("state_id")->restrictOnDelete()->constrained('states');
-            $table->string('zip_code')->nullable();
+            $table->string('estate')->nullable();
+            $table->string('street')->nullable();
             $table->foreignUuid("country_id")->restrictOnDelete()->constrained('countries');
             $table->string('photo_url')->nullable();
-            $table->foreignUuid("job_category_id")->nullable()->nullOnDelete()->constrained('job_categories');
-            $table->foreignUuid("profession_id")->nullable()->nullOnDelete()->constrained('professions');
-            $table->foreignUuid("contract_type_id")->nullable()->nullOnDelete()->constrained('contract_types');
             $table->date('dob')->nullable();
             $table->string('password');
             $table->timestamp('email_verified_at')->nullable();
