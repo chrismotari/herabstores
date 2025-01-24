@@ -27,13 +27,14 @@ Route::middleware('auth')->group(function () {
     Route::get('/home', function () {
         return redirect('/'); 
     });
-    Route::get('jobs/candidate/index', [JobAdvertController::class, 'candidateView'])->name('jobs.candidate-index');
 
     Route::resource('users', UserController::class);
     Route::resource('roles', RoleController::class);
     Route::resource('permissions', PermissionController::class);
-    Route::resource('job_adverts', JobAdvertController::class);
-    Route::resource('job_applications', JobApplicationController::class);
+    
 });
+Route::get('/west', function () {
+    return view('index'); 
+})->name('west');
 
 require __DIR__.'/auth.php';
