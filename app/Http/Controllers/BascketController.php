@@ -12,7 +12,7 @@ class BascketController extends Controller
      */
     public function index()
     {
-        //
+        // Get all basckets
     }
 
     /**
