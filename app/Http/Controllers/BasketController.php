@@ -2,17 +2,17 @@
 
 namespace App\Http\Controllers;
 
-use App\Models\Bascket;
+use App\Models\Basket;
 use Illuminate\Http\Request;
 
-class BascketController extends Controller
+class BasketController extends Controller
 {
     /**
      * Display a listing of the resource.
      */
     public function index()
     {
-        // Get all basckets
+        // Get all baskets
     }
 
     /**
@@ -34,7 +34,7 @@ class BascketController extends Controller
     /**
      * Display the specified resource.
      */
-    public function show(Bascket $bascket)
+    public function show(Basket $basket)
     {
         //
     }
@@ -42,7 +42,7 @@ class BascketController extends Controller
     /**
      * Show the form for editing the specified resource.
      */
-    public function edit(Bascket $bascket)
+    public function edit(Basket $basket)
     {
         //
     }
@@ -50,7 +50,7 @@ class BascketController extends Controller
     /**
      * Update the specified resource in storage.
      */
-    public function update(Request $request, Bascket $bascket)
+    public function update(Request $request, Basket $basket)
     {
         //
     }
@@ -58,7 +58,7 @@ class BascketController extends Controller
     /**
      * Remove the specified resource from storage.
      */
-    public function destroy(Bascket $bascket)
+    public function destroy(Basket $basket)
     {
         //
     }
