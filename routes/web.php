@@ -5,6 +5,7 @@ use App\Http\Controllers\UserController;
 use App\Http\Controllers\JobAdvertController;
 use App\Http\Controllers\JobApplicationController;
 use App\Http\Controllers\PermissionController;
+use App\Http\Controllers\ProductController;
 use App\Http\Controllers\RoleController;
 use Illuminate\Support\Facades\Route;
 
@@ -36,5 +37,6 @@ Route::middleware('auth')->group(function () {
 Route::get('/west', function () {
     return view('index'); 
 })->name('west');
+Route::resource('products', ProductController::class);
 
 require __DIR__.'/auth.php';
