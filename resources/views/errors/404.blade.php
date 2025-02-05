@@ -1,73 +1,44 @@
-
-
-<!DOCTYPE html>
-<html lang="en">
-
-<head>
-
-    <!-- PAGE TITLE HERE -->
-    <title>Not Found : Unity Careers </title>
-
-    <!-- Meta -->
-    <meta charset="utf-8">
-    <meta http-equiv="X-UA-Compatible" content="IE=edge">
-    <meta name="author" content="Chris Motari">
-    <meta name="robots" content="index, follow">
-    <meta name="format-detection" content="telephone=no">
-
-    <meta name="keywords" content="admin dashboard, admin template, analytics, bootstrap, bootstrap 5, bootstrap 5 admin template, job board admin, job portal admin, modern, responsive admin dashboard, sales dashboard, sass, ui kit, web app, frontend">
-    <meta name="description" content="We proudly present Jobick, a Job Admin dashboard HTML Template, If you are hiring a job expert you would like to build a superb website for your Jobick, it's a best choice.">
-
-    <meta property="og:title" content="Jobick : Job Admin Dashboard Bootstrap 5 Template + FrontEnd">
-    <meta property="og:description" content="We proudly present Jobick, a Job Admin dashboard HTML Template, If you are hiring a job expert you would like to build a superb website for your Jobick, it's a best choice.">
-    <meta property="og:image" content="https://jobick.dexignlab.com/xhtml/social-image.png">
-
-    <meta name="twitter:title" content="Jobick : Job Admin Dashboard Bootstrap 5 Template + FrontEnd">
-    <meta name="twitter:description" content="We proudly present Jobick, a Job Admin dashboard HTML Template, If you are hiring a job expert you would like to build a superb website for your Jobick, it's a best choice.">
-    <meta name="twitter:image" content="https://jobick.dexignlab.com/xhtml/social-image.png">
-    <meta name="twitter:card" content="summary_large_image">
-    <base href="{{ url('/') }}/">
-
-    <!-- Mobile Specific -->
-    <meta name="viewport" content="width=device-width, initial-scale=1">
-
-    <!-- Favicon icon -->
-    <link rel="shortcut icon" type="image/png" href="{{ asset('images/logo.png') }}">
-    <link href="{{ asset('css/bootstrap-select.min.css') }}" rel="stylesheet">
-    <link href="{{ asset('css/bootstrap-datepicker.min.css') }}" rel="stylesheet">
-    <link class="main-css" href="{{ asset('css/style.css') }}" rel="stylesheet">
-
-</head>
-
-
-<body>
-    <div class="fix-wrapper">
-        <div class="container">
-            <div class="row justify-content-center align-items-center">
-                <div class="col-md-6">
-                    <div class="form-input-content text-center error-page">
-                        <h1 class="error-text font-weight-bold">404</h1>
-                        <h4><i class="fa fa-exclamation-triangle text-warning"></i> The page you were looking for is not found!</h4>
-                        <p>You may have mistyped the address or the page may have moved.</p>
-						<div>
-                            <a class="btn btn-primary" href="/">Back to Home</a>
-                        </div>
-                    </div>
+@extends('layouts.app')
+@section('content')
+<!-- breadcrumb-area -->
+<section class="breadcrumb-area breadcrumb-bg">
+    <div class="container">
+        <div class="row">
+            <div class="col-12">
+                <div class="breadcrumb-content">
+                    <h2 class="title">PAGE NOT FOUND</h2>
+                    <nav aria-label="breadcrumb">
+                        <ol class="breadcrumb">
+                            <li class="breadcrumb-item"><a href="index.html">Home</a></li>
+                            <li class="breadcrumb-item active" aria-current="page">404 Page</li>
+                        </ol>
+                    </nav>
                 </div>
             </div>
         </div>
     </div>
+</section>
+<!-- breadcrumb-area-end -->
 
-<!--**********************************
-	Scripts
-***********************************-->
-    <!-- Required vendors -->
-    <script src="{{ asset('js/global.min.js') }}"></script>
-    <script src="{{ asset('js/bootstrap-select.min.js') }}"></script>
-    <script src="{{ asset('js/bootstrap-datepicker.min.js') }}"></script>
-    <script src="{{ asset('js/dlabnav-init.js') }}"></script>
-    <script src="{{ asset('js/custom.min.js') }}"></script>
-    <script src="{{ asset('js/demo.js') }}"></script>
-    <script src="{{ asset('js/styleSwitcher.js') }}"></script>
-</body>
-</html>
+<!-- 404-area -->
+<section class="error-area pt-100 pb-100">
+    <div class="container">
+        <div class="row justify-content-center">
+            <div class="col-lg-6 col-md-10">
+                <div class="error-content text-center">
+                    <div class="error_txt">404</div>
+                    <h5>oops! The page you requested was not found!</h5>
+                    <p>The page you are looking for was moved, removed, renamed or might never existed.</p>
+                    <div class="search_form">
+                        <form method="post">
+                            <input name="text" id="text" type="text" placeholder="Search Here ...." class="form-control">
+                            <button type="submit" class="icon_search"><i class="flaticon-loupe"></i></button>
+                        </form>
+                    </div>
+                    <a href="index.html" class="btn rounded-btn">Back To Home</a>
+                </div>
+            </div>
+        </div>
+    </div>
+</section>
+@endsection

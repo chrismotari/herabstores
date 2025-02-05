@@ -1,7 +1,7 @@
 @extends('layouts.app')
 @section('content')
- <!-- slider-area -->
- <section class="slider-area" data-background="img/bg/slider_area_bg.jpg">
+<!-- slider-area -->
+<section class="slider-area" data-background="img/bg/slider_area_bg.jpg">
     <div class="container custom-container">
         <div class="row">
             <div class="col-7">
@@ -123,11 +123,11 @@
     </div>
     <!-- category-area-end -->
 
-    </section>
-    <!-- slider-area-end -->
+</section>
+<!-- slider-area-end -->
 
-    <!-- discount-area -->
-    <section class="discount-area pt-80">
+<!-- discount-area -->
+<section class="discount-area pt-80">
     <div class="container">
         <div class="row justify-content-center">
             <div class="col-xl-4 col-lg-6 col-md-8">
@@ -168,11 +168,11 @@
             </div>
         </div>
     </div>
-    </section>
-    <!-- discount-area-end -->
+</section>
+<!-- discount-area-end -->
 
-    <!-- best-deal-area -->
-    <section class="best-deal-area pt-60 pb-80">
+<!-- best-deal-area -->
+<section class="best-deal-area pt-60 pb-80">
     <div class="container">
         <div class="row justify-content-center">
             <div class="col-xl-7 col-lg-9">
@@ -189,7 +189,7 @@
             <div class="col-xl-3">
                 <div class="best-deal-item">
                     <div class="best-deal-thumb">
-                        <a href="shop-details.html"><img src="img/product/best_deal_product01.png" alt=""></a>
+                        <a href="{{ route('products.show', $products->first()) }}"><img src="img/product/best_deal_product01.png" alt=""></a>
                     </div>
                     <div class="best-deal-content">
                         <div class="main-content">
@@ -200,17 +200,17 @@
                                 <i class="fas fa-star"></i>
                                 <i class="fas fa-star"></i>
                             </div>
-                            <h4 class="title"><a href="shop-details.html">Walnuts Max</a></h4>
-                            <p>$1.50/ kg</p>
+                            <h4 class="title"><a href="{{ route('products.show', $products->first()) }}">Walnuts Max</a></h4>
+                            <p> Ksh 100.50/ kg</p>
                         </div>
-                        <div class="icon"><a href="shop-details.html">+</a></div>
+                        <div class="icon"><a href="{{ route('products.show', $products->first()) }}">+</a></div>
                     </div>
                 </div>
             </div>
             <div class="col-xl-3">
                 <div class="best-deal-item">
                     <div class="best-deal-thumb">
-                        <a href="shop-details.html"><img src="img/product/best_deal_product02.png" alt=""></a>
+                        <a href="{{ route('products.show', $products->first()) }}"><img src="img/product/best_deal_product02.png" alt=""></a>
                     </div>
                     <div class="best-deal-content">
                         <div class="main-content">
@@ -221,17 +221,17 @@
                                 <i class="fas fa-star"></i>
                                 <i class="fas fa-star"></i>
                             </div>
-                            <h4 class="title"><a href="shop-details.html">Fresh Nuts</a></h4>
-                            <p>$3.50/ kg</p>
+                            <h4 class="title"><a href="{{ route('products.show', $products->first()) }}">Fresh Nuts</a></h4>
+                            <p> Ksh 300.50/ kg</p>
                         </div>
-                        <div class="icon"><a href="shop-details.html">+</a></div>
+                        <div class="icon"><a href="{{ route('products.show', $products->first()) }}">+</a></div>
                     </div>
                 </div>
             </div>
             <div class="col-xl-3">
                 <div class="best-deal-item">
                     <div class="best-deal-thumb">
-                        <a href="shop-details.html"><img src="img/product/best_deal_product03.png" alt=""></a>
+                        <a href="{{ route('products.show', $products->first()) }}"><img src="img/product/best_deal_product03.png" alt=""></a>
                     </div>
                     <div class="best-deal-content">
                         <div class="main-content">
@@ -242,17 +242,17 @@
                                 <i class="fas fa-star"></i>
                                 <i class="fas fa-star"></i>
                             </div>
-                            <h4 class="title"><a href="shop-details.html">Fresh Butter</a></h4>
-                            <p>$5.50/ kg</p>
+                            <h4 class="title"><a href="{{ route('products.show', $products->first()) }}">Fresh Butter</a></h4>
+                            <p> Ksh 500.50/ kg</p>
                         </div>
-                        <div class="icon"><a href="shop-details.html">+</a></div>
+                        <div class="icon"><a href="{{ route('products.show', $products->first()) }}">+</a></div>
                     </div>
                 </div>
             </div>
             <div class="col-xl-3">
                 <div class="best-deal-item">
                     <div class="best-deal-thumb">
-                        <a href="shop-details.html"><img src="img/product/best_deal_product04.png" alt=""></a>
+                        <a href="{{ route('products.show', $products->first()) }}"><img src="img/product/best_deal_product04.png" alt=""></a>
                     </div>
                     <div class="best-deal-content">
                         <div class="main-content">
@@ -263,17 +263,17 @@
                                 <i class="fas fa-star"></i>
                                 <i class="fas fa-star"></i>
                             </div>
-                            <h4 class="title"><a href="shop-details.html">Mat Orange</a></h4>
-                            <p>$9.00/ kg</p>
+                            <h4 class="title"><a href="{{ route('products.show', $products->first()) }}">Mat Orange</a></h4>
+                            <p> Ksh 900.00/ kg</p>
                         </div>
-                        <div class="icon"><a href="shop-details.html">+</a></div>
+                        <div class="icon"><a href="{{ route('products.show', $products->first()) }}">+</a></div>
                     </div>
                 </div>
             </div>
             <div class="col-xl-3">
                 <div class="best-deal-item">
                     <div class="best-deal-thumb">
-                        <a href="shop-details.html"><img src="img/product/best_deal_product05.png" alt=""></a>
+                        <a href="{{ route('products.show', $products->first()) }}"><img src="img/product/best_deal_product05.png" alt=""></a>
                     </div>
                     <div class="best-deal-content">
                         <div class="main-content">
@@ -284,20 +284,20 @@
                                 <i class="fas fa-star"></i>
                                 <i class="fas fa-star"></i>
                             </div>
-                            <h4 class="title"><a href="shop-details.html">France Potato</a></h4>
-                            <p>$3.99/ kg</p>
+                            <h4 class="title"><a href="{{ route('products.show', $products->first()) }}">France Potato</a></h4>
+                            <p> Ksh 300.99/ kg</p>
                         </div>
-                        <div class="icon"><a href="shop-details.html">+</a></div>
+                        <div class="icon"><a href="{{ route('products.show', $products->first()) }}">+</a></div>
                     </div>
                 </div>
             </div>
         </div>
     </div>
-    </section>
-    <!-- best-deal-area-end -->
+</section>
+<!-- best-deal-area-end -->
 
-    <!-- special-products-area -->
-    <section class="special-products-area gray-bg pt-75 pb-60">
+<!-- special-products-area -->
+<section class="special-products-area gray-bg pt-75 pb-60">
     <div class="container">
         <div class="row align-items-end mb-50">
             <div class="col-md-8 col-sm-9">
@@ -333,7 +333,7 @@
                             <div class="sp-product-item mb-20">
                                 <div class="sp-product-thumb">
                                     <span class="batch">New</span>
-                                    <a href="shop-details.html"><img src="img/product/sp_products01.png" alt=""></a>
+                                    <a href="{{ route('products.show', $products->first()) }}"><img src="img/product/sp_products01.png" alt=""></a>
                                 </div>
                                 <div class="sp-product-content">
                                     <div class="rating">
@@ -343,7 +343,7 @@
                                         <i class="fas fa-star"></i>
                                         <i class="fas fa-star"></i>
                                     </div>
-                                    <h6 class="title"><a href="shop-details.html">Uncle Bens Vanla Ready Pice</a></h6>
+                                    <h6 class="title"><a href="{{ route('products.show', $products->first()) }}">Uncle Bens Vanla Ready Pice</a></h6>
                                     <span class="product-status">IN Stock</span>
                                     <div class="sp-cart-wrap">
                                         <form action="#">
@@ -352,7 +352,7 @@
                                             </div>
                                         </form>
                                     </div>
-                                    <p>$1.50 - 1 kg</p>
+                                    <p> Ksh 100.50 - 1 kg</p>
                                 </div>
                             </div>
                         </div>
@@ -360,7 +360,7 @@
                             <div class="sp-product-item mb-20">
                                 <div class="sp-product-thumb">
                                     <span class="batch discount">15%</span>
-                                    <a href="shop-details.html"><img src="img/product/sp_products02.png" alt=""></a>
+                                    <a href="{{ route('products.show', $products->first()) }}"><img src="img/product/sp_products02.png" alt=""></a>
                                 </div>
                                 <div class="sp-product-content">
                                     <div class="rating">
@@ -370,7 +370,7 @@
                                         <i class="fas fa-star"></i>
                                         <i class="fas fa-star"></i>
                                     </div>
-                                    <h6 class="title"><a href="shop-details.html">Dannon Max Vanla ice cream</a></h6>
+                                    <h6 class="title"><a href="{{ route('products.show', $products->first()) }}">Dannon Max Vanla ice cream</a></h6>
                                     <span class="product-status">IN Stock</span>
                                     <div class="sp-cart-wrap">
                                         <form action="#">
@@ -379,7 +379,7 @@
                                             </div>
                                         </form>
                                     </div>
-                                    <p>$3.50 - 1 lt</p>
+                                    <p> Ksh 300.50 - 1 lt</p>
                                 </div>
                             </div>
                         </div>
@@ -387,7 +387,7 @@
                             <div class="sp-product-item mb-20">
                                 <div class="sp-product-thumb">
                                     <span class="batch discount">25%</span>
-                                    <a href="shop-details.html"><img src="img/product/sp_products03.png" alt=""></a>
+                                    <a href="{{ route('products.show', $products->first()) }}"><img src="img/product/sp_products03.png" alt=""></a>
                                 </div>
                                 <div class="sp-product-content">
                                     <div class="rating">
@@ -397,7 +397,7 @@
                                         <i class="fas fa-star"></i>
                                         <i class="fas fa-star"></i>
                                     </div>
-                                    <h6 class="title"><a href="shop-details.html">Walnuts Max Vanla Greek Pice</a></h6>
+                                    <h6 class="title"><a href="{{ route('products.show', $products->first()) }}">Walnuts Max Vanla Greek Pice</a></h6>
                                     <span class="product-status">IN Stock</span>
                                     <div class="sp-cart-wrap">
                                         <form action="#">
@@ -406,7 +406,7 @@
                                             </div>
                                         </form>
                                     </div>
-                                    <p>$2.99 - 1 kg</p>
+                                    <p> Ksh 200.99 - 1 kg</p>
                                 </div>
                             </div>
                         </div>
@@ -414,7 +414,7 @@
                             <div class="sp-product-item mb-20">
                                 <div class="sp-product-thumb">
                                     <span class="batch">new</span>
-                                    <a href="shop-details.html"><img src="img/product/sp_products04.png" alt=""></a>
+                                    <a href="{{ route('products.show', $products->first()) }}"><img src="img/product/sp_products04.png" alt=""></a>
                                 </div>
                                 <div class="sp-product-content">
                                     <div class="rating">
@@ -424,7 +424,7 @@
                                         <i class="fas fa-star"></i>
                                         <i class="fas fa-star"></i>
                                     </div>
-                                    <h6 class="title"><a href="shop-details.html">Brachs Bens Vanla Ready Pice</a></h6>
+                                    <h6 class="title"><a href="{{ route('products.show', $products->first()) }}">Brachs Bens Vanla Ready Pice</a></h6>
                                     <span class="product-status">IN Stock</span>
                                     <div class="sp-cart-wrap">
                                         <form action="#">
@@ -433,7 +433,7 @@
                                             </div>
                                         </form>
                                     </div>
-                                    <p>$2.99 - 1 kg</p>
+                                    <p> Ksh 200.99 - 1 kg</p>
                                 </div>
                             </div>
                         </div>
@@ -441,7 +441,7 @@
                             <div class="sp-product-item mb-20">
                                 <div class="sp-product-thumb">
                                     <span class="batch discount">25%</span>
-                                    <a href="shop-details.html"><img src="img/product/sp_products05.png" alt=""></a>
+                                    <a href="{{ route('products.show', $products->first()) }}"><img src="img/product/sp_products05.png" alt=""></a>
                                 </div>
                                 <div class="sp-product-content">
                                     <div class="rating">
@@ -451,7 +451,7 @@
                                         <i class="fas fa-star"></i>
                                         <i class="fas fa-star"></i>
                                     </div>
-                                    <h6 class="title"><a href="shop-details.html">Black Lady Vanla Greek Grapes</a></h6>
+                                    <h6 class="title"><a href="{{ route('products.show', $products->first()) }}">Black Lady Vanla Greek Grapes</a></h6>
                                     <span class="product-status">IN Stock</span>
                                     <div class="sp-cart-wrap">
                                         <form action="#">
@@ -460,7 +460,7 @@
                                             </div>
                                         </form>
                                     </div>
-                                    <p>$5.99 - 1 kg</p>
+                                    <p> Ksh 500.99 - 1 kg</p>
                                 </div>
                             </div>
                         </div>
@@ -468,7 +468,7 @@
                             <div class="sp-product-item mb-20">
                                 <div class="sp-product-thumb">
                                     <span class="batch">new</span>
-                                    <a href="shop-details.html"><img src="img/product/sp_products06.png" alt=""></a>
+                                    <a href="{{ route('products.show', $products->first()) }}"><img src="img/product/sp_products06.png" alt=""></a>
                                 </div>
                                 <div class="sp-product-content">
                                     <div class="rating">
@@ -478,7 +478,7 @@
                                         <i class="fas fa-star"></i>
                                         <i class="fas fa-star"></i>
                                     </div>
-                                    <h6 class="title"><a href="shop-details.html">Potato Max Vanla Greek Pice</a></h6>
+                                    <h6 class="title"><a href="{{ route('products.show', $products->first()) }}">Potato Max Vanla Greek Pice</a></h6>
                                     <span class="product-status">IN Stock</span>
                                     <div class="sp-cart-wrap">
                                         <form action="#">
@@ -487,7 +487,7 @@
                                             </div>
                                         </form>
                                     </div>
-                                    <p>$0.99 - 1 kg</p>
+                                    <p> Ksh 000.99 - 1 kg</p>
                                 </div>
                             </div>
                         </div>
@@ -495,7 +495,7 @@
                             <div class="sp-product-item mb-20">
                                 <div class="sp-product-thumb">
                                     <span class="batch discount">10%</span>
-                                    <a href="shop-details.html"><img src="img/product/sp_products07.png" alt=""></a>
+                                    <a href="{{ route('products.show', $products->first()) }}"><img src="img/product/sp_products07.png" alt=""></a>
                                 </div>
                                 <div class="sp-product-content">
                                     <div class="rating">
@@ -505,7 +505,7 @@
                                         <i class="fas fa-star"></i>
                                         <i class="fas fa-star"></i>
                                     </div>
-                                    <h6 class="title"><a href="shop-details.html">Uncle Bens Vanla Ready Pice</a></h6>
+                                    <h6 class="title"><a href="{{ route('products.show', $products->first()) }}">Uncle Bens Vanla Ready Pice</a></h6>
                                     <span class="product-status">IN Stock</span>
                                     <div class="sp-cart-wrap">
                                         <form action="#">
@@ -514,7 +514,7 @@
                                             </div>
                                         </form>
                                     </div>
-                                    <p>$1.99 - 1 kg</p>
+                                    <p> Ksh 100.99 - 1 kg</p>
                                 </div>
                             </div>
                         </div>
@@ -522,7 +522,7 @@
                             <div class="sp-product-item mb-20">
                                 <div class="sp-product-thumb">
                                     <span class="batch discount">10%</span>
-                                    <a href="shop-details.html"><img src="img/product/sp_products08.png" alt=""></a>
+                                    <a href="{{ route('products.show', $products->first()) }}"><img src="img/product/sp_products08.png" alt=""></a>
                                 </div>
                                 <div class="sp-product-content">
                                     <div class="rating">
@@ -532,7 +532,7 @@
                                         <i class="fas fa-star"></i>
                                         <i class="fas fa-star"></i>
                                     </div>
-                                    <h6 class="title"><a href="shop-details.html">Organic Rice Max Greek Pice</a></h6>
+                                    <h6 class="title"><a href="{{ route('products.show', $products->first()) }}">Organic Rice Max Greek Pice</a></h6>
                                     <span class="product-status">IN Stock</span>
                                     <div class="sp-cart-wrap">
                                         <form action="#">
@@ -541,7 +541,7 @@
                                             </div>
                                         </form>
                                     </div>
-                                    <p>$3.99 - 1 kg</p>
+                                    <p> Ksh 300.99 - 1 kg</p>
                                 </div>
                             </div>
                         </div>
@@ -550,32 +550,32 @@
             </div>
         </div>
     </div>
-    </section>
-    <!-- special-products-area-end -->
+</section>
+<!-- special-products-area-end -->
 
-    <!-- coupon-area -->
-    <div class="coupon-area gray-bg pb-80">
+<!-- coupon-area -->
+<div class="coupon-area gray-bg pb-80">
     <div class="container">
         <div class="row">
             <div class="col-12">
                 <div class="coupon-bg">
                     <div class="coupon-title">
                         <span>Use coupon Code</span>
-                        <h3 class="title">Get $3 Discount Code</h3>
+                        <h3 class="title">Get Ksh  300 Discount Code</h3>
                     </div>
                     <div class="coupon-code-wrap">
-                        <h5 class="code">ganic21abs</h5>
+                        <h5 class="code">Herabs123</h5>
                         <img src="img/images/coupon_code.png" alt="">
                     </div>
                 </div>
             </div>
         </div>
     </div>
-    </div>
-    <!-- coupon-area-end -->
+</div>
+<!-- coupon-area-end -->
 
-    <!-- best-sellers-area -->
-    <section class="best-sellers-area pt-75">
+<!-- best-sellers-area -->
+<section class="best-sellers-area pt-75">
     <div class="container">
         <div class="row align-items-end mb-50">
             <div class="col-md-8 col-sm-9">
@@ -596,7 +596,7 @@
                     <div class="sp-product-item mb-20">
                         <div class="sp-product-thumb">
                             <span class="batch">New</span>
-                            <a href="shop-details.html"><img src="img/product/sp_products09.png" alt=""></a>
+                            <a href="{{ route('products.show', $products->first()) }}"><img src="img/product/sp_products09.png" alt=""></a>
                         </div>
                         <div class="sp-product-content">
                             <div class="rating">
@@ -606,7 +606,7 @@
                                 <i class="fas fa-star"></i>
                                 <i class="fas fa-star"></i>
                             </div>
-                            <h6 class="title"><a href="shop-details.html">Uncle Orange Vanla Ready Pice</a></h6>
+                            <h6 class="title"><a href="{{ route('products.show', $products->first()) }}">Uncle Orange Vanla Ready Pice</a></h6>
                             <span class="product-status">IN Stock</span>
                             <div class="sp-cart-wrap">
                                 <form action="#">
@@ -615,7 +615,7 @@
                                     </div>
                                 </form>
                             </div>
-                            <p>$1.50 - 1 kg</p>
+                            <p> Ksh 100.50 - 1 kg</p>
                         </div>
                     </div>
                 </div>
@@ -623,7 +623,7 @@
                     <div class="sp-product-item mb-20">
                         <div class="sp-product-thumb">
                             <span class="batch discount">15%</span>
-                            <a href="shop-details.html"><img src="img/product/sp_products02.png" alt=""></a>
+                            <a href="{{ route('products.show', $products->first()) }}"><img src="img/product/sp_products02.png" alt=""></a>
                         </div>
                         <div class="sp-product-content">
                             <div class="rating">
@@ -633,7 +633,7 @@
                                 <i class="fas fa-star"></i>
                                 <i class="fas fa-star"></i>
                             </div>
-                            <h6 class="title"><a href="shop-details.html">Dannon Max Vanla ice cream</a></h6>
+                            <h6 class="title"><a href="{{ route('products.show', $products->first()) }}">Dannon Max Vanla ice cream</a></h6>
                             <span class="product-status">IN Stock</span>
                             <div class="sp-cart-wrap">
                                 <form action="#">
@@ -642,7 +642,7 @@
                                     </div>
                                 </form>
                             </div>
-                            <p>$3.50 - 1 lt</p>
+                            <p> Ksh 300.50 - 1 lt</p>
                         </div>
                     </div>
                 </div>
@@ -650,7 +650,7 @@
                     <div class="sp-product-item mb-20">
                         <div class="sp-product-thumb">
                             <span class="batch discount">25%</span>
-                            <a href="shop-details.html"><img src="img/product/sp_products03.png" alt=""></a>
+                            <a href="{{ route('products.show', $products->first()) }}"><img src="img/product/sp_products03.png" alt=""></a>
                         </div>
                         <div class="sp-product-content">
                             <div class="rating">
@@ -660,7 +660,7 @@
                                 <i class="fas fa-star"></i>
                                 <i class="fas fa-star"></i>
                             </div>
-                            <h6 class="title"><a href="shop-details.html">Walnuts Max Vanla Greek Pice</a></h6>
+                            <h6 class="title"><a href="{{ route('products.show', $products->first()) }}">Walnuts Max Vanla Greek Pice</a></h6>
                             <span class="product-status">IN Stock</span>
                             <div class="sp-cart-wrap">
                                 <form action="#">
@@ -669,7 +669,7 @@
                                     </div>
                                 </form>
                             </div>
-                            <p>$2.99 - 1 kg</p>
+                            <p> Ksh 200.99 - 1 kg</p>
                         </div>
                     </div>
                 </div>
@@ -677,7 +677,7 @@
                     <div class="sp-product-item mb-20">
                         <div class="sp-product-thumb">
                             <span class="batch">new</span>
-                            <a href="shop-details.html"><img src="img/product/sp_products04.png" alt=""></a>
+                            <a href="{{ route('products.show', $products->first()) }}"><img src="img/product/sp_products04.png" alt=""></a>
                         </div>
                         <div class="sp-product-content">
                             <div class="rating">
@@ -687,7 +687,7 @@
                                 <i class="fas fa-star"></i>
                                 <i class="fas fa-star"></i>
                             </div>
-                            <h6 class="title"><a href="shop-details.html">Brachs Bens Vanla Ready Pice</a></h6>
+                            <h6 class="title"><a href="{{ route('products.show', $products->first()) }}">Brachs Bens Vanla Ready Pice</a></h6>
                             <span class="product-status">IN Stock</span>
                             <div class="sp-cart-wrap">
                                 <form action="#">
@@ -696,7 +696,7 @@
                                     </div>
                                 </form>
                             </div>
-                            <p>$2.99 - 1 kg</p>
+                            <p> Ksh 200.99 - 1 kg</p>
                         </div>
                     </div>
                 </div>
@@ -704,7 +704,7 @@
                     <div class="sp-product-item mb-20">
                         <div class="sp-product-thumb">
                             <span class="batch discount">25%</span>
-                            <a href="shop-details.html"><img src="img/product/sp_products05.png" alt=""></a>
+                            <a href="{{ route('products.show', $products->first()) }}"><img src="img/product/sp_products05.png" alt=""></a>
                         </div>
                         <div class="sp-product-content">
                             <div class="rating">
@@ -714,7 +714,7 @@
                                 <i class="fas fa-star"></i>
                                 <i class="fas fa-star"></i>
                             </div>
-                            <h6 class="title"><a href="shop-details.html">Black Lady Vanla Greek Grapes</a></h6>
+                            <h6 class="title"><a href="{{ route('products.show', $products->first()) }}">Black Lady Vanla Greek Grapes</a></h6>
                             <span class="product-status">IN Stock</span>
                             <div class="sp-cart-wrap">
                                 <form action="#">
@@ -723,18 +723,18 @@
                                     </div>
                                 </form>
                             </div>
-                            <p>$5.99 - 1 kg</p>
+                            <p> Ksh 500.99 - 1 kg</p>
                         </div>
                     </div>
                 </div>
             </div>
         </div>
     </div>
-    </section>
-    <!-- best-sellers-area-end -->
+</section>
+<!-- best-sellers-area-end -->
 
-    <!-- discount-area -->
-    <section class="discount-style-two pt-60 pb-50">
+<!-- discount-area -->
+<section class="discount-style-two pt-60 pb-50">
     <div class="container">
         <div class="row">
             <div class="col-lg-6">
@@ -765,7 +765,7 @@
             </div>
         </div>
     </div>
-    </section>
-    <!-- discount-area-end -->
+</section>
+<!-- discount-area-end -->
 
 @endsection

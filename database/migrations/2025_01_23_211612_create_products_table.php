@@ -15,10 +15,11 @@ return new class extends Migration
             $table->uuid("id")->primary();
             $table->string("name");
             $table->text("description");
+            $table->string('slug')->unique();
             $table->decimal("price", 10, 2);
             $table->integer("stock");
-            $table->string("image")->nullable();
-            $table->boolean("active")->default(true);
+            $table->string("image_url")->nullable();
+            $table->boolean("is_active")->default(true);
             $table->foreignUuid("category_id")->constrained("categories");
             // $table->foreignUuid("user_id")->constrained("users");//creates by
             $table->timestamps();

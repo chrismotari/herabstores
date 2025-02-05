@@ -80,7 +80,7 @@
                         </ul>
                     </div>
                     <div class="shop-details-price">
-                        <h2 class="price">$9.99</h2>
+                        <h2 class="price"> Ksh 900.99</h2>
                         <h5 class="stock-status">- IN Stock</h5>
                     </div>
                     <p>Organic food is food produced by methods complying with the standards of Rrganic farming. Standards vary Lorem ipsum
@@ -234,10 +234,10 @@
                 <div class="coupon-bg">
                     <div class="coupon-title">
                         <span>Use coupon Code</span>
-                        <h3 class="title">Get $3 Discount Code</h3>
+                        <h3 class="title">Get Ksh 300 Discount Code</h3>
                     </div>
                     <div class="coupon-code-wrap">
-                        <h5 class="code">ganic21abs</h5>
+                        <h5 class="code">Herabs123</h5>
                         <img src="img/images/coupon_code.png" alt="">
                     </div>
                 </div>
@@ -288,7 +288,7 @@
                                     </div>
                                 </form>
                             </div>
-                            <p>$1.50 - 1 kg</p>
+                            <p> Ksh 100.50 - 1 kg</p>
                         </div>
                     </div>
                 </div>
@@ -315,7 +315,7 @@
                                     </div>
                                 </form>
                             </div>
-                            <p>$3.50 - 1 lt</p>
+                            <p> Ksh 300.50 - 1 lt</p>
                         </div>
                     </div>
                 </div>
@@ -342,7 +342,7 @@
                                     </div>
                                 </form>
                             </div>
-                            <p>$2.99 - 1 kg</p>
+                            <p> Ksh 200.99 - 1 kg</p>
                         </div>
                     </div>
                 </div>
@@ -369,7 +369,7 @@
                                     </div>
                                 </form>
                             </div>
-                            <p>$2.99 - 1 kg</p>
+                            <p> Ksh 200.99 - 1 kg</p>
                         </div>
                     </div>
                 </div>
@@ -396,7 +396,7 @@
                                     </div>
                                 </form>
                             </div>
-                            <p>$5.99 - 1 kg</p>
+                            <p> Ksh 500.99 - 1 kg</p>
                         </div>
                     </div>
                 </div>

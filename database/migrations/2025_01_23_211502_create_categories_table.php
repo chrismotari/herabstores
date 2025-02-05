@@ -15,8 +15,10 @@ return new class extends Migration
             $table->uuid("id")->primary();
             $table->string("name");
             $table->text("description");
-            $table->string("image")->nullable();
-            $table->boolean("active")->default(true);
+            $table->string('slug')->unique();
+            $table->string("image_url")->nullable();
+            $table->boolean("is_active")->default(true);
+            $table->foreignUuid('parent_id')->nullable()->constrained('categories');
             $table->timestamps();
         });
     }
