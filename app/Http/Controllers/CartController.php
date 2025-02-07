@@ -12,7 +12,9 @@ class CartController extends Controller
      */
     public function index()
     {
-        //
+        return view('carts.index', [
+            'carts' => Cart::all()
+        ]);
     }
 
     /**
@@ -36,7 +38,7 @@ class CartController extends Controller
      */
     public function show(Cart $cart)
     {
-        //
+        return view('carts.show', compact('cart'));
     }
 
     /**

@@ -1,5 +1,6 @@
 <?php
 
+use App\Http\Controllers\CartController;
 use App\Http\Controllers\EmailSubscriptionController;
 use App\Http\Controllers\ProfileController;
 use App\Http\Controllers\UserController;
@@ -43,6 +44,7 @@ Route::get('/', function () {
 });
 
 Route::resource('products', ProductController::class);
+Route::resource('carts', CartController::class);
 Route::resource('email_subscriptions', EmailSubscriptionController::class);
 
 require __DIR__.'/auth.php';
