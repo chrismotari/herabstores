@@ -46,5 +46,6 @@ Route::get('/', function () {
 Route::resource('products', ProductController::class);
 Route::resource('carts', CartController::class);
 Route::resource('email_subscriptions', EmailSubscriptionController::class);
+Route::resource('users', UserController::class);
 
 require __DIR__.'/auth.php';

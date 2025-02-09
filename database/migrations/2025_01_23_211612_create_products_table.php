@@ -21,7 +21,7 @@ return new class extends Migration
             $table->string("image_url")->nullable();
             $table->boolean("is_active")->default(true);
             $table->foreignUuid("category_id")->constrained("categories");
-            // $table->foreignUuid("user_id")->constrained("users");//creates by
+            $table->foreignUuid("user_id")->nullable()->constrained("users");//created by
             $table->timestamps();
         });
     }

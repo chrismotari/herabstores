@@ -80,7 +80,7 @@
             </div>
             <div class="modal-body">
                 <div class="row">
-                    <form action="{{route('job_adverts.store')}}" method="post" enctype="multipart/form-data">
+                    <form action="{{route('users.store')}}" method="post" enctype="multipart/form-data">
                         @include('users.form')
                     </form>
                 </div>

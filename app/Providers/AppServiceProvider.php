@@ -5,11 +5,7 @@ namespace App\Providers;
 use App\Models\Company;
 use App\Models\ContractType;
 use App\Models\Country;
-use App\Models\JobAdvert;
-use App\Models\JobCategory;
-use App\Models\Profession;
 use App\Models\Role;
-use App\Models\State;
 use Illuminate\Support\Facades\View;
 use Illuminate\Support\Facades\Vite;
 use Illuminate\Support\ServiceProvider;
@@ -34,10 +30,6 @@ class AppServiceProvider extends ServiceProvider
         View::composer('users.form', function ($view) {
             $view->with([
                 'countries' => Country::all(), 
-                'states' => State::all(),
-                'professions' => Profession::all(),
-                'job_categories' => JobCategory::all(),
-                'contract_types' => ContractType::all(),
                 'roles' => Role::all(),
             ]); 
         });

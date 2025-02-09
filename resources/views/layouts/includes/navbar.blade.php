@@ -9,9 +9,9 @@
                             <a href="index-2.html"><img src="img/logo/logo.png" alt=""></a>
                         </div>
                         <div class="header-category d-none d-lg-block">
-                            <a href="#" class="cat-toggle"><i class="fas fa-bars"></i>ALL DEPARTMENTS<i class="fas fa-angle-down"></i></a>
+                            <a href="#" class="cat-toggle"><i class="fas fa-bars"></i>Unbeatable Deals<i class="fas fa-angle-down"></i></a>
                             <ul class="category-menu">
-                                <li class="menu-item-has-children"><a href="shop.html"><i class="flaticon-groceries"></i> Grocery & Frozen</a>
+                                <!-- <li class="menu-item-has-children"><a href="shop.html"><i class="flaticon-groceries"></i> Grocery & Frozen</a>
                                     <ul class="megamenu">
                                         <li class="sub-column-item"><a href="shop.html">Grocery & Frozen</a>
                                             <ul>
@@ -162,21 +162,24 @@
                                     </ul>
                                 </li>
                                 <li><a href="shop.html"><i class="flaticon-broccoli"></i> Vegetable</a></li>
-                                <li><a href="shop.html"><i class="flaticon-pop-corn-1"></i> Popcorn</a></li>
-                                <li><a href="shop.html"><i class="flaticon-nut"></i> Dried Fruit</a></li>
+                                <li><a href="shop.html"><i class="flaticon-pop-corn-1"></i> Popcorn</a></li> -->
+                                <li><a href="shop.html"><i class="flaticon-nut"></i> Offers </a></li>
+                                <li><a href="shop.html"><i class="flaticon-nut"></i> Organic Food </a></li>
+                                <li><a href="shop.html"><i class="flaticon-nut"></i> Baskets </a></li>
                             </ul>
                         </div>
                         <div class="navbar-wrap main-menu d-none d-lg-flex">
                             <ul class="navigation">
-                                <li class="active menu-item-has-children"><a href="#">Home</a>
+                                <li><a href="/">Home</a></li>
+                                <li><a href="about-us.html">About Us</a></li>
+                                <li class="menu-item-has-children"><a href="#">Fruits & Vegetables</a>
                                     <ul class="submenu">
-                                        <li class="active"><a href="index-2.html">Home Page One</a></li>
-                                        <li><a href="index-3.html">Home Page Two</a></li>
+                                        <li><a href="blog-details.html">Fruits</a></li>
+                                        <li><a href="terms-conditios.html">Vegetables</a></li>
                                     </ul>
                                 </li>
-                                <li><a href="about-us.html">About Us</a></li>
-                                <li><a href="shop.html">Fruits & Vegetables</a></li>
-                                <li><a href="shop.html">Blog</a></li>
+                                <li><a href="about-us.html">Spices and Herbs</a></li>
+                                <li><a href="about-us.html">Grains and Nuts</a></li>
                                 <li class="menu-item-has-children"><a href="#">My shoping</a>
                                     <ul class="submenu">
                                         <li><a href="blog-details.html">My orders</a></li>
