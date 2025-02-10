@@ -1,5 +1,5 @@
-@extends('layouts.backend', ['activePage' => 'permissions', 'title' => 'Permissions'])
-@section('title', 'Permissions')
+@extends('layouts.backend', ['activePage' => 'users', 'title' => 'Users'])
+@section('title', 'Users')
 @section('add_button')
 <button type="button" class="btn btn-primary" data-bs-toggle="modal" data-bs-target=".bd-example-modal-lg">Add New</button>
 @endsection

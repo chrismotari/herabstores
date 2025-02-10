@@ -7,8 +7,8 @@
                     @auth
                     <div class="d-flex align-items-center sidebar-info">
                         <div>
-                            <span class="font-w400 d-block">{{"auth()->user()->name"}}</span>
-                            <small class="text-end font-w400">{{"auth()->user()->main_role"}}</small>
+                            <span class="font-w400 d-block">{{auth()->user()->name}}</span>
+                            <small class="text-end font-w400">{{auth()->user()->main_role}}</small>
                         </div>
                         <i class="fas fa-chevron-down"></i>
                     </div>
@@ -55,15 +55,15 @@
                     <span class="nav-text">Products</span>
                 </a>
                 <ul aria-expanded="false">
-                    <li><a href="job_adverts">All Products</a></li>
-                    <li><a href="jobs/candidate-view">Baskets</a></li>
-                    <li><a href="job-applications">Offers & Promotions</a></li>
-                    <li><a href="new-job.html">Add Product</a></li>
+                    <li><a href="{{ route('products.index') }}">All Products</a></li>
+                    <li><a href="baskets">Baskets</a></li>
+                    <li><a href="offers">Offers & Promotions</a></li>
+                    <li><a href="{{ route('products.create') }}">Add Product</a></li>
                 </ul>
             </li>
             <li><a class="has-arrow " href="javascript:void(0);" aria-expanded="false">
                     <i class="fas fa-tasks"></i>
-                    <span class="nav-text">Cartegories</span>
+                    <span class="nav-text">Categories</span>
                 </a>
                 <ul aria-expanded="false">
                     <li><a href=" {{route('categories.index')}} ">All categories</a></li>

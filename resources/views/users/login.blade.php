@@ -28,11 +28,12 @@
     <!-- Mobile Specific -->
     <meta name="viewport" content="width=device-width, initial-scale=1">
 
+    <base href="{{ url('/backend') }}/">
     <!-- Favicon icon -->
     <link rel="shortcut icon" type="image/png" href="{{ asset('images/logo.png') }}">
-    <link href="{{ asset('css/bootstrap-select.min.css') }}" rel="stylesheet">
-    <link href="{{ asset('css/bootstrap-datepicker.min.css') }}" rel="stylesheet">
-    <link class="main-css" href="{{ asset('css/style.css') }}" rel="stylesheet">
+    <link href="{{ asset('backend/css/bootstrap-select.min.css') }}" rel="stylesheet">
+    <link href="{{ asset('backend/css/bootstrap-datepicker.min.css') }}" rel="stylesheet">
+    <link class="main-css" href="{{ asset('/backend/css/style.css') }}" rel="stylesheet">
 
 </head>
 
@@ -79,13 +80,13 @@
 	Scripts
 ***********************************-->
     <!-- Required vendors -->
-    <script src="{{ asset('js/global.min.js') }}"></script>
-    <script src="{{ asset('js/bootstrap-select.min.js') }}"></script>
-    <script src="{{ asset('js/bootstrap-datepicker.min.js') }}"></script>
-    <script src="{{ asset('js/dlabnav-init.js') }}"></script>
-    <script src="{{ asset('js/custom.min.js') }}"></script>
-    <script src="{{ asset('js/demo.js') }}"></script>
-    <script src="{{ asset('js/styleSwitcher.js') }}"></script>
+    <script src="{{ asset('backend/js/global.min.js') }}"></script>
+    <script src="{{ asset('backend/js/bootstrap-select.min.js') }}"></script>
+    <script src="{{ asset('backend/js/bootstrap-datepicker.min.js') }}"></script>
+    <script src="{{ asset('backend/js/dlabnav-init.js') }}"></script>
+    <script src="{{ asset('backend/js/custom.min.js') }}"></script>
+    <script src="{{ asset('backend/js/demo.js') }}"></script>
+    <script src="{{ asset('backend/js/styleSwitcher.js') }}"></script>
 
 </body>
 

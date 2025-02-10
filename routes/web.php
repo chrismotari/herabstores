@@ -1,5 +1,6 @@
 <?php
 
+use App\Http\Controllers\Auth\AuthenticatedSessionController;
 use App\Http\Controllers\CartController;
 use App\Http\Controllers\CategoryController;
 use App\Http\Controllers\EmailSubscriptionController;
@@ -15,25 +16,27 @@ use App\Models\Product;
 use Illuminate\Support\Facades\Route;
 
 Route::middleware('auth')->group(function () {
-    
-    // Route::get('/dashboard', function () {
-    //     return view('dashboard');
-    // })->name('dashboard');
+    Route::get('dashboard', function (){
+        return view('dashboard');
+    })->name('dashboard');
+
     Route::get('/profile', [ProfileController::class, 'edit'])->name('profile.edit');
-   
     Route::patch('/profile', [ProfileController::class, 'update'])->name('profile.update');
     Route::delete('/profile', [ProfileController::class, 'destroy'])->name('profile.destroy');
-
-   
-    
 
     Route::resource('users', UserController::class);
     Route::resource('roles', RoleController::class);
     Route::resource('permissions', PermissionController::class);
+    Route::resource('products', ProductController::class);
+    Route::resource('carts', CartController::class);
+    Route::resource('email_subscriptions', EmailSubscriptionController::class);
+    Route::resource('users', UserController::class);
+    Route::resource('categories', CategoryController::class);
+    Route::resource('orders', CategoryController::class);
     
 });
 Route::get('/index', function () {
-    return redirect('/home'); 
+    return redirect('/'); 
 })->name('index');
 
 Route::get('/home', function () {
@@ -43,12 +46,5 @@ Route::get('/home', function () {
 Route::get('/', function () {
     return view('index')->with('products', Product::all()); 
 });
-
-Route::resource('products', ProductController::class);
-Route::resource('carts', CartController::class);
-Route::resource('email_subscriptions', EmailSubscriptionController::class);
-Route::resource('users', UserController::class);
-Route::resource('categories', CategoryController::class);
-Route::resource('orders', CategoryController::class);
 
 require __DIR__.'/auth.php';

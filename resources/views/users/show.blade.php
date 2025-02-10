@@ -1,4 +1,5 @@
-@extends('layouts.app')
+@extends('layouts.backend', ['activePage' => 'users', 'title' => 'Users'])
+@section('title', $this_user->name)
 @section('content')
     <div class="row">
         <div class="col-xl-12">
