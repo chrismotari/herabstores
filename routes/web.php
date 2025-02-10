@@ -1,6 +1,7 @@
 <?php
 
 use App\Http\Controllers\CartController;
+use App\Http\Controllers\CategoryController;
 use App\Http\Controllers\EmailSubscriptionController;
 use App\Http\Controllers\ProfileController;
 use App\Http\Controllers\UserController;
@@ -47,5 +48,7 @@ Route::resource('products', ProductController::class);
 Route::resource('carts', CartController::class);
 Route::resource('email_subscriptions', EmailSubscriptionController::class);
 Route::resource('users', UserController::class);
+Route::resource('categories', CategoryController::class);
+Route::resource('orders', CategoryController::class);
 
 require __DIR__.'/auth.php';

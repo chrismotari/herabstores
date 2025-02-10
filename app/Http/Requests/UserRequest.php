@@ -29,9 +29,7 @@ class UserRequest extends LaravelFormRequest
         if($this->isMethod('POST')){
             return [
                 
-                'photo_url' => 'image|mimes:jpeg,png,jpg,gif,svg|max:2048',
-                'resume_url' => 'mimes:pdf|max:10240',
-
+                'photo_url' => ['image', 'mimes:jpeg,png,jpg,gif,svg', 'max:2048'],
                 'fname' => ['required', 'string', 'max:255'],
                 'mname' => ['nullable', 'string', 'max:255'],
                 'lname' => ['required', 'string', 'max:255'],
@@ -43,14 +41,10 @@ class UserRequest extends LaravelFormRequest
                 'password' => ['required', 'confirmed', Rules\Password::defaults()],
                 'address' => ['required', 'string', 'max:255'],
                 'city' => ['required', 'string', 'max:255'],
-                'zip_code' => ['required', 'string', 'max:10'],
+                'estate' => ['required', 'string', 'max:10'],
                 'photo_url' => ['nullable', 'image', 'max:2048', 'mimes:jpeg,png,jpg,gif,svg'],
-                'resume_url' => ['nullable', 'mimes:pdf, doc, docx', 'max:10240'],
                 'country_id' => ['required', 'uuid', 'exists:countries,id'],
-                'state_id' => ['nullable', 'uuid', 'exists:states,id'],
-                'job_category_id' => ['nullable', 'uuid', 'exists:job_categories,id'],
-                'profession_id' => ['nullable', 'uuid', 'exists:professions,id'],
-                'contract_type_id' => ['nullable', 'uuid', 'exists:contract_types,id'],
+                'role_id' => ['required', 'uuid', 'exists:roles,id'],
             ];
         } else{
             return [
@@ -63,7 +57,8 @@ class UserRequest extends LaravelFormRequest
                 "alt_email" => ["email","unique:users,alt_email,".$this->route('user')->id],
                 "dob" => ['nullable','date'],
                 'photo_url' => 'image|mimes:jpeg,png,jpg,gif,svg|max:2048',
-                'resume_url' => 'mimes:pdf|max:10240',
+                'role_id' => ['required', 'uuid', 'exists:roles,id'],
+                'address' => ['required', 'string', 'max:255'],
             ];
         }
     }

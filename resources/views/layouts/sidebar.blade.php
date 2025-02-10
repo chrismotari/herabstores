@@ -7,8 +7,8 @@
                     @auth
                     <div class="d-flex align-items-center sidebar-info">
                         <div>
-                            <span class="font-w400 d-block">{{auth()->user()->name}}</span>
-                            <small class="text-end font-w400">{{auth()->user()->main_role}}</small>
+                            <span class="font-w400 d-block">{{"auth()->user()->name"}}</span>
+                            <small class="text-end font-w400">{{"auth()->user()->main_role"}}</small>
                         </div>
                         <i class="fas fa-chevron-down"></i>
                     </div>
@@ -17,7 +17,7 @@
                 </div>
             </a>
             <div class="dropdown-menu dropdown-menu-end">
-                <a href="{{ route('users.show', auth()->user()->id) }}" class="dropdown-item ai-icon ">
+                <a href="{{ route('users.show', 'auth()->user()->id') }}" class="dropdown-item ai-icon ">
                     <svg xmlns="http://www.w3.org/2000/svg" class="text-primary" width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
                         <path d="M20 21v-2a4 4 0 0 0-4-4H8a4 4 0 0 0-4 4v2"></path>
                         <circle cx="12" cy="7" r="4"></circle>
@@ -41,29 +41,52 @@
         <ul class="metismenu" id="menu">
 
             <li><a href="/" class="" aria-expanded="false">
+                    <i class="fa fa-eye"></i>
+                    <span class="nav-text">Customer View</span>
+                </a>
+            </li>
+            <li><a href="/" class="" aria-expanded="false">
                     <i class="flaticon-025-dashboard"></i>
                     <span class="nav-text">Dashboard</span>
                 </a>
             </li>
             <li><a class="has-arrow " href="javascript:void(0);" aria-expanded="false">
                     <i class="fas fa-briefcase"></i>
-                    <span class="nav-text">Job</span>
+                    <span class="nav-text">Products</span>
                 </a>
                 <ul aria-expanded="false">
-                    <li><a href="job_adverts">Job Adverts</a></li>
-                    <li><a href="jobs/candidate-view">Available Jobs</a></li>
-                    <li><a href="job-applications">Job Applications</a></li>
-                    <li><a href="apply-job.html">Apply Job</a></li>
-                    <li><a href="new-job.html">New Job</a></li>
+                    <li><a href="job_adverts">All Products</a></li>
+                    <li><a href="jobs/candidate-view">Baskets</a></li>
+                    <li><a href="job-applications">Offers & Promotions</a></li>
+                    <li><a href="new-job.html">Add Product</a></li>
+                </ul>
+            </li>
+            <li><a class="has-arrow " href="javascript:void(0);" aria-expanded="false">
+                    <i class="fas fa-tasks"></i>
+                    <span class="nav-text">Cartegories</span>
+                </a>
+                <ul aria-expanded="false">
+                    <li><a href=" {{route('categories.index')}} ">All categories</a></li>
+                    <li><a href=" {{route('categories.create')}} ">Add Category</a></li>
+                </ul>
+            </li>
+            <li><a class="has-arrow " href="javascript:void(0);" aria-expanded="false">
+                    <i class="fas fa-shopping-cart"></i>
+                    <span class="nav-text">Orders</span>
+                </a>
+                <ul aria-expanded="false">
+                    <li><a href=" {{route('orders.index')}} ">New Orders</a></li>
+                    <li><a href=" {{route('orders.index')}} ">All Orders</a></li>
+                    <li><a href="apply-job.html">Reported Cases</a></li>
                 </ul>
             </li>
             <li><a class="has-arrow " href="users" aria-expanded="false">
                     <i class="fas fa-users"></i>
-                    <span class="nav-text">Users</span>
+                    <span class="nav-text">User Management</span>
                 </a>
                 <ul aria-expanded="false">
-                    <li><a href="users">Admin Users</a></li>
-                    <li><a href="users">Applicant Profiles</a></li>
+                    <li><a href="users">Store managers</a></li>
+                    <li><a href="users">Customer Profiles</a></li>
                     <li><a href="users/create">New User</a></li>
                     <li><a href="permissions">Permissions</a></li>
                     <li><a href="roles">Roles</a></li>
@@ -93,7 +116,7 @@
             <p class="plus-box-p">Lorem ipsum dolor sit amet</p>
         </div> -->
         <div class="copyright">
-            <p><strong>Unity Careers</strong> © <span class="current-year"></span> All Rights Reserved</p>
+            <p><a href="https://saibadigital.tech" target="none"><strong>Saiba Digital</strong></a> © <span class="current-year"></span> All Rights Reserved</p>
         </div>
     </div>
 </div>

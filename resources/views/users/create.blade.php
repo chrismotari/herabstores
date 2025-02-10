@@ -1,5 +1,4 @@
-@extends('layouts.theme', ['activePage' => 'users', 'title' => 'New User'])
-@section('title', "Create User")
+@extends('layouts.app')
 @section('content')
 <div class="row">
 @if ($errors->any())

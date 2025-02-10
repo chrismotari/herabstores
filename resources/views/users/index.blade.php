@@ -1,6 +1,8 @@
-@extends('app.theme', ['activePage' => 'users', 'title' => 'Users'])
-@section('title', 'Users')
-
+@extends('layouts.backend', ['activePage' => 'permissions', 'title' => 'Permissions'])
+@section('title', 'Permissions')
+@section('add_button')
+<button type="button" class="btn btn-primary" data-bs-toggle="modal" data-bs-target=".bd-example-modal-lg">Add New</button>
+@endsection
 @section('content')
 <div class="row">
     <div class="col-xl-12">
@@ -25,7 +27,7 @@
                         <td>{{$user->email}}</td>
                         <td>{{$user->country ? $user->country->name : ""}}</td>
                         <td>{{$user->role ? $user->role->name : ""}}</td>
-                        <td><span class="badge badge-success badge-lg light">Active</span></td>
+                        <td><span class="badge badge-success badge-lg light">{{$user->status}}</span></td>
                         <td>
                             <div class="action-buttons d-flex justify-content-end">
                                 <a href="javascript:void(0);" class="btn btn-success light mr-2">

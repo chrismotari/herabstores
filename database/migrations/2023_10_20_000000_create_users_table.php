@@ -16,7 +16,7 @@ return new class extends Migration
             $table->string('fname');
             $table->string('mname')->nullable();
             $table->string('lname');
-            $table->string('phone');
+            $table->string('phone')->unique();
             $table->string('alt_phone')->unique()->nullable();
             $table->string('email')->unique();
             $table->string('alt_email')->unique()->nullable();
@@ -27,6 +27,7 @@ return new class extends Migration
             $table->foreignUuid("country_id")->restrictOnDelete()->constrained('countries');
             $table->string('photo_url')->nullable();
             $table->date('dob')->nullable();
+            $table->date('status')->default(1);
             $table->enum('gender', ['male', 'female', 'other'])->nullable();
             $table->string('password');
             $table->timestamp('email_verified_at')->nullable();

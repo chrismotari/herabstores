@@ -1,8 +1,4 @@
-@extends('layouts.theme', ['activePage' => 'users', 'title' => 'User Profile'])
-@section('title', $this_user->name)
-@section('add_button')
-	<button type="button" class="btn btn-primary" data-bs-toggle="modal" data-bs-target=".bd-example-modal-lg">Resset Password</button>
-@endsection
+@extends('layouts.app')
 @section('content')
     <div class="row">
         <div class="col-xl-12">
@@ -21,6 +17,7 @@
                             </div>
                         </div>
                     </div>
+                </div>
                     
                 <div class="card-body pt-0">
                     <h4 class="card-title">Update Profile</h4>

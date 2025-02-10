@@ -41,18 +41,11 @@ class UserController extends Controller
             $request->validated();
             
             $dp_filename = null;
-            $resume_filename = null;
 
             if ($request->hasFile('photo_url')) {
                 $dp_filename = time(). '-' . $request->fname. '-' .$request->lname . '.' . $request->photo_url->extension();
                 $request->photo_url->storeAs('public/images/dps',  $dp_filename);
-            }
-
-
-            if ($request->hasFile('resume_url')) {
-                $resume_filename = time() . '.' . $request->resume_url->extension();
-                $request->resume_url->storeAs('public/files/resumes/',  $resume_filename);
-            }   
+            } 
 
             $user = User::create([
                 'fname'=> $request->fname,
@@ -62,22 +55,21 @@ class UserController extends Controller
                 'alt_phone'=> $request->alt_phone,
                 'email'=> $request->email,
                 'alt_email'=> $request->alt_email,
-                // 'dob'=> strtotime($request->dob),
+                'dob'=> strtotime($request->dob),
                 'password' => Hash::make($request->password),
                 "address" => $request->address,
                 "city" => $request->city,
-                "state_id" => $request->state_id,
-                "zip_code" => $request->zip_code,
+                "estate" => $request->estate,
                 "country_id" => $request->country_id,
                 "photo_url" => $dp_filename,
-                "resume_url" => $resume_filename,
-                "job_category_id" => $request->job_category_id,
-                "profession_id" => $request->profession_id,
-                "contract_type_id" => $request->contract_type_id,
             ]);
 
             event(new Registered($user));
-            toastr()->success("User created successfully");
+
+            if ($request->role_id) {
+                Role::findById($request->role_id)->users()->attach($user);
+            }
+            flasher()->addSuccess('User created successfully');
             return redirect()->back();
         } catch (\Throwable $th) {
             throw $th;

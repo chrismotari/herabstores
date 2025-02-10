@@ -27,13 +27,9 @@ class User extends Authenticatable
         'alt_email',
         'address',
         'city',
-        "state_id",
-        'zip_code',
+        'estate',
         "country_id",
         'photo_url',
-        "job_category_id",
-        "profession_id",
-        "contract_type_id",
         'dob',
         'password',
     ];
@@ -65,44 +61,15 @@ class User extends Authenticatable
     {
         return ucwords("{$this->fname} {$this->mname} {$this->lname}");
     }
-
-    public function getResumeAttribute(){
-        return $this->resumes->where('is_master_copy', true)->first();
-    }
-
-    public function job_category()
-    {
-        return $this->belongsTo(JobCategory::class);
-    }
-
-    public function resumes()
-    {
-        return $this->belongsTo(Resume::class);
-    }
-
-    public function profession()
-    {
-        return $this->belongsTo(Profession::class);
-    }
-
-    public function contract_type()
-    {
-        return $this->belongsTo(ContractType::class);
-    }
     
     public function country()
     {
         return $this->belongsTo(Country::class);
     }
 
-    public function state()
+    public function favourites()
     {
-        return $this->belongsTo(State::class);
-    }
-
-    public function saved_jobs()
-    {
-        return $this->hasMany(SavedJob::class);
+        return $this->hasMany(Favourite::class);
     }
 
 }
