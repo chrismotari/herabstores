@@ -65,7 +65,7 @@
                     <h4 class="title">Dannon Max Natural Vitamin Ice Cream</h4>
                     <div class="shop-details-meta">
                         <ul>
-                            <li>Baands : <a href="shop.html">Ganic</a></li>
+                            <li>Baands : <a href="shop.html">Herab</a></li>
                             <li class="shop-details-review">
                                 <div class="rating">
                                     <i class="fas fa-star"></i>
@@ -83,13 +83,13 @@
                         <h2 class="price"> Ksh 900.99</h2>
                         <h5 class="stock-status">- IN Stock</h5>
                     </div>
-                    <p>Organic food is food produced by methods complying with the standards of Rrganic farming. Standards vary Lorem ipsum
+                    <p>Organic food is food produced by methods complying with the standards of organic farming. Standards vary Lorem ipsum
                         dolor sit amet, consectetur adipiscing worldwide, but organic farming.</p>
                     <div class="shop-details-list">
                         <ul>
                             <li>Type : <span>Ice Cream</span></li>
                             <li>XPD : <span>Aug 19.2021</span></li>
-                            <li>CO : <span>Ganic</span></li>
+                            <li>CO : <span>Herab</span></li>
                         </ul>
                     </div>
                     <div class="shop-perched-info">

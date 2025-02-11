@@ -69,7 +69,7 @@ class UserController extends Controller
             if ($request->role_id) {
                 Role::findById($request->role_id)->users()->attach($user);
             }
-            flasher()->addSuccess('User created successfully');
+            flash()->addSuccess('User created successfully');
             return redirect()->back();
         } catch (\Throwable $th) {
             throw $th;
@@ -119,7 +119,7 @@ class UserController extends Controller
                 "profession_id" => $request->profession_id,
                 "contract_type_id" => $request->contract_type_id,
             ]);
-            toastr()->success("User updated successfully");
+            flash()->success("User updated successfully");
             return redirect()->back();
         } catch (\Throwable $th) {
             throw $th;

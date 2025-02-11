@@ -24,7 +24,7 @@
             <div class="col-md-5">
                 <div class="header-top-right">
                     <ul>
-                        @auth<li><a href="contact.html">My Account</a></li>@endauth
+                        @auth<li><a href="{{ route('dashboard') }}">Backend</a></li>@endauth
                         <li><a href="about-us.html">About Us</a></li>
                         <li><a href="contact.html">Contact</a></li>
                         <li><a href="contact.html">FAQ</a></li>
@@ -72,7 +72,7 @@
                                 <div class="icon"><i class="flaticon-telephone"></i></div>
                                 <a href="tel:1234566789"><span>Call Us Now</span>+254 712 345 678</a>
                             </li>
-                            <li class="header-user"><a href="#"><i class="flaticon-user"></i></a></li>
+                            <li class="header-user"><a href="{{ route('login') }}"><i class="flaticon-user"></i></a></li>
                             <li class="header-wishlist">
                                 <a href="#"><i class="flaticon-heart-shape-outline"></i></a>
                                 <span class="item-count">0</span>

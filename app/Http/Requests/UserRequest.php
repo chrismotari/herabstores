@@ -44,7 +44,7 @@ class UserRequest extends LaravelFormRequest
                 'estate' => ['required', 'string', 'max:10'],
                 'photo_url' => ['nullable', 'image', 'max:2048', 'mimes:jpeg,png,jpg,gif,svg'],
                 'country_id' => ['required', 'uuid', 'exists:countries,id'],
-                'role_id' => ['required', 'uuid', 'exists:roles,id'],
+                'role_id' => ['nullable', 'uuid', 'exists:roles,id'],
             ];
         } else{
             return [

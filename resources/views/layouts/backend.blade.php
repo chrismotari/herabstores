@@ -4,7 +4,7 @@
 <head>
 
    <!-- PAGE TITLE HERE -->
-	<title>@yield('title', '') | Unity Careers Dashboard</title>
+	<title>@yield('title', '') | Herab Groceries Dashboard</title>
 
     <!-- Meta -->
 	<meta charset="utf-8">
@@ -584,8 +584,7 @@
 							<div class="nav-item d-flex align-items-center">
 								<form action="index.html">
 									<div class="input-group search-area">
-										<input type="text" class="form-control" placeholder="Search">
-										<span class="input-group-text"><button type="submit" class="btn"><i class="flaticon-381-search-2"></i></button></span>
+										<button class="btn btn-primary">Customer View</button>
 									</div>
 								</form>
 								
@@ -731,7 +730,7 @@
             <!-- row -->
 			<div class="container-fluid">
 				<div class="d-flex align-items-center mb-4">
-					<h3 class="mb-0 me-auto">@yield('title', "Unity Careers")</h3>
+					<h3 class="mb-0 me-auto">@yield('title', "Herab Groceries")</h3>
 					@yield('add_button')
 				</div>
 				
@@ -750,7 +749,7 @@
         ***********************************-->
         <div class="footer">
             <div class="copyright">
-                <p>Copyright ©  Unity Careers  <span class="current-year">2024</span></p>
+                <p>Copyright ©  Saiba Digital <span class="current-year">{{ now()->format('Y') }}</span></p>
             </div>
         </div>
         <!--**********************************

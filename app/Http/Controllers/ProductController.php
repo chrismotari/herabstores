@@ -2,11 +2,14 @@
 
 namespace App\Http\Controllers;
 
+use App\Http\Requests\ProductRequest;
+use App\Models\Category;
 use App\Models\Product;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Validator;
 
 use Flasher\Laravel\Facade as Flasher;
+use Illuminate\Support\Facades\Auth;
 
 class ProductController extends Controller
 {
@@ -25,51 +28,41 @@ class ProductController extends Controller
      */
     public function create()
     {
-        //
+        return view('products.create',['categories' => Category::all()]);
     }
 
     /**
      * Store a newly created resource in storage.
      */
-    public function store(Request $request)
+    public function store(ProductRequest $request)
     {
-        // Define validation rules
-        $rules = [
-            'name' => 'required|string|max:255',
-            'description' => 'required|string',
-            'slug' => 'required|string|unique:products,slug',
-            'price' => 'required|numeric|min:0',
-            'stock' => 'required|integer|min:0',
-            'image_url' => 'nullable|file|image',
-            'is_active' => 'boolean',
-            'category_id' => 'required|uuid|exists:categories,id',
-        ];
+        
+       try {
+            $request->validated();
+            
+            $filename = null;
 
-        // Validate request
-        $validator = Validator::make($request->all(), $rules);
+            if ($request->hasFile('image_url')) {
+                $filename = time(). '-' . $request->slug. '.' . $request->image_url->extension();
+                $request->image_url->storeAs('public/images/product_images',  $filename);
+            } 
 
-        if ($validator->fails()) {
-            Flasher::addError('Validation failed');
-            return response()->json([
-                'success' => false,
-                'errors' => $validator->errors()
-            ], 422);
-        }
+           $product = Product::create([
+               'name' => $request->name,
+               'description' => $request->description,
+               'slug' => $request->slug,
+               'price' => $request->price,
+               'stock' => $request->stock,
+               'image_url' => $filename,
+               'is_active' => $request->is_active ?? true,
+               'category_id' => $request->category_id,
+               'user_id' => Auth::user()->id,
+           ]);
+       } catch (\Throwable $th) {
+        throw $th;
+       }
 
-        // Store data
-        $product = Product::create([
-            'name' => $request->name,
-            'description' => $request->description,
-            'slug' => $request->slug,
-            'price' => $request->price,
-            'stock' => $request->stock,
-            'image_url' => $request->image_url,
-            'is_active' => $request->is_active ?? true,
-            'category_id' => $request->category_id,
-            'user_id' => Auth::user()->id,
-        ]);
-
-        Flasher::addSuccess('Product created successfully');
+        flash()->success('Product created successfully');
         return back();
     }
 

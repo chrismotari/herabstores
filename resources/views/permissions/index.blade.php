@@ -1,4 +1,4 @@
-@extends('layouts.theme', ['activePage' => 'permissions', 'title' => 'Permissions'])
+@extends('layouts.backend', ['activePage' => 'permissions', 'title' => 'Permissions'])
 @section('title', 'Permissions')
 @section('add_button')
 <button type="button" class="btn btn-primary" data-bs-toggle="modal" data-bs-target=".bd-example-modal-lg">Add New</button>
@@ -55,7 +55,7 @@
                     </tr>
                     @empty
                     <tr>
-                        <td colspan="7" class="text-center">No permissions found</td>
+                        No permissions found
                     </tr>
                     @endforelse
                 </tbody>

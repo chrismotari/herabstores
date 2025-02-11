@@ -33,8 +33,8 @@ class PermissionController extends Controller
         $permission = Permission::create([
             'name' => $request->name
         ]);
-        toastr()->success('Permission created successfully');
-        return redirect()->route('permissions.index');
+        flash()->success('Permission created successfully');
+        return redirect()->back();
     }
 
     /**

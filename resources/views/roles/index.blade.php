@@ -1,4 +1,4 @@
-@extends('layouts.theme', ['activePage' => 'roles', 'title' => 'Roles'])
+@extends('layouts.backend', ['activePage' => 'roles', 'title' => 'Roles'])
 @section('title', 'Roles')
 @section('add_button')
 <button type="button" class="btn btn-primary" data-bs-toggle="modal" data-bs-target=".bd-example-modal-lg">Add New</button>
@@ -55,7 +55,7 @@
                     </tr>
                     @empty
                     <tr>
-                        <td colspan="7" class="text-center">No roles found</td>
+                        No roles found
                     </tr>
                     @endforelse
                 </tbody>

@@ -744,7 +744,7 @@
                     </div>
                     <div class="discount-content">
                         <span>healthy food</span>
-                        <h4 class="title"><a href="shop.html">organic farm for ganic</a></h4>
+                        <h4 class="title"><a href="shop.html">organic farm for Herab</a></h4>
                         <p>Super Offer TO 50% OFF</p>
                         <a href="shop.html" class="btn rounded-btn">shop now</a>
                     </div>

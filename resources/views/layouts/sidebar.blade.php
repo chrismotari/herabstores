@@ -17,7 +17,7 @@
                 </div>
             </a>
             <div class="dropdown-menu dropdown-menu-end">
-                <a href="{{ route('users.show', 'auth()->user()->id') }}" class="dropdown-item ai-icon ">
+                <a href="{{ route('users.show', auth()->user()->id) }}" class="dropdown-item ai-icon ">
                     <svg xmlns="http://www.w3.org/2000/svg" class="text-primary" width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
                         <path d="M20 21v-2a4 4 0 0 0-4-4H8a4 4 0 0 0-4 4v2"></path>
                         <circle cx="12" cy="7" r="4"></circle>
@@ -85,11 +85,11 @@
                     <span class="nav-text">User Management</span>
                 </a>
                 <ul aria-expanded="false">
-                    <li><a href="users">Store managers</a></li>
-                    <li><a href="users">Customer Profiles</a></li>
-                    <li><a href="users/create">New User</a></li>
-                    <li><a href="permissions">Permissions</a></li>
-                    <li><a href="roles">Roles</a></li>
+                    <li><a href="{{ route ('users.index') }}">Store managers</a></li>
+                    <li><a href="{{ route ('users.customers') }}">Customer Profiles</a></li>
+                    <li><a href="{{ route ('users.create') }}">New User</a></li>
+                    <li><a href="{{ route ('permissions.index') }}">Permissions</a></li>
+                    <li><a href="{{ route ('roles.index') }}">Roles</a></li>
                 </ul>
             </li>
 

@@ -33,8 +33,8 @@ class RoleController extends Controller
         $role = Role::create([
             'name' => $request->name
         ]);
-        toastr()->success('Role created successfully');
-        return redirect()->route('roles.index');
+        flash()->success('Role created successfully');
+        return redirect()->back();
     }
 
     /**
