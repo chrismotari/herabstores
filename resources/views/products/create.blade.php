@@ -16,7 +16,6 @@
 @endif
 	<div class="col-xl-12">
 		<form action=" {{ route('products.store') }} " method="POST" enctype="multipart/form-data">
-			@csrf
 			@include('products.form')
 		</form>
 	</div>

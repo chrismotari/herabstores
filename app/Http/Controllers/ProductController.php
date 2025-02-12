@@ -19,7 +19,8 @@ class ProductController extends Controller
     public function index()
     {
         return view('products.index', [
-            'products' => Product::all()
+            'products' => Product::all(),
+            'categories' => Category::all()
         ]);
     }
 
@@ -41,20 +42,21 @@ class ProductController extends Controller
             $request->validated();
             
             $filename = null;
+            $file_path = null;
 
             if ($request->hasFile('image_url')) {
                 $filename = time(). '-' . $request->slug. '.' . $request->image_url->extension();
-                $request->image_url->storeAs('public/images/product_images',  $filename);
+                $file_path = $request->image_url->storeAs('images/product_images',  $filename, 'public');
             } 
-
+            dd( $request->is_active);
            $product = Product::create([
                'name' => $request->name,
                'description' => $request->description,
                'slug' => $request->slug,
                'price' => $request->price,
                'stock' => $request->stock,
-               'image_url' => $filename,
-               'is_active' => $request->is_active ?? true,
+               'image_url' => $file_path,
+               'is_active' => $request->is_active ? 1 : 0,
                'category_id' => $request->category_id,
                'user_id' => Auth::user()->id,
            ]);

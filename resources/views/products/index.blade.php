@@ -54,3 +54,22 @@
 
 
 @endsection
+@section('modals')
+<div class="modal fade bd-example-modal-lg" tabindex="-1" role="dialog" aria-hidden="true">
+	<div class="modal-dialog modal-lg">
+		<div class="modal-content">
+			<div class="modal-header">
+				<h2 class="modal-title">New Product</h2>
+				<button type="button" class="btn-close" data-bs-dismiss="modal">
+				</button>
+			</div>
+			<div class="modal-body">
+			<form action=" {{ route('products.store') }} " method="POST" enctype="multipart/form-data">
+				@include('products.form')
+			</form>
+			</div>
+			
+		</div>
+	</div>
+</div>
+@endsection
