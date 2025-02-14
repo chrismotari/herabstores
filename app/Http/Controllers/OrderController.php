@@ -29,6 +29,47 @@ class OrderController extends Controller
     public function store(Request $request)
     {
         //
+
+        #   Take user's cart
+        #   Check if the cart is empty
+        #   get all cart items
+        #   calculate the total price of the cart items
+        #   create a new order
+        #   add all cart items to the order as order items in json format
+        #   clear the cart
+        #   return the order
+        #   
+            // Take user's cart
+        $cart = session()->get('cart', []);
+
+        // Check if the cart is empty
+        if (empty($cart)) {
+            return response()->json(['message' => 'Cart is empty'], 400);
+        }
+
+        // Get all cart items
+        $cartItems = $cart['items'];
+
+        // Calculate the total price of the cart items
+        $totalPrice = array_reduce($cartItems, function ($carry, $item) {
+            return $carry + ($item['price'] * $item['quantity']);
+        }, 0);
+
+        // Create a new order
+        $order = Order::create([
+            'user_id' => auth()->id(),
+            'total_price' => $totalPrice,
+        ]);
+
+        // Add all cart items to the order as order items in json format
+        $order->items = json_encode($cartItems);
+        $order->save();
+
+        // Clear the cart
+        session()->forget('cart');
+
+        // Return the order
+        return response()->json($order, 201);
     }
 
     /**

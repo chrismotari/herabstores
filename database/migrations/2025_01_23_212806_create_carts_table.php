@@ -14,7 +14,7 @@ return new class extends Migration
         Schema::create('carts', function (Blueprint $table) {
             $table->uuid("id")->primary();
             $table->foreignUuid("user_id")->constrained("users");
-            // $table->decimal("total", 10, 2)->default(0);//calculated value 
+            $table->string("status")->nullable();
             $table->timestamps();
         });
     }
