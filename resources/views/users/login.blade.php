@@ -12,20 +12,7 @@
     <meta name="author" content="Chris Motari">
     <meta name="robots" content="index, follow">
     <meta name="format-detection" content="telephone=no">
-
-    <meta name="keywords" content="admin dashboard, admin template, analytics, bootstrap, bootstrap 5, bootstrap 5 admin template, job board admin, job portal admin, modern, responsive admin dashboard, sales dashboard, sass, ui kit, web app, frontend">
-    <meta name="description" content="We proudly present Jobick, a Job Admin dashboard HTML Template, If you are hiring a job expert you would like to build a superb website for your Jobick, it's a best choice.">
-
-    <meta property="og:title" content="Jobick : Job Admin Dashboard Bootstrap 5 Template + FrontEnd">
-    <meta property="og:description" content="We proudly present Jobick, a Job Admin dashboard HTML Template, If you are hiring a job expert you would like to build a superb website for your Jobick, it's a best choice.">
-    <meta property="og:image" content="https://jobick.dexignlab.com/xhtml/social-image.png">
-
-    <meta name="twitter:title" content="Jobick : Job Admin Dashboard Bootstrap 5 Template + FrontEnd">
-    <meta name="twitter:description" content="We proudly present Jobick, a Job Admin dashboard HTML Template, If you are hiring a job expert you would like to build a superb website for your Jobick, it's a best choice.">
-    <meta name="twitter:image" content="https://jobick.dexignlab.com/xhtml/social-image.png">
-    <meta name="twitter:card" content="summary_large_image">
-
-    <!-- Mobile Specific -->
+ <!-- Mobile Specific -->
     <meta name="viewport" content="width=device-width, initial-scale=1">
 
     <base href="{{ url('/backend') }}/">

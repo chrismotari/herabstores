@@ -582,11 +582,11 @@
                                 {{$title}}
                             </div>
 							<div class="nav-item d-flex align-items-center">
-								<form action="index.html">
+								
 									<div class="input-group search-area">
-										<button class="btn btn-primary">Customer View</button>
+										<a href="/" class="btn btn-primary">Customer View</a>
 									</div>
-								</form>
+								
 								
 							</div>
                         </div>

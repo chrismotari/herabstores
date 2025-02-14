@@ -34,15 +34,5 @@ class AppServiceProvider extends ServiceProvider
             ]); 
         });
 
-        View::composer('job_adverts.form', function ($view) {
-            $view->with([
-                'countries' => Country::all(),
-                'job_categories' => JobCategory::all(),
-                'contract_types' => ContractType::all(),
-                'professions' => Profession::all(),
-                'companies' => Company::all(),
-                'jobs' => JobAdvert::all(),
-            ]);
-        });
     }
 }

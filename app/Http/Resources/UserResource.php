@@ -26,13 +26,9 @@ class UserResource extends JsonResource
             "alt_email" => $this->alt_email,
             "address" => $this->address,
             "city" => $this->city,
-            "state_id" => $this->state,
-            "zip_code" => $this->zip_code,
+            "estate" => $this->estate,
             "country" => $this->country,
             "photo_url" => $this->photo_url,
-            "job_category" => $this->job_category,
-            "profession" => $this->profession,
-            "contract_type" => $this->contract_type,
             "dob" => $this->dob
         ];
     }

@@ -2,16 +2,15 @@
 
 use App\Http\Controllers\Auth\AuthenticatedSessionController;
 use App\Http\Controllers\CartController;
+use App\Http\Controllers\CartItemController;
 use App\Http\Controllers\CategoryController;
 use App\Http\Controllers\EmailSubscriptionController;
 use App\Http\Controllers\ProfileController;
 use App\Http\Controllers\UserController;
-use App\Http\Controllers\JobAdvertController;
-use App\Http\Controllers\JobApplicationController;
+use App\Http\Controllers\OrderController;
 use App\Http\Controllers\PermissionController;
 use App\Http\Controllers\ProductController;
 use App\Http\Controllers\RoleController;
-use App\Models\EmailSubscription;
 use App\Models\Product;
 use Illuminate\Support\Facades\Route;
 
@@ -32,12 +31,14 @@ Route::middleware('auth', 'admin')->group(function () {
     Route::resource('permissions', PermissionController::class);
     Route::resource('products', ProductController::class);
     Route::resource('carts', CartController::class);
+    Route::resource('cart_items', CartItemController::class);
     Route::resource('email_subscriptions', EmailSubscriptionController::class);
     Route::resource('users', UserController::class);
     Route::resource('categories', CategoryController::class);
-    Route::resource('orders', CategoryController::class);
+    Route::resource('orders', OrderController::class);
     
 });
+
 Route::get('/index', function () {
     return redirect('/'); 
 })->name('index');

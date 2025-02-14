@@ -24,4 +24,29 @@ class Product extends Model
     {
         return $this->belongsTo(Category::class);
     }
+
+    public function user()
+    {
+        return $this->belongsTo(User::class);
+    }
+
+
+    public function getIsInStockAttribute()
+    {
+        if (!$this->stock  || !$this->total_stock ) {
+            return 'Out of Stock';
+        }
+
+        if ($this->stock < 1) {
+            return 'Out of Stock';
+        }
+
+        $tenPercent = $this->total_stock * 0.1;
+
+        if ($this->stock < $tenPercent) {
+            return 'Few Items Left';
+        }
+
+        return 'In Stock';
+    }
 }

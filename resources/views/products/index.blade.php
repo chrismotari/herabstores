@@ -42,7 +42,7 @@
                             </tr>
                             @empty
                             <tr>
-                                <td colspan="7" class="text-center">No job adverts found</td>
+                                <td colspan="7" class="text-center">No data found</td>
                             </tr>
                             @endforelse
                         </tbody>

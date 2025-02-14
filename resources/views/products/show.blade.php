@@ -53,7 +53,7 @@
                             </div>
                             <div class="tab-pane fade" id="item-three" role="tabpanel" aria-labelledby="item-three-tab">
                                 <div class="shop-details-img">
-                                    <img src="img/product/shop_details_img03.jpg" alt="">
+                                    <img src="{{ asset($product->image_url) }}" alt="">
                                 </div>
                             </div>
                         </div>
@@ -62,7 +62,7 @@
             </div>
             <div class="col-lg-5">
                 <div class="shop-details-content">
-                    <h4 class="title">Dannon Max Natural Vitamin Ice Cream</h4>
+                    <h4 class="title">{{$product->name}}</h4>
                     <div class="shop-details-meta">
                         <ul>
                             <li>Baands : <a href="shop.html">Herab</a></li>
@@ -80,41 +80,42 @@
                         </ul>
                     </div>
                     <div class="shop-details-price">
-                        <h2 class="price"> Ksh 900.99</h2>
-                        <h5 class="stock-status">- IN Stock</h5>
+                        <h2 class="price"> Ksh {{$product->price}}</h2>
+                        <h5 class="stock-status">- {{$product->is_in_stock}}</h5>
                     </div>
-                    <p>Organic food is food produced by methods complying with the standards of organic farming. Standards vary Lorem ipsum
-                        dolor sit amet, consectetur adipiscing worldwide, but organic farming.</p>
+                    <p>{{$product->description}}</p>
                     <div class="shop-details-list">
                         <ul>
-                            <li>Type : <span>Ice Cream</span></li>
-                            <li>XPD : <span>Aug 19.2021</span></li>
-                            <li>CO : <span>Herab</span></li>
+                            <li>Category : <span>{{$product->category->name}}</span></li>
                         </ul>
                     </div>
-                    <div class="shop-perched-info">
-                        <div class="sd-cart-wrap">
-                            <form action="#">
-                                <div class="cart-plus-minus">
-                                    <input type="text" value="1">
+                    <form action="{{ route('cart_items.store') }}" method="POST">
+                        @csrf
+                        <div class="shop-perched-info">
+                            <div class="sd-cart-wrap">
+                                
+                                    <div class="cart-plus-minus">
+                                        <input type="text" value="1" name="quantity">
+                                    </div>
+                                    
                                 </div>
-                            </form>
+                                <input type="text" hidden value="{{$product->id}}" name="product_id">
+                            <button type="submit" class="btn">add to cart</button>
                         </div>
-                        <a href="#" class="btn">add to cart</a>
-                    </div>
+                    </form>
                     <div class="shop-details-bottom">
-                        <h5 class="title"><a href="#"><i class="far fa-heart"></i> Add To Wishlist</a></h5>
+                        <button class="btn btn-secondary bg-light text-danger"><i class="far fa-heart "></i> Add to Wish List</button>
                         <ul>
                             <li>
                                 <span>Tag : </span>
-                                <a href="#">ICE Cream</a>
+                                <a href="#">Green</a>
                             </li>
                             <li>
                                 <span>CATEGORIES :</span>
-                                <a href="#">women's,</a>
-                                <a href="#">bikini,</a>
-                                <a href="#">tops for,</a>
-                                <a href="#">large bust</a>
+                                <a href="#">farm,</a>
+                                <a href="#">food,</a>
+                                <a href="#">organic,</a>
+                                <a href="#">green</a>
                             </li>
                         </ul>
                     </div>

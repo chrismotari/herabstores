@@ -3,12 +3,7 @@
 namespace App\Http\Controllers;
 
 use App\Http\Requests\UserRequest;
-use App\Models\ContractType;
-use App\Models\Country;
-use App\Models\JobCategory;
-use App\Models\Profession;
 use App\Models\Role;
-use App\Models\State;
 use App\Models\User;
 use Illuminate\Auth\Events\Registered;
 use Illuminate\Http\Request;
@@ -98,7 +93,7 @@ class UserController extends Controller
      */
     public function update(Request $request, User $user)
     {
-        // dd('updating...');
+        dd('updating...');
         try {
             $user->update([
                 'fname'=> $request->fname,
@@ -115,9 +110,6 @@ class UserController extends Controller
                 "state_id" => $request->state_id,
                 "zip_code" => $request->zip_code,
                 "country_id" => $request->country_id,
-                "job_category_id" => $request->job_category_id,
-                "profession_id" => $request->profession_id,
-                "contract_type_id" => $request->contract_type_id,
             ]);
             flash()->success("User updated successfully");
             return redirect()->back();

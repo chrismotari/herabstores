@@ -4,12 +4,6 @@ namespace App\Http\Controllers\Auth;
 
 use App\Http\Controllers\Controller;
 use App\Http\Requests\UserRequest;
-use App\Models\ContractType;
-use App\Models\Country;
-use App\Models\JobCategory;
-use App\Models\Profession;
-use App\Models\Role;
-use App\Models\State;
 use App\Models\User;
 use Illuminate\Auth\Events\Registered;
 use Illuminate\Http\RedirectResponse;
@@ -71,9 +65,6 @@ class RegisteredUserController extends Controller
                 "country_id" => $request->country_id,
                 "photo_url" => $dp_filename,
                 "resume_url" => $resume_filename,
-                "job_category_id" => $request->job_category_id,
-                "profession_id" => $request->profession_id,
-                "contract_type_id" => $request->contract_type_id,
             ]);
 
             event(new Registered($user));
