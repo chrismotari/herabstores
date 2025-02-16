@@ -52,10 +52,24 @@
                                     </span>
                                     <x-input-error :messages="$errors->get('password')" class="mt-2 text-danger" />
                                 </div>
+                                <div class="form-row d-flex flex-wrap justify-content-between mb-2">
+                                    <div class="form-group mb-sm-4 mb-1">
+                                        <div class="form-check custom-checkbox ms-1">
+                                            <input type="checkbox" class="form-check-input" id="basic_checkbox_1">
+                                            <label class="form-check-label" for="basic_checkbox_1">Remember my preference</label>
+                                        </div>
+                                    </div>
+                                    <div class="form-group ms-2">
+                                        <a class="text-hover" href="{{route('password.request')}}">Forgot Password?</a>
+                                    </div>
+                                </div>
                                 <div class="text-center">
                                     <button type="submit" class="btn btn-primary btn-block">Sign in</button>
                                 </div>
                             </form>
+                            <div class="new-account mt-3 __web-inspector-hide-shortcut__">
+                                <p>Don't have an account? <a class="text-primary" href="{{route('register')}}">Sign up</a></p>
+                            </div>
                         </div>
                     </div>
                 </div>

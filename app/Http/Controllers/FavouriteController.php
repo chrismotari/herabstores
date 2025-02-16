@@ -4,6 +4,8 @@ namespace App\Http\Controllers;
 
 use App\Models\Favourite;
 use Illuminate\Http\Request;
+use Illuminate\Validation\Rule;
+use Illuminate\Validation\ValidationException;
 
 class FavouriteController extends Controller
 {
@@ -28,7 +30,34 @@ class FavouriteController extends Controller
      */
     public function store(Request $request)
     {
-        //
+        try {
+            $validatedData = $request->validate([
+                'product_id' => [
+                    'required',
+                    'string',
+                    'max:50',
+                    'exists:products,id',
+                    Rule::unique('favourites')->where(function ($query) use ($request) {
+                        return $query->where('user_id', auth()->id());
+                    }),
+                ]
+            ],[
+                'product_id.unique' => 'Product already added to favourites',
+            ]);
+    
+            Favourite::create([
+                'user_id' => auth()->id(),
+                'product_id' => $validatedData['product_id'],
+            ]);
+            return back()->with('success', 'Product added to favourites');
+        }  catch (ValidationException $e) {
+            flash()->error($e->validator->errors()->first());
+            return redirect()->back()->withErrors($e->validator)->withInput();
+        }catch (\Throwable $th) {
+            flash()->error('An error occurred while adding product to favourites');
+            return redirect()->back();
+
+        }
     }
 
     /**

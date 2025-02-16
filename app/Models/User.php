@@ -24,6 +24,7 @@ class User extends Authenticatable
         'fname',
         'mname',
         'lname',
+        'gender',
         'phone',
         'alt_phone',
         'email',
@@ -34,6 +35,8 @@ class User extends Authenticatable
         "country_id",
         'photo_url',
         'dob',
+        'status',
+        'is_admin',
         'password',
     ];
 
@@ -73,6 +76,20 @@ class User extends Authenticatable
     public function favourites()
     {
         return $this->hasMany(Favourite::class);
+    }
+    public function carts()
+    {
+        return $this->hasMany(Cart::class);
+    }
+
+    public function orders()
+    {
+        return $this->hasMany(Order::class);
+    }
+
+    public function getCartAttribute()
+    {
+        return $this->carts()->first();
     }
 
     public function getMainRoleAttribute()

@@ -14,7 +14,7 @@
                                 <ol class="breadcrumb">
                                     <li class="breadcrumb-item"><a href="index.html">Home</a></li>
                                     <li class="breadcrumb-item"><a href="index.html">Pages</a></li>
-                                    <li class="breadcrumb-item active" aria-current="page">Our Blog</li>
+                                    <li class="breadcrumb-item active" aria-current="page">My cart</li>
                                 </ol>
                             </nav>
                         </div>
@@ -43,51 +43,44 @@
                                         </tr>
                                     </thead>
                                     <tbody>
-                                        <tr>
-                                            <td class="product-thumbnail"><a href="shop-details.html"><img src="img/product/cart_img01.jpg" alt=""></a></td>
-                                            <td class="product-name">
-                                                <h4><a href="shop-details.html">Orange Bens Vanla</a></h4>
-                                            </td>
-                                            <td class="product-price">$ 27.00</td>
-                                            <td class="product-quantity">
-                                                <div class="cart--plus--minus">
-                                                    <form action="#" class="num-block">
-                                                        <input type="text" class="in-num" value="1" readonly="">
-                                                        <div class="qtybutton-box">
-                                                            <span class="plus"><i class="fas fa-angle-up"></i></span>
-                                                            <span class="minus dis"><i class="fas fa-angle-down"></i></span>
-                                                        </div>
+                                        @forelse ( $cart->cartItems as $cart_item )
+                                            <tr>
+                                                <td class="product-thumbnail"><a href="shop-details.html"><img src="{{ asset($cart_item->product->image_url) }}" alt="{{$cart_item->product->slug}}"></a></td>
+                                                <td class="product-name">
+                                                    <h4><a href="shop-details.html">{{$cart_item->product->name}}</a></h4>
+                                                </td>
+                                                <td class="product-price">{{$cart_item->product->price}}</td>
+                                                {{-- <td class="product-quantity">
+                                                    <div class="cart--plus--minus">
+                                                        <form action="#" class="num-block">
+                                                            <input type="text" class="in-num" value="1" readonly="">
+                                                            <div class="qtybutton-box">
+                                                                <span class="plus"><i class="fas fa-angle-up"></i></span>
+                                                                <span class="minus dis"><i class="fas fa-angle-down"></i></span>
+                                                            </div>
+                                                        </form>
+                                                    </div>
+                                                </td> --}}
+                                                <td class="product-subtotal"><span>{{$cart_item->quantity}}</span></td>
+                                                <td class="product-subtotal"><span>{{$cart_item->total}}</span></td>
+                                                <td class="product-delete">
+                                                    <form id="remove_item" action="{{ route('cart_items.destroy', $cart_item) }}" method="POST">
+                                                        @csrf
+                                                        @method('DELETE')
+                                                        {{-- <button type="submit"><i class="far fa-trash-alt"></i></button> --}}
+                                                        <a href="javascript:{}" onclick="document.getElementById('remove_item').submit();"><i class="far fa-trash-alt"></i></a>
                                                     </form>
-                                                </div>
-                                            </td>
-                                            <td class="product-subtotal"><span>$ 27.99</span></td>
-                                            <td class="product-delete"><a href="#"><i class="far fa-trash-alt"></i></a></td>
-                                        </tr>
-                                        <tr>
-                                            <td class="product-thumbnail"><a href="shop-details.html"><img src="img/product/cart_img02.jpg" alt=""></a></td>
-                                            <td class="product-name">
-                                                <h4><a href="shop-details.html">Dannon Capcicam</a></h4>
-                                            </td>
-                                            <td class="product-price">$ 40.00</td>
-                                            <td class="product-quantity">
-                                                <div class="cart--plus--minus">
-                                                    <form action="#" class="num-block">
-                                                        <input type="text" class="in-num" value="1" readonly="">
-                                                        <div class="qtybutton-box">
-                                                            <span class="plus"><i class="fas fa-angle-up"></i></span>
-                                                            <span class="minus dis"><i class="fas fa-angle-down"></i></span>
-                                                        </div>
-                                                    </form>
-                                                </div>
-                                            </td>
-                                            <td class="product-subtotal"><span>$ 40.99</span></td>
-                                            <td class="product-delete"><a href="#"><i class="far fa-trash-alt"></i></a></td>
-                                        </tr>
+                                                </td>
+                                            </tr>
+                                            
+                                        @empty
+                                            Cart is empty
+                                        @endforelse
                                     </tbody>
                                 </table>
                             </div>
                         </div>
-                        <div class="shop-cart-bottom">
+                        {{-- <div class="shop-cart-bottom">
                             <div class="cart-coupon">
                                 <form action="#">
                                     <input type="text" placeholder="Enter Coupon Code...">
@@ -95,9 +88,9 @@
                                 </form>
                             </div>
                             <div class="continue-shopping">
-                                <a href="shop.html" class="btn">update Cart</a>
+                                <a href="#" class="btn">update Cart</a>
                             </div>
-                        </div>
+                        </div> --}}
                     </div>
                     <div class="col-xl-5 col-lg-12">
                         <div class="shop-cart-total">
@@ -105,23 +98,24 @@
                             <div class="shop-cart-widget">
                                 <form action="#">
                                     <ul>
-                                        <li class="sub-total"><span>Subtotal</span> $ 136.00</li>
+                                        <li class="sub-total"><span>Subtotal</span> KSHS {{$cart->total}}</li>
                                         <li>
                                             <span>Shipping</span>
                                             <div class="shop-check-wrap">
-                                                <div class="custom-control custom-checkbox">
+                                                KSHS 150
+                                                {{-- <div class="custom-control custom-checkbox">
                                                     <input type="checkbox" class="custom-control-input" id="customCheck1">
-                                                    <label class="custom-control-label" for="customCheck1">Free Shipping</label>
+                                                    <label class="custom-control-label" for="customCheck1">Home Delivery: KSH 150.00 </label>
                                                 </div>
                                                 <div class="custom-control custom-checkbox">
                                                     <input type="checkbox" class="custom-control-input" id="customCheck2">
-                                                    <label class="custom-control-label" for="customCheck2">LOCAL PICKUP: $5.00</label>
-                                                </div>
+                                                    <label class="custom-control-label" for="customCheck2">LOCAL PICKUP: KSH 0.00</label>
+                                                </div> --}}
                                             </div>
                                         </li>
-                                        <li class="cart-total-amount"><span>Total Price</span> <span class="amount">$ 151.00</span></li>
+                                        <li class="cart-total-amount"><span>Total Payable</span> <span class="amount">KSHS {{$cart->total + 150}} </span></li>
                                     </ul>
-                                    <a href="checkout.html" class="btn">PROCEED TO CHECKOUT</a>
+                                    <a href="{{ route("orders.create") }}" class="btn">PROCEED TO CHECKOUT</a>
                                 </form>
                             </div>
                         </div>

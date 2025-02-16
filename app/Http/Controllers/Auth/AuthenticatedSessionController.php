@@ -16,6 +16,8 @@ class AuthenticatedSessionController extends Controller
      */
     public function create(): View
     {
+        dd('here');
+
         return view('users.login');
     }
 
@@ -24,11 +26,14 @@ class AuthenticatedSessionController extends Controller
      */
     public function store(LoginRequest $request): RedirectResponse
     {
+        dd('here');
         $request->authenticate();
 
         $request->session()->regenerate();
 
-        return redirect()->intended(route('dashboard', absolute: false));
+        
+            return redirect()->intended(route('home', absolute: false));
+        
     }
 
     /**

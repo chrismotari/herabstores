@@ -4,6 +4,7 @@ namespace App\Http\Controllers;
 
 use App\Models\Order;
 use Illuminate\Http\Request;
+use Illuminate\Support\Facades\Auth;
 
 class OrderController extends Controller
 {
@@ -20,7 +21,9 @@ class OrderController extends Controller
      */
     public function create()
     {
-        //
+        return view('orders.create', [
+            'cart' => Auth::user()->cart,
+        ]);
     }
 
     /**

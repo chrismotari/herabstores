@@ -104,7 +104,20 @@
                         </div>
                     </form>
                     <div class="shop-details-bottom">
-                        <button class="btn btn-secondary bg-light text-danger"><i class="far fa-heart "></i> Add to Wish List</button>
+                        @if ($product->is_Favourite)
+                            <form action="{{ route('products.unfavourite', $product ) }}" method="POST">
+                                @csrf
+                                @method('delete')
+                                <input type="hidden" name="product_id" value="{{ $product->id }}">
+                                <button type="submit" class="btn btn-secondary bg-light text-danger"><i class="fas fa-heart"></i> Remove from Wish List</button>
+                            </form>
+                        @else  
+                            <form action="{{ route('favourites.store') }}" method="POST">                              
+                                @csrf
+                                <input type="hidden" name="product_id" value="{{ $product->id }}">
+                                <button type="submit" class="btn btn-secondary bg-light text-primary"><i class="far fa-heart"></i> Add to Wish List</button>
+                            </form>
+                        @endif
                         <ul>
                             <li>
                                 <span>Tag : </span>

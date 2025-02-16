@@ -2,6 +2,7 @@
 
 namespace App\Http\Controllers;
 
+use App\Models\Cart;
 use App\Models\CartItem;
 use Illuminate\Http\Request;
 
@@ -28,7 +29,53 @@ class CartItemController extends Controller
      */
     public function store(Request $request)
     {
-        dd($request->all());
+        $request->validate([
+            'product_id' => 'required|exists:products,id',
+            'quantity' => 'required|integer|min:1',
+        ]);
+
+        $user = auth()->user();
+        $cart = $user->cart;
+
+        if (!$cart) {
+            $cart = Cart::create([
+                'user_id' => $user->id,
+                'status' => 'open',
+            ]);
+        }
+
+        $existingCartItem = CartItem::where('cart_id', $cart->id)
+            ->where('product_id', $request->product_id)
+            ->first();
+
+        if ($existingCartItem) {
+            flash()->error('Product already in cart');
+            return redirect()->back();
+        }
+        try {
+            $user = auth()->user();
+            $cart = $user->cart;
+    
+            if(!$cart) {
+                $cart = Cart::create([
+                    'user_id' => $user->id,
+                    'status' => 'open',
+                ]);
+            }
+    
+            $cartItem = CartItem::create([
+                'cart_id' => $cart->id,
+                'product_id' => $request->product_id,
+                'quantity' => $request->quantity,
+            ]);
+            flash()->success('Product added to cart');
+        } catch (\Throwable $th) {
+            throw $th;
+            // flash()->error('Failed to add product to cart');
+        }
+        return redirect()->back();
+
+
     }
 
     /**
@@ -60,6 +107,9 @@ class CartItemController extends Controller
      */
     public function destroy(CartItem $cartItem)
     {
-        //
+        // dd($cartItem);
+        $cartItem->delete();
+        flash()->success('Product removed from cart');
+        return redirect()->back();
     }
 }

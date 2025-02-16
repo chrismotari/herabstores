@@ -22,6 +22,15 @@
                 <x-input-error :messages="$errors->get('lname')" class="mt-2 text-danger" />
             </div>
             <div class="col-xl-3 col-md-4 col-sm-6 mb-4">
+                <label class="form-label">Gender<span class="text-danger scale5 ms-2">*</span></label>
+                <select class="nice-select default-select wide form-control" name="gender">
+                    <option value="male" {{ old('gender', $this_user->gender ?? '') == 'male' ? 'selected' : '' }}>Male</option>
+                    <option value="female" {{ old('gender', $this_user->gender ?? '') == 'female' ? 'selected' : '' }}>Female</option>
+                    <option value="other" {{ old('gender', $this_user->gender ?? '') == 'other' ? 'selected' : '' }}>Prefer not to say</option>
+                </select>
+                <x-input-error :messages="$errors->get('gender')" class="mt-2 text-danger" />
+            </div>
+            <div class="col-xl-3 col-md-4 col-sm-6 mb-4">
                 <label class="form-label">Date of Birth<span class="text-danger scale3 ms-2">*</span></label>
                 <div class="input-hasicon">
                     <input class="form-control bt-datepicker" value="{{ old('dob') }}" name="dob">
@@ -108,29 +117,31 @@
             </div>
             @endempty
 
-            <div class="col-xl-3 col-md-4 col-sm-6 mb-4">
-                <label class="form-label">Status<span class="text-danger scale5 ms-2">*</span></label>
-                <select class="nice-select default-select wide form-control" name="status">
-                    <option value="1" {{ old('status', $this_user->status ?? '') == '1' ? 'selected' : '' }}>Active</option>
-                    <option value="0" {{ old('status', $this_user->status ?? '') == '0' ? 'selected' : '' }}>Inactive</option>
-                </select>
-                <x-input-error :messages="$errors->get('status')" class="mt-2 text-danger" />
-            </div>
+            @if (auth()->user()?->is_admin)
+                <div class="col-xl-3 col-md-4 col-sm-6 mb-4">
+                    <label class="form-label">Status<span class="text-danger scale5 ms-2">*</span></label>
+                    <select class="nice-select default-select wide form-control" name="status">
+                        <option value="1" {{ old('status', $this_user->status ?? '') == '1' ? 'selected' : '' }}>Active</option>
+                        <option value="0" {{ old('status', $this_user->status ?? '') == '0' ? 'selected' : '' }}>Inactive</option>
+                    </select>
+                    <x-input-error :messages="$errors->get('status')" class="mt-2 text-danger" />
+                </div>
 
-            <div class="col-xl-3 col-md-4 col-sm-6 mb-4">
-                <label class="form-label">Role<span class="text-danger scale5 ms-2">*</span></label>
-                <select class="nice-select default-select wide form-control" name="role_id">
-                    <option value="" disabled {{ old('role_id', $this_user->role_id ?? null) === null ? 'selected' : '' }}>Choose...</option>
-                        @forelse($roles as $role)
-                        <option value="{{ $role->id }}" {{ old('role_id', $this_user->role_id ?? null) == $role->id ? 'selected' : '' }}>
-                            {{ $role->name }}
-                        </option>
-                        @empty
-                    <option disabled>No roles available</option>
-                    @endforelse
-                </select>
-                <x-input-error :messages="$errors->get('role_id')" class="mt-2 text-danger" />
-            </div>
+                <div class="col-xl-3 col-md-4 col-sm-6 mb-4">
+                    <label class="form-label">Role<span class="text-danger scale5 ms-2">*</span></label>
+                    <select class="nice-select default-select wide form-control" name="role_id">
+                        <option value="" disabled {{ old('role_id', $this_user->role_id ?? null) === null ? 'selected' : '' }}>Choose...</option>
+                            @forelse($roles as $role)
+                            <option value="{{ $role->id }}" {{ old('role_id', $this_user->role_id ?? null) == $role->id ? 'selected' : '' }}>
+                                {{ $role->name }}
+                            </option>
+                            @empty
+                        <option disabled>No roles available</option>
+                        @endforelse
+                    </select>
+                    <x-input-error :messages="$errors->get('role_id')" class="mt-2 text-danger" />
+                </div>
+            @endif
 
         </div>
 

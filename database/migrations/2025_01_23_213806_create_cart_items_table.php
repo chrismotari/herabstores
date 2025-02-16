@@ -15,7 +15,8 @@ return new class extends Migration
             $table->uuid("id")->primary(); 
             $table->foreignUuid("cart_id")->constrained("carts");
             $table->foreignUuid("product_id")->constrained("products");
-            $table->integer("quantity");        
+            $table->integer("quantity");    
+            $table->unique(['cart_id', 'product_id']);    
             $table->timestamps();
         });
     }

@@ -5,6 +5,7 @@ use App\Http\Controllers\CartController;
 use App\Http\Controllers\CartItemController;
 use App\Http\Controllers\CategoryController;
 use App\Http\Controllers\EmailSubscriptionController;
+use App\Http\Controllers\FavouriteController;
 use App\Http\Controllers\ProfileController;
 use App\Http\Controllers\UserController;
 use App\Http\Controllers\OrderController;
@@ -14,10 +15,14 @@ use App\Http\Controllers\RoleController;
 use App\Models\Product;
 use Illuminate\Support\Facades\Route;
 
-Route::middleware('auth', 'admin')->group(function () {
+Route::middleware('auth')->group(function () {
     Route::get('dashboard', function (){
         return view('dashboard');
-    })->name('dashboard');
+    })->name('dashboard')->middleware('admin');
+
+    Route::get('/admin', function () {
+        return redirect('/dashboard'); 
+    })->name('admin');
 
     Route::get('/profile', [ProfileController::class, 'edit'])->name('profile.edit');
     Route::patch('/profile', [ProfileController::class, 'update'])->name('profile.update');
@@ -25,6 +30,7 @@ Route::middleware('auth', 'admin')->group(function () {
 
     Route::get('/users/customers', [UserController::class, 'customers'])->name('users.customers');
 
+    Route::delete('products/{product}/unfavourite', [ProductController::class, 'unfavourite'])->name('products.unfavourite');
 
     Route::resource('users', UserController::class);
     Route::resource('roles', RoleController::class);
@@ -36,6 +42,7 @@ Route::middleware('auth', 'admin')->group(function () {
     Route::resource('users', UserController::class);
     Route::resource('categories', CategoryController::class);
     Route::resource('orders', OrderController::class);
+    Route::resource('favourites', FavouriteController::class);
     
 });
 

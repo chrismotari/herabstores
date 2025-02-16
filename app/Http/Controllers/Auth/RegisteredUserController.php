@@ -20,7 +20,7 @@ class RegisteredUserController extends Controller
      */
     public function create(): View
     {
-        return view('users.create');
+        return view('users.register');
     }
 
     /**
@@ -35,7 +35,6 @@ class RegisteredUserController extends Controller
 
         try { 
             $request->validated();
-            // dd('passed');
 
             if ($request->hasFile('photo_url')) {
                 $dp_filename = time(). '-' . $request->fname. '-' .$request->lname . '.' . $request->photo_url->extension();

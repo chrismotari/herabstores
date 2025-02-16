@@ -7,10 +7,20 @@ use App\Models\Role;
 use App\Models\User;
 use Illuminate\Auth\Events\Registered;
 use Illuminate\Http\Request;
+use Illuminate\Routing\Controllers\Middleware;
+use Illuminate\Routing\Controllers\HasMiddleware;
+use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Facades\Hash;
 
-class UserController extends Controller
+class UserController extends Controller implements HasMiddleware
 {
+    public static function middleware(): array
+    {
+        return [
+            // 'admin',
+            new Middleware('admin', except: ['store', 'update']),
+        ];
+    }
     /**
      * Display a listing of the resource.
      */
@@ -36,10 +46,11 @@ class UserController extends Controller
             $request->validated();
             
             $dp_filename = null;
+            $filepath = null;
 
             if ($request->hasFile('photo_url')) {
                 $dp_filename = time(). '-' . $request->fname. '-' .$request->lname . '.' . $request->photo_url->extension();
-                $request->photo_url->storeAs('public/images/dps',  $dp_filename);
+                $filepath = $request->photo_url->storeAs('images/dps',  $dp_filename, 'public');
             } 
 
             $user = User::create([
@@ -56,7 +67,7 @@ class UserController extends Controller
                 "city" => $request->city,
                 "estate" => $request->estate,
                 "country_id" => $request->country_id,
-                "photo_url" => $dp_filename,
+                "photo_url" => $filepath,
             ]);
 
             event(new Registered($user));
@@ -64,8 +75,15 @@ class UserController extends Controller
             if ($request->role_id) {
                 Role::findById($request->role_id)->users()->attach($user);
             }
-            flash()->addSuccess('User created successfully');
-            return redirect()->back();
+            if (Auth::user()?->is_admin) {
+                flash()->success('User created successfully');
+                return redirect()->back();
+            } else {
+                Auth::login($user);
+                return redirect(route('home', absolute: false));
+            }
+            
+
         } catch (\Throwable $th) {
             throw $th;
         }
@@ -93,7 +111,7 @@ class UserController extends Controller
      */
     public function update(Request $request, User $user)
     {
-        dd('updating...');
+        dd('updating paused...');
         try {
             $user->update([
                 'fname'=> $request->fname,
@@ -111,7 +129,7 @@ class UserController extends Controller
                 "zip_code" => $request->zip_code,
                 "country_id" => $request->country_id,
             ]);
-            flash()->success("User updated successfully");
+            flash()->success("User info updated successfully");
             return redirect()->back();
         } catch (\Throwable $th) {
             throw $th;
@@ -125,23 +143,23 @@ class UserController extends Controller
      */
     public function destroy(User $user)
     {
-        if($user->id == auth()->user()->id) {
-            toastr()->error("You cannot delete yourself!");
+        if($user->id == auth()->id) {
+            flash()->error("You cannot delete yourself!");
             return redirect()->back();
         }
        
         if ($user->photo_url) {
-            unlink(storage_path('app/public/images/dps/' . $user->photo_url));
+            unlink(storage_path( $user->photo_url));
             
         }
         if ($user->resume_url) {
-            unlink(storage_path('app/public/files/resumes/' . $user->resume_url));
+            unlink(storage_path($user->resume_url));
         }
         if ($user->delete()) {
-            toastr()->success("User deleted successfully");
+            flash()->success("User deleted successfully");
             return redirect()->back();
         } else {
-            toastr()->error("Error deleting user");
+            flash()->error("Error deleting user");
             return redirect()->back();
         }
     }

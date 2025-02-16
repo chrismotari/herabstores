@@ -24,7 +24,7 @@
             <div class="col-md-5">
                 <div class="header-top-right">
                     <ul>
-                        @if(auth()->user()?->is_admin)<li><a href="{{ route('dashboard') }}">Backend</a></li>@endif
+                        @if(auth()->user())<li><a href="{{ route('users.show', Auth::user()) }}">Hello, {{Auth::user()->name}}!</a></li>@endif
                         <li><a href="about-us.html">About Us</a></li>
                         <li><a href="contact.html">Contact</a></li>
                         <li><a href="contact.html">FAQ</a></li>
@@ -72,62 +72,92 @@
                                 <div class="icon"><i class="flaticon-telephone"></i></div>
                                 <a href="tel:1234566789"><span>Call Us Now</span>+254 712 345 678</a>
                             </li>
-                            <li class="header-user"><a href="{{ route('login') }}"><i class="flaticon-user"></i></a></li>
-                            @if(auth()->user()?->is_admin)<li class="header-user"><a href="{{ route('dashboard') }}"><i class="fa fa-cog"></i></a></li>@endif
-                            <li class="header-wishlist">
-                                <a href="#"><i class="flaticon-heart-shape-outline"></i></a>
-                                <span class="item-count">0</span>
-                            </li>
                             <li class="header-cart-action">
                                 <div class="header-cart-wrap">
-                                    <a href="cart.html"><i class="flaticon-shopping-basket"></i></a>
-                                    <span class="item-count">2</span>
+                                    <a href="login"><i class="flaticon-user"></i></a>
+                                    @auth
+                                        <ul class="minicart">  
+                                            <li class="d-flex align-items-start">
+                                                <div class="cart-img">
+                                                    <a href="{{route('users.show', auth()->user())}}"><img src="{{ asset('backend/images/user.png') }}" alt=""></a>
+                                                </div>
+                                                <div class="cart-content">
+                                                    <h4><a href="shop-details.html">{{auth()->user()->name}}</a></h4>
+                                                </div>
+                                                
+                                            </li>
+                                            <li>
+                                                <div class="checkout-link">
+                                                
+                                                    <a href=" {{ route('users.show', auth()->user()) }} ">My Profile</a>
+                                                
+                                                    <form id="logout_form" action="{{ route('logout') }}" method="POST">
+                                                        @csrf
+                                                        {{-- <a class="black-color" href="#">Logout</a> --}}
+                                                        <a class="black-color" href="javascript:{}" onclick="document.getElementById('logout_form').submit();"> Logout <i class="far fa-sign-out"></i></a>
+                                                    </form>
+                                                </div>
+                                            </li>
+                                        </ul>
+                                    @endauth
+                                </div>
+                            </li>
+                            @if(auth()->user()?->is_admin)
+                                <li class="header-user">
+                                    <a href="{{ route('dashboard') }}"><i class="fa fa-cog"></i></a>
+                                </li>
+                            @endif
+                            
+                            <li class="header-wishlist">
+                                <a href="#"><i class="flaticon-heart-shape-outline"></i></a>
+                                <span class="item-count">{{ $favourites?->count() }}</span>
+                            </li>
+                            
+                            <li class="header-cart-action">
+                                <div class="header-cart-wrap">
+                                    @if ($cart)
+                                    <a href="{{ route('carts.show', $cart) }}"><i class="flaticon-shopping-basket"></i></a>
+                                    <span class="item-count">{{ $cart->cartItems()->count() }}</span>
+                                    @else
+                                    <a href="#"><i class="flaticon-shopping-basket"></i></a>
+                                    <span class="item-count">0</span>
+                                    @endif
                                     <ul class="minicart">
+                                        @forelse ($cart?->cartItems ? $cart->cartItems : [] as $cart_item)    
                                         <li class="d-flex align-items-start">
                                             <div class="cart-img">
-                                                <a href="shop-details.html"><img src="img/product/cart_p01.jpg" alt=""></a>
+                                                <a href="shop-details.html"><img src="{{ asset($cart_item->product->image_url) }}" alt=""></a>
                                             </div>
                                             <div class="cart-content">
-                                                <h4><a href="shop-details.html">Organic Farm Fresh Nuts</a></h4>
+                                                <h4><a href="shop-details.html">{{$cart_item->product->name}}</a></h4>
                                                 <div class="cart-price">
-                                                    <span class="new">Ksh 229.9</span>
-                                                    <span><del>Ksh 229.9</del></span>
+                                                    <span class="new">KShs {{$cart_item->product->price}}</span>
                                                 </div>
                                             </div>
                                             <div class="del-icon">
                                                 <a href="#"><i class="far fa-trash-alt"></i></a>
                                             </div>
                                         </li>
-                                        <li class="d-flex align-items-start">
-                                            <div class="cart-img">
-                                                <a href="shop-details.html"><img src="img/product/cart_p02.jpg" alt=""></a>
-                                            </div>
-                                            <div class="cart-content">
-                                                <h4><a href="shop-details.html">Organic Fresh Nuts Vanla Butter</a></h4>
-                                                <div class="cart-price">
-                                                    <span class="new">Ksh 229.9</span>
-                                                    <span><del>Ksh 229.9</del></span>
-                                                </div>
-                                            </div>
-                                            <div class="del-icon">
-                                                <a href="#"><i class="far fa-trash-alt"></i></a>
-                                            </div>
-                                        </li>
+                                        @empty
+                                            Empty cart
+                                        @endforelse
                                         <li>
                                             <div class="total-price">
                                                 <span class="f-left">Total:</span>
-                                                <span class="f-right">Ksh 239.9</span>
+                                                <span class="f-right">Ksh {{$cart?->total}}</span>
                                             </div>
                                         </li>
                                         <li>
                                             <div class="checkout-link">
-                                                <a href="cart.html">Shopping Cart</a>
-                                                <a class="black-color" href="checkout.html">Checkout</a>
+                                                @if ($cart)    
+                                                    <a href=" {{ route('carts.show', $cart) }} ">Go to Cart</a>
+                                                    <a class="black-color" href="#">Checkout</a>
+                                                @endif
                                             </div>
                                         </li>
                                     </ul>
                                 </div>
-                                <div class="cart-amount">Ksh 1000.00</div>
+                                <div class="cart-amount">KSHS {{$cart?->total}}</div>
                             </li>
                         </ul>
                     </div>
