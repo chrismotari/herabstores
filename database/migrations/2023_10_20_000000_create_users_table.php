@@ -27,8 +27,8 @@ return new class extends Migration
             $table->foreignUuid("country_id")->restrictOnDelete()->constrained('countries');
             $table->string('photo_url')->nullable();
             $table->date('dob')->nullable();
-            $table->date('status')->default(1);
-            $table->date('is_admin')->default(0);
+            $table->boolean('is_active')->default(1);
+            $table->boolean('is_admin')->default(0);
             $table->enum('gender', ['male', 'female', 'other'])->nullable();
             $table->string('password');
             $table->timestamp('email_verified_at')->nullable();
