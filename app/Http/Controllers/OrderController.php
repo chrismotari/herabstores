@@ -23,6 +23,7 @@ class OrderController extends Controller
     {
         return view('orders.create', [
             'cart' => Auth::user()->cart,
+            'user' => Auth::user(),
         ]);
     }
 

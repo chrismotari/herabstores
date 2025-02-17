@@ -46,24 +46,44 @@
                             </div>
                         </div>
                         <div class="checkout-form-wrap">
-                            <form action="#">
+                            <form action="{{ route('orders.store') }}" method="POST">
                                 <div class="checkout-form-top">
-                                    <h5 class="title">Contact information</h5>
-                                    <p>Already have an account? <a href="contact.html">Log in</a></p>
+                                    <h5 class="title">Delivery information</h5>
+                                    {{-- <p>Already have an account? <a href="contact.html">Log in</a></p> --}}
                                 </div>
-                                <input type="text" placeholder="Email or Mobile Phone Number *">
+                                <div class="row">
+                                    <div class="col-sm-6 mb-4">
+                                        <label class="form-label">Email<span class="text-danger scale5 ms-2">*</span></label>
+                                        <input type="text" class="" placeholder="Email" aria-label="fname" 
+                                            value="{{ old('fname', $this_user->fname ?? '') }}" name="fname">
+                                        <x-input-error :messages="$errors->get('fname')" class="mt-2 text-danger" />
+                                    </div>
+                                    <div class="col-sm-6 mb-4">
+                                        <label class="form-label">Last Name<span class="text-danger scale5 ms-2">*</span></label>
+                                        <input type="text" class="" placeholder="Last Name" aria-label="lname" 
+                                            value="{{ old('lname', $this_user->lname ?? '') }}" name="lname">
+                                        <x-input-error :messages="$errors->get('lname')" class="mt-2 text-danger" />
+                                    </div>
+                                </div>
                                 <div class="news-and-offers custom-control custom-checkbox">
                                     <input type="checkbox" class="custom-control-input" id="nao">
                                     <label class="custom-control-label" for="nao">Keep me up to date on news and offers</label>
                                 </div>
+                                
                                 <div class="building-info-wrap">
                                     <h5 class="title">Billing Information</h5>
                                     <div class="row">
-                                        <div class="col-md-6">
-                                            <input type="text" placeholder="First Name *">
+                                        <div class="col-sm-6 mb-4">
+                                            <label class="form-label">First Name<span class="text-danger scale5 ms-2">*</span></label>
+                                            <input type="text" class="" placeholder="First Name" aria-label="fname" 
+                                                value="{{ old('fname', $this_user->fname ?? '') }}" name="fname">
+                                            <x-input-error :messages="$errors->get('fname')" class="mt-2 text-danger" />
                                         </div>
-                                        <div class="col-md-6">
-                                            <input type="text" placeholder="Last Name *">
+                                        <div class="col-sm-6 mb-4">
+                                            <label class="form-label">Last Name<span class="text-danger scale5 ms-2">*</span></label>
+                                            <input type="text" class="" placeholder="Last Name" aria-label="lname" 
+                                                value="{{ old('lname', $this_user->lname ?? '') }}" name="lname">
+                                            <x-input-error :messages="$errors->get('lname')" class="mt-2 text-danger" />
                                         </div>
                                     </div>
                                     <input type="text" placeholder="Company Name ( optional )">
@@ -100,59 +120,58 @@
                     <div class="col-lg-5">
                         <div class="shop-cart-total order-summary-wrap">
                             <h3 class="title">Order Summary</h3>
-                            <div class="os-products-item">
-                                <div class="thumb">
-                                    <a href="shop-details.html"><img src="img/product/os-products-thumb.jpg" alt=""></a>
+                            @foreach ($cart->cartItems as $cart_item)
+                                <div class="os-products-item">
+                                    <div class="thumb">
+                                        <a href="shop-details.html"><img src="img/product/os-products-thumb.jpg" alt=""></a>
+                                    </div>
+                                    <div class="content">
+                                        <h6 class="title"><a href="shop-details.html">{{$cart_item->product->name}}</a></h6>
+                                        <span class="price">KSH {{$cart_item->price}}</span>
+                                    </div>
+                                    <div class="remove">x</div>
                                 </div>
-                                <div class="content">
-                                    <h6 class="title"><a href="shop-details.html">Uncle Bens Vanla</a></h6>
-                                    <span class="price">$3.50</span>
-                                </div>
-                                <div class="remove">x</div>
-                            </div>
+                            @endforeach
+                        
                             <div class="shop-cart-widget">
-                                <form action="#">
+                                <form action="{{ route('orders.store') }}" method="POST">
                                     <ul>
-                                        <li class="sub-total"><span>Subtotal</span> $ 136.00</li>
+                                        <li class="sub-total"><span>Subtotal</span> KSH {{ $cart->total }} </li>
                                         <li>
-                                            <span>Shipping</span>
+                                            <span>Shipping to Area 57</span>
                                             <div class="shop-check-wrap">
                                                 <div class="custom-control custom-checkbox">
-                                                    <input type="checkbox" class="custom-control-input" id="customCheck1">
-                                                    <label class="custom-control-label" for="customCheck1">Free Shipping</label>
+                                                    <label for="customCheck1">KSH 150</label>
                                                 </div>
-                                                <div class="custom-control custom-checkbox">
-                                                    <input type="checkbox" class="custom-control-input" id="customCheck2">
-                                                    <label class="custom-control-label" for="customCheck2">LOCAL PICKUP: $5.00</label>
-                                                </div>
+                                                
                                             </div>
                                         </li>
-                                        <li class="cart-total-amount"><span>Total Price</span> <span class="amount">$ 151.00</span></li>
+                                        <li class="cart-total-amount"><span>Total Price</span> <span class="amount">KSH {{$cart->total+150}}</span></li>
                                     </ul>
                                     <div class="payment-method-info">
                                         <div class="paypal-method-flex">
                                             <div class="custom-control custom-checkbox">
-                                                <input type="checkbox" class="custom-control-input" id="customCheck5">
+                                                <input type="checkbox" disabled checked class="custom-control-input" id="customCheck5">
                                                 <label class="custom-control-label" for="customCheck5">Cash on delivery</label>
                                                 <p>Pay with cash upon delivery.</p>
                                             </div>
                                         </div>
                                         <div class="paypal-method-flex">
                                             <div class="custom-control custom-checkbox">
-                                                <input type="checkbox" class="custom-control-input" id="customCheck6">
-                                                <label class="custom-control-label" for="customCheck6">PayPal</label>
+                                                <input type="checkbox" disabled class="custom-control-input" id="customCheck6">
+                                                <label class="custom-control-label" for="customCheck6">Coming soon</label>
                                             </div>
                                             <div class="paypal-logo"><img src="img/images/card.png" alt=""></div>
                                         </div>
                                     </div>
                                     <div class="payment-terms">
-                                        <p>The purpose Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod.</p>
+                                        <p>Deliveries can take up to 24 hrs.</p>
                                         <div class="custom-control custom-checkbox">
-                                            <input type="checkbox" class="custom-control-input" id="customCheck7">
+                                            <input type="checkbox" class="custom-control-input" id="customCheck7" required>
                                             <label class="custom-control-label" for="customCheck7">I agree to the website terms and conditions</label>
                                         </div>
                                     </div>
-                                    <a href="checkout.html" class="btn">Place order</a>
+                                    <button class="btn btn-primary" class="btn">Place order</button>
                                 </form>
                             </div>
                         </div>
