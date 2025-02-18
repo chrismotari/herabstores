@@ -86,6 +86,12 @@
                                             <x-input-error :messages="$errors->get('lname')" class="mt-2 text-danger" />
                                         </div>
                                     </div>
+                                    <div class="col-sm-6 mb-4">
+                                        <label class="form-label">Company Name<span class="text-danger scale5 ms-2">*</span></label>
+                                        <input type="text" class="" placeholder="Company Name" aria-label="company_name" 
+                                            value="{{ old('company_name', $this_user->company_name ?? '') }}" name="company_name">
+                                        <x-input-error :messages="$errors->get('company_name')" class="mt-2 text-danger" />
+                                    </div>
                                     <input type="text" placeholder="Company Name ( optional )">
                                     <input type="text" placeholder="Country / Region *">
                                     <input type="text" placeholder="Street Address *">

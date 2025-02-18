@@ -12,15 +12,15 @@
                             <ul>
                                 <li>
                                     <div class="icon"><i class="flaticon-place"></i></div>
-                                    <p>Sukuma Street Westie, Nairobi</p>
+                                    <p>Westfield Mbaazi, Lavington, Nairobi</p>
                                 </li>
                                 <li>
                                     <div class="icon"><i class="flaticon-telephone-1"></i></div>
-                                    <h5 class="number"><a href="tel:12027993245">+254 712 456 789</a></h5>
+                                    <h5 class="number"><a href="tel:+254789454242">+254 789 45 42 42</a></h5>
                                 </li>
                                 <li>
                                     <div class="icon"><i class="flaticon-mail"></i></div>
-                                    <p>info@herabstores.com</p>
+                                    <p>info@herabgroceries.com</p>
                                 </li>
                                 <li>
                                     <div class="icon"><i class="flaticon-wall-clock"></i></div>

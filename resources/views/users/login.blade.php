@@ -45,7 +45,7 @@
                                 </div>
                                 <div class="mb-sm-4 mb-3 position-relative">
                                     <label class="form-label" for="dlab-password">Password</label>
-                                    <input type="password" id="dlab-password" class="form-control" value="123456" name="password">
+                                    <input type="password" id="dlab-password" class="form-control"  name="password">
                                     <span class="show-pass eye">
                                         <i class="fa fa-eye-slash"></i>
                                         <i class="fa fa-eye"></i>

@@ -14,7 +14,8 @@
                             <tr>
                                 <th>Product</th>
                                 <th>Category</th>
-                                <th>Date Created</th>
+                                <th>Price</th>
+                                <th>Stock</th>
                                 <th>Status</th>
                                 <th>Actions</th>
                             </tr>
@@ -24,7 +25,8 @@
                             <tr>
                                 <td><a href="{{ route('products.show', $product) }}">{{$product->name}}</a></td>
                                 <td class="wspace-no">{{$product->category->name}}</td>
-                                <td>{{$product->created_at}}</td>
+                                <td>KSHS {{$product->price}}</td>
+                                <td>{{$product->stock}}</td>
                                 <td><span class="badge badge-success badge-lg light">Active</span></td>
                                 <td>
                                     <div class="action-buttons d-flex justify-content-end">

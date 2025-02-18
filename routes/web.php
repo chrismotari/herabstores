@@ -6,6 +6,7 @@ use App\Http\Controllers\CartItemController;
 use App\Http\Controllers\CategoryController;
 use App\Http\Controllers\EmailSubscriptionController;
 use App\Http\Controllers\FavouriteController;
+use App\Http\Controllers\MassAddController;
 use App\Http\Controllers\ProfileController;
 use App\Http\Controllers\UserController;
 use App\Http\Controllers\OrderController;
@@ -19,6 +20,7 @@ Route::middleware('auth')->group(function () {
     Route::get('dashboard', function (){
         return view('dashboard');
     })->name('dashboard')->middleware('admin');
+    // Route::get('/masscreate', MassAddController::class, 'massAddProducts')->name('masscreate')->middleware('admin');
 
     Route::get('/admin', function () {
         return redirect('/dashboard'); 
@@ -29,6 +31,7 @@ Route::middleware('auth')->group(function () {
     Route::delete('/profile', [ProfileController::class, 'destroy'])->name('profile.destroy');
 
     Route::get('/users/customers', [UserController::class, 'customers'])->name('users.customers');
+    Route::get('/products/massadd', [MassAddController::class, 'massAddProducts'])->name('products.massadd');
 
     Route::delete('products/{product}/unfavourite', [ProductController::class, 'unfavourite'])->name('products.unfavourite');
 
@@ -43,6 +46,7 @@ Route::middleware('auth')->group(function () {
     Route::resource('categories', CategoryController::class);
     Route::resource('orders', OrderController::class);
     Route::resource('favourites', FavouriteController::class);
+
     
 });
 

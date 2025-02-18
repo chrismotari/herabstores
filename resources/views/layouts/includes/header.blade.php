@@ -70,7 +70,7 @@
                         <ul>
                             <li class="header-phone">
                                 <div class="icon"><i class="flaticon-telephone"></i></div>
-                                <a href="tel:1234566789"><span>Call Us Now</span>+254 712 345 678</a>
+                                <a href="tel:+254789454242"><span>Call Us Now</span>+254 789 45 42 42</a>
                             </li>
                             <li class="header-cart-action">
                                 <div class="header-cart-wrap">
