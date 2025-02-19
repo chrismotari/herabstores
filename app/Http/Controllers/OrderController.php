@@ -2,6 +2,7 @@
 
 namespace App\Http\Controllers;
 
+use App\Models\Country;
 use App\Models\Order;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Auth;
@@ -24,6 +25,7 @@ class OrderController extends Controller
         return view('orders.create', [
             'cart' => Auth::user()->cart,
             'user' => Auth::user(),
+            'countries' => Country::all(),
         ]);
     }
 
@@ -32,7 +34,8 @@ class OrderController extends Controller
      */
     public function store(Request $request)
     {
-        //
+        // dd(auth()->user()->cart->cartItems);
+        // dd($request->all());
 
         #   Take user's cart
         #   Check if the cart is empty
@@ -44,11 +47,13 @@ class OrderController extends Controller
         #   return the order
         #   
             // Take user's cart
-        $cart = session()->get('cart', []);
+        
+        $cart = auth()->user()->cart->cartItems;
 
         // Check if the cart is empty
-        if (empty($cart)) {
-            return response()->json(['message' => 'Cart is empty'], 400);
+        if (empty($cartItems)) {
+            flash()->error('Cart is empty');
+            return back()->route();
         }
 
         // Get all cart items
@@ -73,7 +78,7 @@ class OrderController extends Controller
         session()->forget('cart');
 
         // Return the order
-        return response()->json($order, 201);
+        return back()->with('success', 'Order has been placed successfully');
     }
 
     /**

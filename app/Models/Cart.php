@@ -19,6 +19,10 @@ class Cart extends Model
     {
         return $this->hasMany(CartItem::class);
     }
+    public function  getItemsAttribute()
+    {
+        return $this->hasMany(CartItem::class);
+    }
 
     public function user()
     {
