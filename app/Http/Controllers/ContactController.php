@@ -2,10 +2,10 @@
 
 namespace App\Http\Controllers;
 
-use App\Models\EmailSubscription;
+use App\Models\Contact;
 use Illuminate\Http\Request;
 
-class EmailSubscriptionController extends Controller
+class ContactController extends Controller
 {
     /**
      * Display a listing of the resource.
@@ -30,12 +30,12 @@ class EmailSubscriptionController extends Controller
     {
         try {
             $request->validate([
-                'email' => ['required', 'email', 'unique:email_subscriptions,email'],
+                'email' => ['required', 'email', ],
             ]);
         } catch (\Illuminate\Validation\ValidationException $e) {
             return redirect()->back()->with('error', 'Sorry, an issue occured, try again later.');
         }
-        EmailSubscription::create([
+        Contact::create([
             'email' => $request->email,
         ]);
         return redirect()->back()->with('success', 'You have successfully subscribed to our newsletter.');
@@ -44,7 +44,7 @@ class EmailSubscriptionController extends Controller
     /**
      * Display the specified resource.
      */
-    public function show(EmailSubscription $emailSubscription)
+    public function show(Contact $contact)
     {
         //
     }
@@ -52,7 +52,7 @@ class EmailSubscriptionController extends Controller
     /**
      * Show the form for editing the specified resource.
      */
-    public function edit(EmailSubscription $emailSubscription)
+    public function edit(Contact $contact)
     {
         //
     }
@@ -60,7 +60,7 @@ class EmailSubscriptionController extends Controller
     /**
      * Update the specified resource in storage.
      */
-    public function update(Request $request, EmailSubscription $emailSubscription)
+    public function update(Request $request, Contact $contact)
     {
         //
     }
@@ -68,7 +68,7 @@ class EmailSubscriptionController extends Controller
     /**
      * Remove the specified resource from storage.
      */
-    public function destroy(EmailSubscription $emailSubscription)
+    public function destroy(Contact $contact)
     {
         //
     }

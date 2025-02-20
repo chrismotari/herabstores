@@ -65,9 +65,9 @@
                         <div class="fw-link">
                             <ul>
                                 <li><a href="#">Careers</a></li>
-                                <li><a href="#">About us</a></li>
-                                <li><a href="#">Our Blog</a></li>
-                                <li><a href="#">Contact Us</a></li>
+                                <li><a href="{{route('about.us')}}">About us</a></li>
+                                <li><a href="{{route('terms.and.conditions')}}">Our Terms and Conditions</a></li>
+                                <li><a href="{{route('contact.us')}}">Contact Us</a></li>
                             </ul>
                         </div>
                     </div>
@@ -87,7 +87,7 @@
                             <div class="fw-title">
                                 <h5 class="title">Newsletter</h5>
                             </div>
-                            <form action="email_subscriptions" method="post">
+                            <form action="{{route('contacts.store')}}" method="post">
                                 @csrf
                                 <input type="email" placeholder="Email Address" name="email" required>
                                 <button type="submit" ><i class="flaticon-send"></i></button>

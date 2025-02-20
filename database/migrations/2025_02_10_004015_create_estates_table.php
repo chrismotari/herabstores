@@ -11,10 +11,12 @@ return new class extends Migration
      */
     public function up(): void
     {
-        Schema::create('email_subscriptions', function (Blueprint $table) {
-            $table->uuid('id')->primary();
-            $table->string('email')->unique();
-            $table->boolean('consented')->default(true);
+        Schema::create('estates', function (Blueprint $table) {
+            $table->uuid("id")->primary();
+            $table->string("name")->unique();
+            $table->string("slug")->unique()->nullable();
+            $table->text("description")->nullable();
+            $table->decimal("delivery_fees", 10, 2)->default(0);
             $table->timestamps();
         });
     }
@@ -24,6 +26,6 @@ return new class extends Migration
      */
     public function down(): void
     {
-        Schema::dropIfExists('email_subscriptions');
+        Schema::dropIfExists('estates');
     }
 };

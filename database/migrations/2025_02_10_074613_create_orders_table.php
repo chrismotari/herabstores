@@ -3,6 +3,7 @@
 use Illuminate\Database\Migrations\Migration;
 use Illuminate\Database\Schema\Blueprint;
 use Illuminate\Support\Facades\Schema;
+use PHPUnit\TextUI\XmlConfiguration\Logging\TeamCity;
 
 return new class extends Migration
 {
@@ -31,6 +32,19 @@ return new class extends Migration
             $table->timestamp("paid_at")->nullable();
             $table->timestamp("completed_at")->nullable();
             $table->timestamp("expired_at")->nullable();
+            $table->string("first_name")->nullable();
+            $table->string("last_name")->nullable();
+            $table->string("company")->nullable();
+            $table->string("phone")->nullable();
+            $table->string("alt_phone")->nullable();
+            $table->string("email")->nullable();
+            $table->string("address")->nullable();
+            $table->string("city")->nullable();
+            $table->foreignUuid("estate_id")->nullable()->constrained("estates");
+            $table->foreignUuid("country_id")->nullable()->constrained("countries");
+            $table->string("message")->nullable();
+            $table->string("referee_code")->nullable();
+
             $table->timestamps();
         });
     }

@@ -11,3 +11,4 @@
 <script src="js/aos.js"></script>
 <script src="js/plugins.js"></script>
 <script src="js/main.js"></script>
+<script src="https://kit.fontawesome.com/17e517cc1c.js" crossorigin="anonymous"></script> 

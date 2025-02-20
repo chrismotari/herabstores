@@ -171,7 +171,6 @@
                         <div class="navbar-wrap main-menu d-none d-lg-flex">
                             <ul class="navigation">
                                 <li><a href="/">Home</a></li>
-                                <li><a href="about-us.html">About Us</a></li>
                                 <li class="menu-item-has-children"><a href="#">Fruits & Vegetables</a>
                                     <ul class="submenu">
                                         <li><a href="blog-details.html">Fruits</a></li>
@@ -183,10 +182,11 @@
                                 <li class="menu-item-has-children"><a href="#">My shoping</a>
                                     <ul class="submenu">
                                         <li><a href="blog-details.html">My orders</a></li>
-                                        <li><a href="terms-conditios.html">Terms Conditions</a></li>
+                                        <li><a href="{{route('terms.and.conditions')}}">Terms Conditions</a></li>
                                     </ul>
                                 </li>
-                                <li><a href="contact.html">contacts</a></li>
+                                <li><a href="{{route('about.us')}}">About Us</a></li>
+                                <li><a href="{{route('contact.us')}}">contact us</a></li>
                             </ul>
                         </div>
 

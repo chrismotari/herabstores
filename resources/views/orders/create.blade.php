@@ -140,7 +140,13 @@
                                         </div>
                                     </div> --}}
                                     <textarea name="message" id="message" placeholder="Extra Notes ( Optional )"></textarea>
-
+ <div class="payment-terms">
+                                    <p>Deliveries can take up to 24 hrs.</p>
+                                    <div class="custom-control custom-checkbox">
+                                        <input type="checkbox" class="custom-control-input" id="customCheck7" required name="accept_terms">
+                                        <label class="custom-control-label" for="customCheck7">I agree to the website terms and conditions</label>
+                                    </div>
+                                </div>
                                 </div>
                             </form>
                         </div>

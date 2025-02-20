@@ -48,34 +48,61 @@ class OrderController extends Controller
         #   
             // Take user's cart
         
-        $cart = auth()->user()->cart->cartItems;
+        $cart_items = auth()->user()->cart->cartItems;
 
         // Check if the cart is empty
-        if (empty($cartItems)) {
+        if (empty($cart_items)) {
             flash()->error('Cart is empty');
-            return back()->route();
+            return redirect()->back();
         }
 
-        // Get all cart items
-        $cartItems = $cart['items'];
-
         // Calculate the total price of the cart items
-        $totalPrice = array_reduce($cartItems, function ($carry, $item) {
-            return $carry + ($item['price'] * $item['quantity']);
+        $totalPrice = array_reduce($cart_items->toArray(), function ($carry, $item) {
+            return $carry + ($item->product->price * $item->quantity);
         }, 0);
 
         // Create a new order
         $order = Order::create([
             'user_id' => auth()->id(),
-            'total_price' => $totalPrice,
+            'total' => $totalPrice,
+            'status' => "new",
+            'payment_status' => $request->payment_status,
+            'payment_method' => $request->payment_method,
+            'shipping_method' => $request->shipping_method,
+            // 'paid_at',
+            'completed_at' => now(),
+            'first_name' => $request->first_name,
+            'last_name' => $request->last_name,
+            'company' => $request->company,
+            'phone' => $request->phone,
+            'alt_phone' => $request->alt_phone,
+            'email' => $request->email,
+            'address' => $request->address,
+            'city' => $request->city,
+            'estate_id' => $request->estate_id,
+            'country_id' => $request->country_id,
+            'message' => $request->message,
+            'referee_code' => $request->referee_code,
+            'cart_items' => $cart_items->map(function ($item) {
+                return [
+                    'product_id' => $item->product_id,
+                    'name' => $item->product->name, // Assuming product relationship
+                    'price' => $item->price,
+                    'quantity' => $item->quantity,
+                    'discount' => 0,
+                    'description' => "Description",
+                ];
+            })->toArray(),
         ]);
 
         // Add all cart items to the order as order items in json format
-        $order->items = json_encode($cartItems);
-        $order->save();
+        // $order->items = json_encode($cartItems);
+        // $order->save();
 
         // Clear the cart
-        session()->forget('cart');
+        if ($order) {
+            auth()->user()->cart->cartItems()->delete();
+        }
 
         // Return the order
         return back()->with('success', 'Order has been placed successfully');

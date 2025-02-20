@@ -11,7 +11,7 @@
                                 <button class="dropdown-toggle" type="button" id="dropdownMenuButton3" data-toggle="dropdown" aria-haspopup="true"
                                     aria-expanded="false">KSH - KE Shilling</button>
                                 <div class="dropdown-menu" aria-labelledby="dropdownMenuButton3">
-                                    <a class="dropdown-item" href="index-2.html">USD - US Dollar</a>
+                                    <a class="dropdown-item" href="#">USD - US Dollar</a>
                                 </div>
                             </div>
                         </li>
@@ -25,9 +25,9 @@
                 <div class="header-top-right">
                     <ul>
                         @if(auth()->user())<li><a href="{{ route('users.show', Auth::user()) }}">Hello, {{Auth::user()->name}}!</a></li>@endif
-                        <li><a href="about-us.html">About Us</a></li>
-                        <li><a href="contact.html">Contact</a></li>
-                        <li><a href="contact.html">FAQ</a></li>
+                        <li><a href="{{ route('about.us')}}">About Us</a></li>
+                        <li><a href="{{ route('contact.us')}}">Contact Us</a></li>
+                        <li><a href="{{ route('faq')}}"></a></li>
                     </ul>
                 </div>
             </div>
@@ -82,7 +82,7 @@
                                                     <a href="{{route('users.show', auth()->user())}}"><img src="{{ asset('backend/images/user.png') }}" alt=""></a>
                                                 </div>
                                                 <div class="cart-content">
-                                                    <h4><a href="shop-details.html">{{auth()->user()->name}}</a></h4>
+                                                    <h4><a href="{{route('users.show', auth()->user())}}">{{auth()->user()->name}}</a></h4>
                                                 </div>
                                                 
                                             </li>
@@ -126,10 +126,10 @@
                                         @forelse ($cart?->cartItems ? $cart->cartItems : [] as $cart_item)    
                                         <li class="d-flex align-items-start">
                                             <div class="cart-img">
-                                                <a href="shop-details.html"><img src="{{ asset($cart_item->product->image_url) }}" alt=""></a>
+                                                <a href="{{route('products.show', $cart_item->product)}}"><img src="{{ asset($cart_item->product->image_url) }}" alt=""></a>
                                             </div>
                                             <div class="cart-content">
-                                                <h4><a href="shop-details.html">{{$cart_item->product->name}}</a></h4>
+                                                <h4><a href="{{route('products.show', $cart_item->product)}}">{{$cart_item->product->name}}</a></h4>
                                                 <div class="cart-price">
                                                     <span class="new">KShs {{$cart_item->product->price}}</span>
                                                 </div>

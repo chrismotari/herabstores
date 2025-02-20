@@ -4,7 +4,7 @@ use App\Http\Controllers\Auth\AuthenticatedSessionController;
 use App\Http\Controllers\CartController;
 use App\Http\Controllers\CartItemController;
 use App\Http\Controllers\CategoryController;
-use App\Http\Controllers\EmailSubscriptionController;
+use App\Http\Controllers\ContactController;
 use App\Http\Controllers\FavouriteController;
 use App\Http\Controllers\MassAddController;
 use App\Http\Controllers\ProfileController;
@@ -41,14 +41,14 @@ Route::middleware('auth')->group(function () {
     Route::resource('products', ProductController::class);
     Route::resource('carts', CartController::class);
     Route::resource('cart_items', CartItemController::class);
-    Route::resource('email_subscriptions', EmailSubscriptionController::class);
     Route::resource('users', UserController::class);
     Route::resource('categories', CategoryController::class);
     Route::resource('orders', OrderController::class);
     Route::resource('favourites', FavouriteController::class);
-
+    
     
 });
+Route::resource('contacts', ContactController::class);
 
 Route::get('/index', function () {
     return redirect('/'); 
@@ -61,5 +61,22 @@ Route::get('/home', function () {
 Route::get('/', function () {
     return view('index')->with('products', Product::all()); 
 });
+
+Route::get('/terms-and-conditions', function () {
+    return view('terms-and-conditions'); 
+})->name('terms.and.conditions');
+
+Route::get('/about-us', function () {
+    return view('about-us'); 
+})->name('about.us');
+
+Route::get('/contact-us', function () {
+    return view('contact-us'); 
+})->name('contact.us');
+
+Route::get('/faq', function () {
+    return view('contact-us'); 
+})->name('faq');
+
 
 require __DIR__.'/auth.php';
