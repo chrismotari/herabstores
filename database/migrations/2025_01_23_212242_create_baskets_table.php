@@ -23,7 +23,7 @@ return new class extends Migration
             $table->boolean("active")->default(true);
             $table->dateTime("effective_from")->default(now());
             $table->dateTime("effective_to");
-            $table->json("items");
+            $table->json("items"); // need to make basket_itmes table instead
 
             $table->timestamps();
         });

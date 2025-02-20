@@ -18,7 +18,7 @@ class UserController extends Controller implements HasMiddleware
     {
         return [
             // 'admin',
-            new Middleware('admin', except: ['store', 'update']),
+            new Middleware('admin', except: ['store', 'update', 'show']),
         ];
     }
     /**
@@ -95,7 +95,7 @@ class UserController extends Controller implements HasMiddleware
     public function show(User $user)
     {
         // dd($user);
-        return view('users.show', ['this_user' => $user]);
+        return view('users.customer_profile', ['this_user' => $user]);
     }
 
     /**

@@ -74,7 +74,7 @@
                             </li>
                             <li class="header-cart-action">
                                 <div class="header-cart-wrap">
-                                    <a href="login"><i class="flaticon-user"></i></a>
+                                    <a href="{{route('home')}}"><i class="flaticon-user"></i></a>
                                     @auth
                                         <ul class="minicart">  
                                             <li class="d-flex align-items-start">
@@ -150,8 +150,8 @@
                                         <li>
                                             <div class="checkout-link">
                                                 @if ($cart)    
-                                                    <a href=" {{ route('carts.show', $cart) }} ">Go to Cart</a>
-                                                    <a class="black-color" href="#">Checkout</a>
+                                                    <a href=" {{ route('carts.show', $cart) }} ">Show Cart</a>
+                                                    <a class="black-color" href="{{route('orders.create')}}">Checkout</a>
                                                 @endif
                                             </div>
                                         </li>

@@ -28,7 +28,7 @@ return new class extends Migration
             $table->integer('max_uses_per_user')->nullable(); // Maximum number of times the offer can be used by a single user
             $table->integer('max_uses_per_code')->nullable(); // Maximum number of times a single code can be used
             $table->string('code')->nullable(); // Offer code
-
+            // create offer items table
             $table->timestamps();
         });
     }

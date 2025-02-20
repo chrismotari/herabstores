@@ -22,7 +22,7 @@ return new class extends Migration
             $table->string('alt_email')->unique()->nullable();
             $table->string('address');
             $table->string('city');
-            $table->string('estate')->nullable();
+            $table->foreignUuid('estate_id')->nullable()->constrained('estates');
             $table->string('street')->nullable();
             $table->foreignUuid("country_id")->restrictOnDelete()->constrained('countries');
             $table->string('photo_url')->nullable();

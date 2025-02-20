@@ -46,17 +46,22 @@ Route::middleware('auth')->group(function () {
     Route::resource('orders', OrderController::class);
     Route::resource('favourites', FavouriteController::class);
     
-    
+    Route::get('/home', function () {
+        return redirect('/'); 
+    })->name('home');
+
 });
+
+Route::get('shop', function () {
+    return view('shop')->with('products', Product::all()); 
+})->name('shop');
+
 Route::resource('contacts', ContactController::class);
 
 Route::get('/index', function () {
     return redirect('/'); 
 })->name('index');
 
-Route::get('/home', function () {
-    return redirect('/'); 
-})->name('home');
 
 Route::get('/', function () {
     return view('index')->with('products', Product::all()); 

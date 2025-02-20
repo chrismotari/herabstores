@@ -4,6 +4,7 @@ namespace App\Models;
 
 use App\Traits\UUID;
 use Illuminate\Database\Eloquent\Model;
+use Illuminate\Support\Str;
 
 class Order extends Model
 {
@@ -13,7 +14,10 @@ class Order extends Model
         parent::boot();
 
         static::creating(function ($order) {
-            $order->nhexa = self::generateNHexa();
+            if (!$order->id) {
+                $order->id = Str::uuid(); 
+            }
+            $order->order_number = self::generateNHexa();
         });
     }
 
@@ -21,7 +25,7 @@ class Order extends Model
     {
         do {
             $code = substr(bin2hex(random_bytes(ceil($length / 2))), 0, $length);
-        } while (self::where('nhexa', $code)->exists()); // Ensure uniqueness
+        } while (self::where('order_number', $code)->exists()); // Ensure uniqueness
 
         return $code;
     }
@@ -61,6 +65,38 @@ class Order extends Model
     ];
 
     protected $casts = [
-        'cart_items' => 'array', // Automatically handle JSON conversion
+        'order_items' => 'array',
     ];
+
+    public function user()
+    {
+        return $this->belongsTo(User::class);
+    }
+
+    public function estate()
+    {
+        return $this->belongsTo(Estate::class);
+    }
+
+    public function country()
+    {
+        return $this->belongsTo(Country::class);
+    }   
+
+    public function getFullNameAttribute()
+    {
+        $fname = $this->fname ?? $this->user->fname ?? '';
+        $lname = $this->lname ?? $this->user->lname ?? '';
+        return "{$fname} {$lname}";
+    }   
+
+    public function getFullAddressAttribute()
+    {
+        return "{$this->address}, {$this->city}, {$this->estate->name}, {$this->country->name}";
+    }
+
+    public function getFormattedTotalAttribute()
+    {
+        return number_format($this->total, 2);
+    }       
 }

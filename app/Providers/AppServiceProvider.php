@@ -5,6 +5,7 @@ namespace App\Providers;
 use App\Models\Company;
 use App\Models\ContractType;
 use App\Models\Country;
+use App\Models\Estate;
 use App\Models\Role;
 use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Facades\View;
@@ -32,6 +33,7 @@ class AppServiceProvider extends ServiceProvider
             $view->with([
                 'countries' => Country::where('name', 'like', 'Kenya')->get(), 
                 'roles' => Role::all(),
+                'estates' => Estate::all(),
             ]); 
         });
         View::composer('layouts.includes.header', function ($view) {

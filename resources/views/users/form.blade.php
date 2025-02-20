@@ -77,9 +77,17 @@
 
             <div class="col-xl-3 col-md-4 col-sm-6 mb-4">
                 <label class="form-label">Estate<span class="text-danger scale5 ms-2">*</span></label>
-                <input type="text" class="form-control" placeholder="Estate" aria-label="estate" 
-                    value="{{ old('estate', $this_user->estate ?? '') }}" name="estate">
-                <x-input-error :messages="$errors->get('estate')" class="mt-2 text-danger" />
+                <select class="nice-select default-select wide form-control" name="estate_id">
+                    <option value="" disabled {{ old('estate_id', $this_user->estate_id ?? null) === null ? 'selected' : '' }}>Choose...</option>
+                    @forelse($estates as $estate)
+                    <option value="{{ $estate->id }}" {{ old('estate_id', $this_user->estate_id ?? null) == $estate->id ? 'selected' : '' }}>
+                        {{ $estate->name }}
+                    </option>
+                    @empty
+                    <option disabled>No estates available</option>
+                    @endforelse
+                </select>
+                <x-input-error :messages="$errors->get('estate_id')" class="mt-2 text-danger" />
             </div>
 
             <div class="col-xl-3 col-md-4 col-sm-6 mb-4">
