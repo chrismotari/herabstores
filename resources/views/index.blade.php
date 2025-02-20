@@ -11,7 +11,7 @@
                             <h5 class="sub-title" data-animation="fadeInUp" data-delay=".2s">top deal !</h5>
                             <h2 class="title" data-animation="fadeInUp" data-delay=".4s">organic food</h2>
                             <p data-animation="fadeInUp" data-delay=".6s">Get up to 50% OFF Today Only</p>
-                            <a href="shop.html" class="btn rounded-btn" data-animation="fadeInUp" data-delay=".8s">Shop Now</a>
+                            <a href="{{route('shop')}}" class="btn rounded-btn" data-animation="fadeInUp" data-delay=".8s">Shop Now</a>
                         </div>
                     </div>
                     <div class="single-slider slider-bg" data-background="img/slider/slider_bg01.jpg">
@@ -19,7 +19,7 @@
                             <h5 class="sub-title" data-animation="fadeInUp" data-delay=".2s">Real simple !</h5>
                             <h2 class="title" data-animation="fadeInUp" data-delay=".4s">Time Grocery</h2>
                             <p data-animation="fadeInUp" data-delay=".6s">Get up to 50% OFF Today Only</p>
-                            <a href="shop.html" class="btn rounded-btn" data-animation="fadeInUp" data-delay=".8s">Shop Now</a>
+                            <a href="{{route('shop')}}" class="btn rounded-btn" data-animation="fadeInUp" data-delay=".8s">Shop Now</a>
                         </div>
                     </div>
                     <div class="single-slider slider-bg" data-background="img/slider/slider_bg01.jpg">
@@ -27,22 +27,22 @@
                             <h5 class="sub-title" data-animation="fadeInUp" data-delay=".2s">top deal !</h5>
                             <h2 class="title" data-animation="fadeInUp" data-delay=".4s">organic food</h2>
                             <p data-animation="fadeInUp" data-delay=".6s">Get up to 50% OFF Today Only</p>
-                            <a href="shop.html" class="btn rounded-btn" data-animation="fadeInUp" data-delay=".8s">Shop Now</a>
+                            <a href="{{route('shop')}}" class="btn rounded-btn" data-animation="fadeInUp" data-delay=".8s">Shop Now</a>
                         </div>
                     </div>
                 </div>
             </div>
             <div class="col-3">
                 <div class="slider-banner-img mb-20">
-                    <a href="shop.html"><img src="img/slider/slider_banner01.jpg" alt=""></a>
+                    <a href="{{route('shop')}}"><img src="img/slider/slider_banner01.jpg" alt=""></a>
                 </div>
                 <div class="slider-banner-img">
-                    <a href="shop.html"><img src="img/slider/slider_banner02.jpg" alt=""></a>
+                    <a href="{{route('shop')}}"><img src="img/slider/slider_banner02.jpg" alt=""></a>
                 </div>
             </div>
             <div class="col-3">
                 <div class="slider-banner-img">
-                    <a href="shop.html"><img src="img/slider/slider_banner03.jpg" alt=""></a>
+                    <a href="{{route('shop')}}"><img src="img/slider/slider_banner03.jpg" alt=""></a>
                 </div>
             </div>
         </div>
@@ -54,7 +54,7 @@
             <div class="row category-active">
                 <div class="col-lg-2">
                     <div class="category-item active">
-                        <a href="shop.html" class="category-link"></a>
+                        <a href="{{route('shop')}}" class="category-link"></a>
                         <div class="category-thumb">
                             <img src="img/product/category_img01.png" alt="">
                         </div>
@@ -65,7 +65,7 @@
                 </div>
                 <div class="col-lg-2">
                     <div class="category-item">
-                        <a href="shop.html" class="category-link"></a>
+                        <a href="{{route('shop')}}" class="category-link"></a>
                         <div class="category-thumb">
                             <img src="img/product/category_img02.png" alt="">
                         </div>
@@ -76,7 +76,7 @@
                 </div>
                 <div class="col-lg-2">
                     <div class="category-item">
-                        <a href="shop.html" class="category-link"></a>
+                        <a href="{{route('shop')}}" class="category-link"></a>
                         <div class="category-thumb">
                             <img src="img/product/category_img03.png" alt="">
                         </div>
@@ -87,7 +87,7 @@
                 </div>
                 <div class="col-lg-2">
                     <div class="category-item">
-                        <a href="shop.html" class="category-link"></a>
+                        <a href="{{route('shop')}}" class="category-link"></a>
                         <div class="category-thumb">
                             <img src="img/product/category_img04.png" alt="">
                         </div>
@@ -98,7 +98,7 @@
                 </div>
                 <div class="col-lg-2">
                     <div class="category-item">
-                        <a href="shop.html" class="category-link"></a>
+                        <a href="{{route('shop')}}" class="category-link"></a>
                         <div class="category-thumb">
                             <img src="img/product/category_img05.png" alt="">
                         </div>
@@ -109,7 +109,7 @@
                 </div>
                 <div class="col-lg-2">
                     <div class="category-item">
-                        <a href="shop.html" class="category-link"></a>
+                        <a href="{{route('shop')}}" class="category-link"></a>
                         <div class="category-thumb">
                             <img src="img/product/category_img06.png" alt="">
                         </div>
@@ -137,8 +137,8 @@
                     </div>
                     <div class="discount-content">
                         <span>healthy food</span>
-                        <h4 class="title"><a href="shop.html">100 organic UP TO 35%</a></h4>
-                        <a href="shop.html" class="btn">shop now</a>
+                        <h4 class="title"><a href="{{route('shop')}}">100 organic UP TO 35%</a></h4>
+                        <a href="{{route('shop')}}" class="btn">shop now</a>
                     </div>
                 </div>
             </div>
@@ -149,8 +149,8 @@
                     </div>
                     <div class="discount-content">
                         <span>healthy food</span>
-                        <h4 class="title"><a href="shop.html">Hygienically Packed</a></h4>
-                        <a href="shop.html" class="btn">shop now</a>
+                        <h4 class="title"><a href="{{route('shop')}}">Hygienically Packed</a></h4>
+                        <a href="{{route('shop')}}" class="btn">shop now</a>
                     </div>
                 </div>
             </div>
@@ -161,8 +161,8 @@
                     </div>
                     <div class="discount-content">
                         <span>healthy food</span>
-                        <h4 class="title"><a href="shop.html">baby favorite UP TO 15%</a></h4>
-                        <a href="shop.html" class="btn">shop now</a>
+                        <h4 class="title"><a href="{{route('shop')}}">baby favorite UP TO 15%</a></h4>
+                        <a href="{{route('shop')}}" class="btn">shop now</a>
                     </div>
                 </div>
             </div>
@@ -172,7 +172,7 @@
 <!-- discount-area-end -->
 
 <!-- best-deal-area -->
-<section class="best-deal-area pt-60 pb-80">
+{{-- <section class="best-deal-area pt-60 pb-80">
     <div class="container">
         <div class="row justify-content-center">
             <div class="col-xl-7 col-lg-9">
@@ -293,11 +293,11 @@
             </div>
         </div>
     </div>
-</section>
+</section> --}}
 <!-- best-deal-area-end -->
 
 <!-- special-products-area -->
-<section class="special-products-area gray-bg pt-75 pb-60">
+{{-- <section class="special-products-area gray-bg pt-75 pb-60">
     <div class="container">
         <div class="row align-items-end mb-50">
             <div class="col-md-8 col-sm-9">
@@ -308,7 +308,7 @@
             </div>
             <div class="col-md-4 col-sm-3">
                 <div class="section-btn text-left text-md-right">
-                    <a href="shop.html" class="btn">View All</a>
+                    <a href="{{route('shop')}}" class="btn">View All</a>
                 </div>
             </div>
         </div>
@@ -323,7 +323,7 @@
                             <span class="sub-title">healthy food</span>
                             <h4 class="title">baby favorite <b>Product</b></h4>
                             <p>Super Offer TO 50% OFF</p>
-                            <a href="shop.html" class="btn rounded-btn">shop now</a>
+                            <a href="{{route('shop')}}" class="btn rounded-btn">shop now</a>
                         </div>
                     </div>
                 </div>
@@ -550,7 +550,7 @@
             </div>
         </div>
     </div>
-</section>
+</section> --}}
 <!-- special-products-area-end -->
 
 <!-- coupon-area -->
@@ -575,7 +575,7 @@
 <!-- coupon-area-end -->
 
 <!-- best-sellers-area -->
-<section class="best-sellers-area pt-75">
+{{-- <section class="best-sellers-area pt-75">
     <div class="container">
         <div class="row align-items-end mb-50">
             <div class="col-md-8 col-sm-9">
@@ -586,7 +586,7 @@
             </div>
             <div class="col-md-4 col-sm-3">
                 <div class="section-btn text-left text-md-right">
-                    <a href="shop.html" class="btn">View All</a>
+                    <a href="{{route('shop')}}" class="btn">View All</a>
                 </div>
             </div>
         </div>
@@ -730,7 +730,7 @@
             </div>
         </div>
     </div>
-</section>
+</section> --}}
 <!-- best-sellers-area-end -->
 
 <!-- discount-area -->
@@ -744,9 +744,9 @@
                     </div>
                     <div class="discount-content">
                         <span>healthy food</span>
-                        <h4 class="title"><a href="shop.html">organic farm for Herab</a></h4>
+                        <h4 class="title"><a href="{{route('shop')}}">organic farm for Herab</a></h4>
                         <p>Super Offer TO 50% OFF</p>
-                        <a href="shop.html" class="btn rounded-btn">shop now</a>
+                        <a href="{{route('shop')}}" class="btn rounded-btn">shop now</a>
                     </div>
                 </div>
             </div>
@@ -757,9 +757,9 @@
                     </div>
                     <div class="discount-content">
                         <span>healthy food</span>
-                        <h4 class="title"><a href="shop.html">BABY FAVORITE UP TO 15%</a></h4>
+                        <h4 class="title"><a href="{{route('shop')}}">BABY FAVORITE UP TO 15%</a></h4>
                         <p>Super Offer TO 50% OFF</p>
-                        <a href="shop.html" class="btn rounded-btn">shop now</a>
+                        <a href="{{route('shop')}}" class="btn rounded-btn">shop now</a>
                     </div>
                 </div>
             </div>

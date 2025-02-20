@@ -171,25 +171,30 @@
                         <div class="navbar-wrap main-menu d-none d-lg-flex">
                             <ul class="navigation">
                                 <li><a href="/">Home</a></li>
-                                <li class="menu-item-has-children"><a href="#">Fruits & Vegetables</a>
+                                <li class="menu-item-has-children"><a href="{{route('shop')}}">Fruits & Vegetables</a>
                                     <ul class="submenu">
-                                        <li><a href="blog-details.html">Fruits</a></li>
+                                        <li><a href="{{route('shop')}}">Fruits</a></li>
                                         <li><a href="terms-conditios.html">Vegetables</a></li>
                                     </ul>
                                 </li>
-                                <li><a href="about-us.html">Spices and Herbs</a></li>
-                                <li><a href="about-us.html">Grains and Nuts</a></li>
+                                <li><a href="{{route('shop')}}">Spices and Herbs</a></li>
+                                <li><a href="{{route('shop')}}">Grains and Nuts</a></li>
                                 <li class="menu-item-has-children"><a href="#">My shoping</a>
                                     <ul class="submenu">
-                                        <li><a href="blog-details.html">My orders</a></li>
+                                        <li><a href="#">My orders</a></li>
                                         <li><a href="{{route('terms.and.conditions')}}">Terms Conditions</a></li>
                                     </ul>
                                 </li>
-                                <li><a href="{{route('about.us')}}">About Us</a></li>
-                                <li><a href="{{route('contact.us')}}">contact us</a></li>
                             </ul>
                         </div>
 
+                        <div class="header-super-store d-none d-xl-block d-lg-none d-md-block">
+                            <div class="dropdown">
+                                <a class="dropdown-toggle" href="{{route('shop')}}" 
+                                    aria-expanded="false"><i class="flaticon-shop"></i> Shop Now</a>
+                                
+                            </div>
+                        </div>
                     </nav>
                 </div>
                 <!-- Mobile Menu  -->

@@ -53,6 +53,12 @@ class DatabaseSeeder extends Seeder
             'slug' => 'test',
             'is_active' => 1,
         ]);
+        Category::create([
+            'name' => 'General groceries',
+            'description' => 'General groceries',
+            'slug' => 'general-groceries',
+            'is_active' => 1,
+        ]);
 
         Product::create([
             'name' => 'Test',

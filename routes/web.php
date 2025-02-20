@@ -20,7 +20,8 @@ Route::middleware('auth')->group(function () {
     Route::get('dashboard', function (){
         return view('dashboard');
     })->name('dashboard')->middleware('admin');
-    // Route::get('/masscreate', MassAddController::class, 'massAddProducts')->name('masscreate')->middleware('admin');
+
+    Route::get('/masscreate', [MassAddController::class, 'massAddProducts'])->name('masscreate')->middleware('admin');
 
     Route::get('/admin', function () {
         return redirect('/dashboard'); 

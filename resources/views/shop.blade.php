@@ -12,8 +12,8 @@
                             <nav aria-label="breadcrumb">
                                 <ol class="breadcrumb">
                                     <li class="breadcrumb-item"><a href="index-2.html">Home</a></li>
-                                    <li class="breadcrumb-item"><a href="shop.html">Shop</a></li>
-                                    <li class="breadcrumb-item active" aria-current="page">Spices Food</li>
+                                    <li class="breadcrumb-item"><a href="{{route('shop')}}">Shop</a></li>
+                                    <li class="breadcrumb-item active" aria-current="page">All Products</li>
                                 </ol>
                             </nav>
                         </div>
@@ -35,12 +35,12 @@
                                 </div>
                                 <div class="shop-cat-list">
                                     <ul>
-                                        <li><a href="shop.html">Accessories <span>+</span></a></li>
-                                        <li><a href="shop.html">Vegetables <span>+</span></a></li>
-                                        <li><a href="shop.html">Spices Food <span>+</span></a></li>
-                                        <li><a href="shop.html">Dairy <span>+</span></a></li>
-                                        <li><a href="shop.html">Baby Food <span>+</span></a></li>
-                                        <li><a href="shop.html">Kitchen Accessories <span>+</span></a></li>
+                                        <li><a href="{{route('shop')}}">Accessories <span>+</span></a></li>
+                                        <li><a href="{{route('shop')}}">Vegetables <span>+</span></a></li>
+                                        <li><a href="{{route('shop')}}">Spices Food <span>+</span></a></li>
+                                        <li><a href="{{route('shop')}}">Dairy <span>+</span></a></li>
+                                        <li><a href="{{route('shop')}}">Baby Food <span>+</span></a></li>
+                                        <li><a href="{{route('shop')}}">Kitchen Accessories <span>+</span></a></li>
                                     </ul>
                                 </div>
                             </div>
@@ -113,22 +113,22 @@
                                     </ul>
                                 </div> --}}
                             </div>
-                            <div class="widget shop-widget">
+                            {{-- <div class="widget shop-widget">
                                 <div class="shop-widget-title">
                                     <h6 class="title">BRANDS</h6>
                                 </div>
                                 <div class="shop-cat-list">
                                     <ul>
-                                        <li><a href="shop.html">Adara <span>+</span></a></li>
-                                        <li><a href="shop.html">Carnation <span>+</span></a></li>
-                                        <li><a href="shop.html">We Beyond <span>+</span></a></li>
-                                        <li><a href="shop.html">Agrifram <span>+</span></a></li>
+                                        <li><a href="{{route('shop')}}">Adara <span>+</span></a></li>
+                                        <li><a href="{{route('shop')}}">Carnation <span>+</span></a></li>
+                                        <li><a href="{{route('shop')}}">We Beyond <span>+</span></a></li>
+                                        <li><a href="{{route('shop')}}">Agrifram <span>+</span></a></li>
                                     </ul>
                                 </div>
-                            </div>
+                            </div> --}}
                             <div class="widget">
                                 <div class="shop-widget-banner text-center">
-                                    <a href="shop.html"><img src="img/product/sidebar_shop_ad.jpg" alt=""></a>
+                                    <a href="{{route('shop')}}"><img src="img/product/sidebar_shop_ad.jpg" alt=""></a>
                                 </div>
                             </div>
                         </aside>
@@ -137,9 +137,9 @@
                         <div class="shop-discount-area">
                             <div class="discount-content shop-discount-content">
                                 <span>healthy food</span>
-                                <h4 class="title"><a href="shop.html">organic farm for ganic</a></h4>
+                                <h4 class="title"><a href="{{route('shop')}}">organic farm for ganic</a></h4>
                                 <p>Super Offer TO 50% OFF</p>
-                                <a href="shop.html" class="btn rounded-btn">shop now</a>
+                                <a href="{{route('shop')}}" class="btn rounded-btn">shop now</a>
                             </div>
                         </div>
                         <div class="shop-top-meta mb-30">
@@ -174,8 +174,8 @@
                               <div class="col-xl-3 col-md-4 col-sm-6">
                                   <div class="sp-product-item">
                                       <div class="sp-product-thumb">
-                                          <span class="batch discount">25%</span>
-                                          <a href="shop-details.html"><img src="img/product/category_img02.png" alt=""></a>
+                                          {{-- <span class="batch discount">25%</span> --}}
+                                          <a href="{{route('products.show', $product)}}"><img src="img/product/category_img02.png" alt=""></a>
                                       </div>
                                       <div class="sp-product-content">
                                           <div class="rating">
@@ -185,7 +185,7 @@
                                               <i class="fas fa-star"></i>
                                               <i class="fas fa-star"></i>
                                           </div>
-                                          <h6 class="title"><a href="shop-details.html">{{$product->name}}</a></h6>
+                                          <h6 class="title"><a href="{{route('products.show', $product)}}">{{$product->name}}</a></h6>
                                           <span class="product-status">{{$product->is_in_stock}}</span>
                                           <div class="sp-cart-wrap">
                                               <form action="#">
@@ -205,14 +205,14 @@
                         </div>
                         {{-- <div class="pagination-wrap">
                             <ul>
-                                <li class="prev"><a href="shop.html">Prev</a></li>
-                                <li><a href="shop.html">1</a></li>
-                                <li class="active"><a href="shop.html">2</a></li>
-                                <li><a href="shop.html">3</a></li>
-                                <li><a href="shop.html">4</a></li>
-                                <li><a href="shop.html">...</a></li>
-                                <li><a href="shop.html">10</a></li>
-                                <li class="next"><a href="shop.html">Next</a></li>
+                                <li class="prev"><a href="{{route('shop')}}">Prev</a></li>
+                                <li><a href="{{route('shop')}}">1</a></li>
+                                <li class="active"><a href="{{route('shop')}}">2</a></li>
+                                <li><a href="{{route('shop')}}">3</a></li>
+                                <li><a href="{{route('shop')}}">4</a></li>
+                                <li><a href="{{route('shop')}}">...</a></li>
+                                <li><a href="{{route('shop')}}">10</a></li>
+                                <li class="next"><a href="{{route('shop')}}">Next</a></li>
                             </ul>
                         </div> --}}
                     </div>

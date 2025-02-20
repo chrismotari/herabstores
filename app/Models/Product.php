@@ -37,6 +37,9 @@ class Product extends Model
 
     public function getIsInStockAttribute()
     {
+        // skip function for now
+        return 'In Stock';
+
         if (!$this->stock  || !$this->total_stock ) {
             return 'Out of Stock';
         }
