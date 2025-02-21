@@ -28,7 +28,7 @@ class DatabaseSeeder extends Seeder
             'password' => Hash::make('password'),
             "address" => "72, Fox street",
             "city" => "Jerusalem",
-            "estate" => "Bethsaida",
+            // "estate" => "Bethsaida",
             "country_id" => Country::where('name', "like", "Kenya")->first()->id,
             "is_admin" => 1,  
         ]);
@@ -42,7 +42,7 @@ class DatabaseSeeder extends Seeder
             'password' => Hash::make('password'),
             "address" => "72, Fox street",
             "city" => "Jerusalem",
-            "estate" => "Bethsaida",
+            // "estate" => "Bethsaida",
             "country_id" => Country::where('name', "like", "Kenya")->first()->id,
             "is_admin" => 0,  
         ]);

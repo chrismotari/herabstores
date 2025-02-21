@@ -31,7 +31,7 @@ class User extends Authenticatable
         'alt_email',
         'address',
         'city',
-        'estate',
+        'estate_id',
         "country_id",
         'photo_url',
         'dob',
