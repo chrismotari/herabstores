@@ -15,7 +15,7 @@ return new class extends Migration
             $table->id();
             $table->string('phone')->unique();
             $table->string('ref_code')->unique();
-            $table->foreignId('user_id')->nullable()->constrained('users');
+            $table->foreignUuid('user_id')->nullable()->constrained('users');
             $table->text('description')->nullable();
             $table->boolean('is_active')->default(true);
             $table->timestamp('expires_at')->nullable();
