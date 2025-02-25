@@ -63,6 +63,10 @@ Route::get('/index', function () {
     return redirect('/'); 
 })->name('index');
 
+Route::POST('products/search', [ProductController::class, 'search'])->name('products.search');
+Route::get('products/search', [ProductController::class, 'search']);
+Route::get('products/admin/show/{product}', [ProductController::class, 'adminShow'])->name("products.admin.show");
+
 
 Route::get('/', function () {
     return view('index')->with('products', Product::all()); 

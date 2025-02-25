@@ -54,5 +54,5 @@
         <label class="form-check-label" for="is_active">Active</label>
     </div>
 
-    <button type="submit" class="btn btn-primary">Create Product</button>
+    <button type="submit" class="btn btn-primary">Submit</button>
 </div>

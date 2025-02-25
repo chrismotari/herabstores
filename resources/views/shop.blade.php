@@ -169,13 +169,12 @@
                         </div>
                         <div class="shop-products-wrap">
                             <div class="row justify-content-center">
-                              @forelse ($products as $product)
-                                  
+                              @forelse ($products as $product)   
                               <div class="col-xl-3 col-md-4 col-sm-6">
                                   <div class="sp-product-item">
                                       <div class="sp-product-thumb">
                                           {{-- <span class="batch discount">25%</span> --}}
-                                          <a href="{{route('products.show', $product)}}"><img src="img/product/category_img02.png" alt=""></a>
+                                          <a href="{{route('products.show', $product)}}"><img src="{{ asset('storage/' . $product->image_url) }}" alt="{{ $product->name }}"></a>
                                       </div>
                                       <div class="sp-product-content">
                                           <div class="rating">

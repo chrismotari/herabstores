@@ -2,6 +2,7 @@
 
 namespace App\Providers;
 
+use App\Models\Category;
 use App\Models\Company;
 use App\Models\ContractType;
 use App\Models\Country;
@@ -40,6 +41,12 @@ class AppServiceProvider extends ServiceProvider
             $view->with([
                 'cart' => Auth::user()?->cart, 
                 'favourites' => Auth::user()?->favourites, 
+                'categories' => Category::all(), 
+            ]); 
+        });
+        View::composer('products.form', function ($view) {
+            $view->with([
+                'categories' => Category::all(), 
             ]); 
         });
 

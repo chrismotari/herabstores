@@ -24,7 +24,7 @@
                                 </li>
                                 <li>
                                     <div class="icon"><i class="flaticon-wall-clock"></i></div>
-                                    <p>Mon - Fri 8:00 to 21:00</p>
+                                    <p>Sun - Fri : 8:00 to 21:00</p>
                                 </li>
                             </ul>
                         </div>

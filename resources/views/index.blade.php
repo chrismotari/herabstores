@@ -59,7 +59,7 @@
                             <img src="img/product/category_img01.png" alt="">
                         </div>
                         <div class="category-content">
-                            <h6 class="title">Juice & Drinks</h6>
+                            <h6 class="title">Spices</h6>
                         </div>
                     </div>
                 </div>
@@ -81,7 +81,7 @@
                             <img src="img/product/category_img03.png" alt="">
                         </div>
                         <div class="category-content">
-                            <h6 class="title">Fresh Nuts</h6>
+                            <h6 class="title">Nuts</h6>
                         </div>
                     </div>
                 </div>
@@ -89,10 +89,10 @@
                     <div class="category-item">
                         <a href="{{route('shop')}}" class="category-link"></a>
                         <div class="category-thumb">
-                            <img src="img/product/category_img04.png" alt="">
+                            <img src="img/product/watermelon.png" alt="">
                         </div>
                         <div class="category-content">
-                            <h6 class="title">Cleaning</h6>
+                            <h6 class="title">Fresh Fruits</h6>
                         </div>
                     </div>
                 </div>
@@ -100,10 +100,10 @@
                     <div class="category-item">
                         <a href="{{route('shop')}}" class="category-link"></a>
                         <div class="category-thumb">
-                            <img src="img/product/category_img05.png" alt="">
+                            <img src="img/product/cart_img02.jpg" alt="">
                         </div>
                         <div class="category-content">
-                            <h6 class="title">fresh meat</h6>
+                            <h6 class="title">Condiments</h6>
                         </div>
                     </div>
                 </div>
@@ -114,7 +114,7 @@
                             <img src="img/product/category_img06.png" alt="">
                         </div>
                         <div class="category-content">
-                            <h6 class="title">Powders</h6>
+                            <h6 class="title">Cerials</h6>
                         </div>
                     </div>
                 </div>

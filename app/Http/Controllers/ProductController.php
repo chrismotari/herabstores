@@ -12,6 +12,7 @@ use Illuminate\Routing\Controllers\HasMiddleware;
 use Flasher\Laravel\Facade as Flasher;
 use Illuminate\Routing\Controllers\Middleware;
 use Illuminate\Support\Facades\Auth;
+use Illuminate\Support\Facades\Storage;
 
 class ProductController extends Controller implements HasMiddleware
 {
@@ -19,7 +20,7 @@ class ProductController extends Controller implements HasMiddleware
     {
         return [
             // 'admin',
-            new Middleware('admin', except: ['show', 'unfavourite']),
+            new Middleware('admin', except: ['show', 'unfavourite', 'search']),
         ];
     }
 
@@ -30,7 +31,6 @@ class ProductController extends Controller implements HasMiddleware
     {
         return view('products.index', [
             'products' => Product::all(),
-            'categories' => Category::all()
         ]);
     }
 
@@ -47,9 +47,7 @@ class ProductController extends Controller implements HasMiddleware
      */
     public function store(ProductRequest $request)
     {
-        
        try {
-            $request->validated();
             
             $filename = null;
             $file_path = null;
@@ -87,6 +85,12 @@ class ProductController extends Controller implements HasMiddleware
             'product' => $product
         ]);
     }
+    public function adminShow(Product $product)
+    {
+        return view('products.admin_show', [
+            'this_product' => $product
+        ]);
+    }
 
     /**
      * Show the form for editing the specified resource.
@@ -99,9 +103,41 @@ class ProductController extends Controller implements HasMiddleware
     /**
      * Update the specified resource in storage.
      */
-    public function update(Request $request, Product $product)
+    public function update(ProductRequest $request, Product $product)
     {
-        //
+        // dd($request->all());
+
+        try {
+            $filename = $product->image_url; // Keep existing image
+            $file_path = $product->image_url;
+    
+            if ($request->hasFile('image_url')) {
+                // Delete old image if exists
+                if ($product->image_url && Storage::disk('public')->exists($product->image_url)) {
+                    Storage::disk('public')->delete($product->image_url);
+                }
+    
+                $filename = time() . '-' . $request->slug . '.' . $request->image_url->extension();
+                $file_path = $request->image_url->storeAs('images/product_images', $filename, 'public');
+            }
+    
+            $product->update([
+                'name' => $request->name,
+                'description' => $request->description,
+                'slug' => $request->slug,
+                'price' => $request->price,
+                'stock' => $request->stock,
+                'image_url' => $file_path,
+                'is_active' => $request->is_active ? 1 : 0,
+                'category_id' => $request->category_id,
+            ]);
+    
+        } catch (\Throwable $th) {
+            throw $th;
+        }
+    
+        flash()->success('Product updated successfully');
+        return back();
     }
 
     /**
@@ -127,5 +163,29 @@ class ProductController extends Controller implements HasMiddleware
 
         flash()->success('Product removed from your favourites');
         return redirect()->back();
+    }
+
+    public function search(Request $request)
+    {
+        $search = $request->query('search', $request->input('search'));
+        $categoryId = $request->query('category_id', $request->input('category_id'));
+
+        $products = Product::where(function ($query) use ($search) {
+                if (!empty($search)) {
+                    $query->where('name', 'like', "%{$search}%")
+                          ->orWhere('description', 'like', "%{$search}%");
+                }
+            })->when(!empty($categoryId), function ($query) use ($categoryId) {
+                $query->where('category_id', $categoryId);
+            }, function ($query) {
+                // If no category_id is provided, allow products with or without a category
+                $query->orWhereNull('category_id');
+            })->get();
+
+        return view('shop', [
+            'products' => $products,
+            "search_term" => $search,
+            "serch_category" => $categoryId,
+        ]);
     }
 }

@@ -16,7 +16,7 @@
                             </div>
                         </li>
                         <li class="header-work-time">
-                            Working time: <span> Mon - Fri : 8:00 - 21:0</span>
+                            Working time: <span> Sun - Fri : 8:00 - 21:0</span>
                         </li>
                     </ul>
                 </div>
@@ -48,22 +48,18 @@
             <div class="col-xl-10 col-lg-9">
                 <div class="d-block d-sm-flex align-items-center justify-content-end">
                     <div class="header-search-wrap">
-                        <form action="#">
-                            <select class="custom-select">
-                                <option selected="">All Categories</option>
-                                <option>-- Grocery & Frozen</option>
-                                <option>-- Fresh Fruits</option>
-                                <option>-- Fresh Fish</option>
-                                <option>-- Fresh Nuts</option>
-                                <option>-- Fresh Meats</option>
-                                <option>-- Bread & Bakery</option>
-                                <option>-- Vegetable</option>
-                                <option>-- Kids Food</option>
-                                <option>-- Dried Fruits</option>
-                                <option>-- Others Food</option>
+                        <form action="{{route('products.search')}}" method="POST">
+                            @csrf
+                            <select class="custom-select" name="category_id">
+                                <option selected value="">All Categories</option>
+                                @forelse ($categories as $category)
+                                    <option value="{{$category->id}}">{{$category->name}}</option>
+                                @empty
+                                    
+                                @endforelse
                             </select>
-                            <input type="text" placeholder="Search Product...">
-                            <button><i class="flaticon-loupe-1"></i></button>
+                            <input type="text" placeholder="Search Product..." value="{{$search_term??""}}" name="search">
+                            <button type="submit"><i class="flaticon-loupe-1"></i></button>
                         </form>
                     </div>
                     <div class="header-action">
