@@ -145,7 +145,22 @@ class ProductController extends Controller implements HasMiddleware
      */
     public function destroy(Product $product)
     {
-        //
+        if ($product->image_url && Storage::disk('public')->exists($product->image_url)) {
+            Storage::disk('public')->delete($product->image_url);
+        }
+        foreach ($product->images as $image) {
+            if ($image->image_url && Storage::disk('public')->exists($image->image_url)) {
+                Storage::disk('public')->delete($image->image_url);
+            }
+        }
+        foreach ($product->favourites as $favourite) {
+            $favourite->delete();
+        }
+
+        $product->delete();
+
+        flash()->success('Product deleted successfully');
+        return redirect()->back();
     }
 
     public function unfavourite(Product $product)

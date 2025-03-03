@@ -36,7 +36,6 @@ class OrderController extends Controller
      */
     public function store(Request $request)
     {        
-        // dd($request->all());
         $cart_items = auth()->user()->cart->cartItems;
 
         if ($cart_items->count() < 1 ) {
@@ -83,7 +82,7 @@ class OrderController extends Controller
             // Clear the cart
             if ($order) {
                 auth()->user()->cart->cartItems()->delete();
-                return back()->with('success', 'Order has been placed successfully');
+                return redirect()->route('home')->with('success', 'Order has been placed successfully');
             }else{
                 return back()->with('error', 'An Error occured while placing your order');
             }
@@ -97,7 +96,7 @@ class OrderController extends Controller
     public function show(Order $order)
     {
         return view('orders.show', [
-            'order' => $order,
+            'selected_order' => $order,
         ]);
     }
 
@@ -114,7 +113,8 @@ class OrderController extends Controller
      */
     public function update(Request $request, Order $order)
     {
-        //
+        
+
     }
 
     /**
@@ -122,6 +122,7 @@ class OrderController extends Controller
      */
     public function destroy(Order $order)
     {
-        //
+        $order->delete();
+        return back()->with('success', 'Order has been deleted successfully');
     }
 }

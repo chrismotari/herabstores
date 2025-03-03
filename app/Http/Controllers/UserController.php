@@ -11,6 +11,7 @@ use Illuminate\Routing\Controllers\Middleware;
 use Illuminate\Routing\Controllers\HasMiddleware;
 use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Facades\Hash;
+use Illuminate\Support\Facades\Storage;
 
 class UserController extends Controller implements HasMiddleware
 {
@@ -26,7 +27,11 @@ class UserController extends Controller implements HasMiddleware
      */
     public function index()
     {
-        return view('users.index', ['users' => User::all()]);
+        return view('users.index', ['users' => User::where('is_admin', true)->get()]);
+    }
+    public function customers()
+    {
+        return view('users.index', ['users' => User::where('is_admin', false)->get()]);
     }
 
     /**
@@ -148,12 +153,8 @@ class UserController extends Controller implements HasMiddleware
             return redirect()->back();
         }
        
-        if ($user->photo_url) {
-            unlink(storage_path( $user->photo_url));
-            
-        }
-        if ($user->resume_url) {
-            unlink(storage_path($user->resume_url));
+        if ($user->photo_url && Storage::disk('public')->exists($user->photo_url)) {
+            Storage::disk('public')->delete($user->photo_url);
         }
         if ($user->delete()) {
             flash()->success("User deleted successfully");

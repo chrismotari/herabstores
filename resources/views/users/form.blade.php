@@ -5,28 +5,28 @@
             <div class="col-xl-3 col-md-4 col-sm-6 mb-4">
                 <label class="form-label">First Name<span class="text-danger scale5 ms-2">*</span></label>
                 <input type="text" class="form-control" placeholder="First Name" aria-label="fname" 
-                    value="{{ old('fname', $this_user->fname ?? '') }}" name="fname">
+                    value="{{ old('fname', $selected_user->fname ?? '') }}" name="fname">
                 <x-input-error :messages="$errors->get('fname')" class="mt-2 text-danger" />
             </div>
             <div class="col-xl-3 col-md-4 col-sm-6 mb-4">
                 <label class="form-label">Middle Name</label>
                 <input type="text" class="form-control" placeholder="Middle Name" aria-label="mname" 
-                    value="{{ old('mname', $this_user->mname ?? '') }}" name="mname">
+                    value="{{ old('mname', $selected_user->mname ?? '') }}" name="mname">
                 <x-input-error :messages="$errors->get('mname')" class="mt-2 text-danger" />
             </div>
 
             <div class="col-xl-3 col-md-4 col-sm-6 mb-4">
                 <label class="form-label">Last Name<span class="text-danger scale5 ms-2">*</span></label>
                 <input type="text" class="form-control" placeholder="Last Name" aria-label="lname" 
-                    value="{{ old('lname', $this_user->lname ?? '') }}" name="lname">
+                    value="{{ old('lname', $selected_user->lname ?? '') }}" name="lname">
                 <x-input-error :messages="$errors->get('lname')" class="mt-2 text-danger" />
             </div>
             <div class="col-xl-3 col-md-4 col-sm-6 mb-4">
                 <label class="form-label">Gender<span class="text-danger scale5 ms-2">*</span></label>
                 <select class="nice-select default-select wide form-control" name="gender">
-                    <option value="male" {{ old('gender', $this_user->gender ?? '') == 'male' ? 'selected' : '' }}>Male</option>
-                    <option value="female" {{ old('gender', $this_user->gender ?? '') == 'female' ? 'selected' : '' }}>Female</option>
-                    <option value="other" {{ old('gender', $this_user->gender ?? '') == 'other' ? 'selected' : '' }}>Prefer not to say</option>
+                    <option value="male" {{ old('gender', $selected_user->gender ?? '') == 'male' ? 'selected' : '' }}>Male</option>
+                    <option value="female" {{ old('gender', $selected_user->gender ?? '') == 'female' ? 'selected' : '' }}>Female</option>
+                    <option value="other" {{ old('gender', $selected_user->gender ?? '') == 'other' ? 'selected' : '' }}>Prefer not to say</option>
                 </select>
                 <x-input-error :messages="$errors->get('gender')" class="mt-2 text-danger" />
             </div>
@@ -41,46 +41,46 @@
             <div class="col-xl-3 col-md-4 col-sm-6 mb-4">
                 <label class="form-label">Phone Number<span class="text-danger scale5 ms-2">*</span></label>
                 <input type="text" class="form-control" placeholder="Phone" aria-label="phone" 
-                    value="{{ old('phone', $this_user->phone ?? '') }}" name="phone">
+                    value="{{ old('phone', $selected_user->phone ?? '') }}" name="phone">
                 <x-input-error :messages="$errors->get('phone')" class="mt-2 text-danger" />
             </div>
             <div class="col-xl-3 col-md-4 col-sm-6 mb-4">
                 <label class="form-label">Alternative Number </label>
                 <input type="text" class="form-control" placeholder="Alt Phone" aria-label="alt_phone" 
-                    value="{{ old('alt_phone', $this_user->alt_phone ?? '') }}" name="alt_phone">
+                    value="{{ old('alt_phone', $selected_user->alt_phone ?? '') }}" name="alt_phone">
                 <x-input-error :messages="$errors->get('alt_phone')" class="mt-2 text-danger" />
             </div>
             <div class="col-xl-3 col-md-4 col-sm-6 mb-4">
                 <label class="form-label">Email Address<span class="text-danger scale5 ms-2">*</span></label>
                 <input type="text" class="form-control" placeholder="Email" aria-label="email" 
-                    value="{{ old('email', $this_user->email ?? '') }}" name="email">
+                    value="{{ old('email', $selected_user->email ?? '') }}" name="email">
                 <x-input-error :messages="$errors->get('email')" class="mt-2 text-danger" />
             </div>
             <div class="col-xl-3 col-md-4 col-sm-6 mb-4">
                 <label class="form-label">Alternative Email Address </label>
                 <input type="text" class="form-control" placeholder="Alt Email" aria-label="alt_email" 
-                    value="{{ old('alt_email', $this_user->alt_email ?? '') }}" name="alt_email">
+                    value="{{ old('alt_email', $selected_user->alt_email ?? '') }}" name="alt_email">
                 <x-input-error :messages="$errors->get('alt_email')" class="mt-2 text-danger" />
             </div>
             <div class="col-xl-3 col-md-4 col-sm-6 mb-4">
                 <label class="form-label">Address<span class="text-danger scale5 ms-2">*</span></label>
                 <input type="text" class="form-control" placeholder="Address" aria-label="address" 
-                    value="{{ old('address', $this_user->address ?? '') }}" name="address">
+                    value="{{ old('address', $selected_user->address ?? '') }}" name="address">
                 <x-input-error :messages="$errors->get('address')" class="mt-2 text-danger" />
             </div>
             <div class="col-xl-3 col-md-4 col-sm-6 mb-4">
                 <label class="form-label">City<span class="text-danger scale5 ms-2">*</span></label>
                 <input type="text" class="form-control" placeholder="City" aria-label="city" 
-                    value="{{ old('city', $this_user->city ?? '') }}" name="city">
+                    value="{{ old('city', $selected_user->city ?? '') }}" name="city">
                 <x-input-error :messages="$errors->get('city')" class="mt-2 text-danger" />
             </div>
 
             <div class="col-xl-3 col-md-4 col-sm-6 mb-4">
                 <label class="form-label">Estate<span class="text-danger scale5 ms-2">*</span></label>
                 <select class="nice-select default-select wide form-control" name="estate_id">
-                    <option value="" disabled {{ old('estate_id', $this_user->estate_id ?? null) === null ? 'selected' : '' }}>Choose...</option>
+                    <option value="" disabled {{ old('estate_id', $selected_user->estate_id ?? null) === null ? 'selected' : '' }}>Choose...</option>
                     @forelse($estates as $estate)
-                    <option value="{{ $estate->id }}" {{ old('estate_id', $this_user->estate_id ?? null) == $estate->id ? 'selected' : '' }}>
+                    <option value="{{ $estate->id }}" {{ old('estate_id', $selected_user->estate_id ?? null) == $estate->id ? 'selected' : '' }}>
                         {{ $estate->name }}
                     </option>
                     @empty
@@ -93,9 +93,9 @@
             <div class="col-xl-3 col-md-4 col-sm-6 mb-4">
                 <label class="form-label">Country<span class="text-danger scale5 ms-2">*</span></label>
                 <select class="nice-select default-select wide form-control" name="country_id">
-                    <option value="" disabled {{ old('country_id', $this_user->country_id ?? null) === null ? 'selected' : '' }}>Choose...</option>
+                    <option value="" disabled {{ old('country_id', $selected_user->country_id ?? null) === null ? 'selected' : '' }}>Choose...</option>
                     @forelse($countries as $country)
-                    <option value="{{ $country->id }}" {{ old('country_id', $this_user->country_id ?? null) == $country->id ? 'selected' : '' }}>
+                    <option value="{{ $country->id }}" {{ old('country_id', $selected_user->country_id ?? null) == $country->id ? 'selected' : '' }}>
                         {{ $country->name }}
                     </option>
                     @empty
@@ -105,7 +105,7 @@
                 <x-input-error :messages="$errors->get('country_id')" class="mt-2 text-danger" />
             </div>
 
-            @empty($this_user)
+            @empty($selected_user)
             <div class="col-xl-3 col-md-4 col-sm-6 mb-4">
                 <label class="form-label">Profile Photo </label>
                 <input type="file" class="form-control" placeholder="Profile Photo" aria-label="photo_url" name="photo_url">
@@ -129,8 +129,8 @@
                 <div class="col-xl-3 col-md-4 col-sm-6 mb-4">
                     <label class="form-label">Status<span class="text-danger scale5 ms-2">*</span></label>
                     <select class="nice-select default-select wide form-control" name="status">
-                        <option value="1" {{ old('status', $this_user->status ?? '') == '1' ? 'selected' : '' }}>Active</option>
-                        <option value="0" {{ old('status', $this_user->status ?? '') == '0' ? 'selected' : '' }}>Inactive</option>
+                        <option value="1" {{ old('status', $selected_user->status ?? '') == '1' ? 'selected' : '' }}>Active</option>
+                        <option value="0" {{ old('status', $selected_user->status ?? '') == '0' ? 'selected' : '' }}>Inactive</option>
                     </select>
                     <x-input-error :messages="$errors->get('status')" class="mt-2 text-danger" />
                 </div>
@@ -138,9 +138,9 @@
                 <div class="col-xl-3 col-md-4 col-sm-6 mb-4">
                     <label class="form-label">Role<span class="text-danger scale5 ms-2">*</span></label>
                     <select class="nice-select default-select wide form-control" name="role_id">
-                        <option value="" disabled {{ old('role_id', $this_user->role_id ?? null) === null ? 'selected' : '' }}>Choose...</option>
+                        <option value="" disabled {{ old('role_id', $selected_user->role_id ?? null) === null ? 'selected' : '' }}>Choose...</option>
                             @forelse($roles as $role)
-                            <option value="{{ $role->id }}" {{ old('role_id', $this_user->role_id ?? null) == $role->id ? 'selected' : '' }}>
+                            <option value="{{ $role->id }}" {{ old('role_id', $selected_user->role_id ?? null) == $role->id ? 'selected' : '' }}>
                                 {{ $role->name }}
                             </option>
                             @empty

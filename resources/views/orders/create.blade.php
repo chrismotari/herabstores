@@ -57,13 +57,13 @@
                                     <div class="col-sm-6 mb-4">
                                         <label class="form-label">Email<span class="text-danger scale5 ms-2">*</span></label>
                                         <input type="text" class="" placeholder="Email" aria-label="fname" 
-                                            value="{{ old('fname', $this_user->fname ?? '') }}" name="fname">
+                                            value="{{ old('fname', $selected_user->fname ?? '') }}" name="fname">
                                         <x-input-error :messages="$errors->get('fname')" class="mt-2 text-danger" />
                                     </div>
                                     <div class="col-sm-6 mb-4">
                                         <label class="form-label">Phone<span class="text-danger scale5 ms-2">*</span></label>
                                         <input type="text" class="" placeholder="Phone" aria-label="lname" 
-                                            value="{{ old('lname', $this_user->lname ?? '') }}" name="lname">
+                                            value="{{ old('lname', $selected_user->lname ?? '') }}" name="lname">
                                         <x-input-error :messages="$errors->get('lname')" class="mt-2 text-danger" />
                                     </div>
                                 </div>
@@ -78,27 +78,27 @@
                                         <div class="col-md-6 mb-4">
                                             <label class="form-label">First Name<span class="text-danger scale5 ms-2">*</span></label>
                                             <input type="text" class="" placeholder="First Name" aria-label="fname" 
-                                                value="{{ old('fname', $this_user->fname ?? '') }}" name="fname">
+                                                value="{{ old('fname', $selected_user->fname ?? '') }}" name="fname">
                                             <x-input-error :messages="$errors->get('fname')" class="mt-2 text-danger" />
                                         </div>
                                         <div class="col-md-6 mb-4">
                                             <label class="form-label">Last Name<span class="text-danger scale5 ms-2">*</span></label>
                                             <input type="text" class="" placeholder="Last Name" aria-label="phone" 
-                                                value="{{ old('phone', $this_user->phone ?? '') }}" name="phone">
+                                                value="{{ old('phone', $selected_user->phone ?? '') }}" name="phone">
                                             <x-input-error :messages="$errors->get('phone')" class="mt-2 text-danger" />
                                         </div>
                                         <div class="col-md-6 mb-4">
                                             <label class="form-label">Company Name<span class="text-danger scale5 ms-2">*</span></label>
                                             <input type="text" class="" placeholder="Company Name" aria-label="company_name" 
-                                                value="{{ old('company_name', $this_user->company_name ?? '') }}" name="company_name">
+                                                value="{{ old('company_name', $selected_user->company_name ?? '') }}" name="company_name">
                                             <x-input-error :messages="$errors->get('company_name')" class="mt-2 text-danger" />
                                         </div>
                                         <div class="col-md-6 mb-4">
                                             <label class="form-label">Country<span class="text-danger scale5 ms-2">*</span></label>
                                             <select class="nice-select default-select wide form-control" name="country_id">
-                                                <option value="" disabled {{ old('country_id', $this_user->country_id ?? null) === null ? 'selected' : '' }}>Choose...</option>
+                                                <option value="" disabled {{ old('country_id', $selected_user->country_id ?? null) === null ? 'selected' : '' }}>Choose...</option>
                                                 @forelse($countries as $country)
-                                                <option value="{{ $country->id }}" {{ old('country_id', $this_user->country_id ?? null) == $country->id ? 'selected' : '' }}>
+                                                <option value="{{ $country->id }}" {{ old('country_id', $selected_user->country_id ?? null) == $country->id ? 'selected' : '' }}>
                                                     {{ $country->name }}
                                                 </option>
                                                 @empty
@@ -113,20 +113,20 @@
                                     <div class=" col-md-12 mb-4">
                                         <label class="form-label">Address<span class="text-danger scale5 ms-2">*</span></label>
                                         <input type="text" class="" placeholder="Address" aria-label="address" 
-                                            value="{{ old('address', $this_user->address ?? '') }}" name="address">
+                                            value="{{ old('address', $selected_user->address ?? '') }}" name="address">
                                         <x-input-error :messages="$errors->get('address')" class="mt-2 text-danger" />
                                     </div>
                                     <div class="row">
                                         <div class="col-sm-6 mb-4">
                                             <label class="form-label">City<span class="text-danger scale5 ms-2">*</span></label>
                                             <input type="text" class="" placeholder="City" aria-label="city" 
-                                                value="{{ old('city', $this_user->city ?? '') }}" name="city">
+                                                value="{{ old('city', $selected_user->city ?? '') }}" name="city">
                                             <x-input-error :messages="$errors->get('city')" class="mt-2 text-danger" />
                                         </div>
                                         <div class="col-sm-6 mb-4">
                                             <label class="form-label">Estate<span class="text-danger scale5 ms-2">*</span></label>
                                             <input type="text" class="" placeholder="Estate" aria-label="estate" 
-                                                value="{{ old('estate', $this_user->estate ?? '') }}" name="estate">
+                                                value="{{ old('estate', $selected_user->estate ?? '') }}" name="estate">
                                             <x-input-error :messages="$errors->get('estate')" class="mt-2 text-danger" />
                                         </div>
                                     </div>

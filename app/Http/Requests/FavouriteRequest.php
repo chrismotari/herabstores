@@ -3,10 +3,9 @@
 namespace App\Http\Requests;
 
 use Illuminate\Foundation\Http\FormRequest;
-use App\Models\Product;
-use Illuminate\Validation\Rule;
+use App\Models\Favourite;
 
-class ProductRequest extends FormRequest
+class FavouriteRequest extends FormRequest
 {
     /**
      * Determine if the user is authorized to make this request.
@@ -23,17 +22,16 @@ class ProductRequest extends FormRequest
      */
     public function rules(): array
     {
+        $productId = $this->route('product')?->id;
         return [
-            'product_id' => [
-                'required',
-                'string',
-                'max:50',
-                'exists:products,id',
-                Rule::unique('favourites')->where(function ($query) use ($request) {
-                    return $query->where('user_id', auth()->id());
-                }),
-            ]
+            'name' => 'required|string|max:255',
+            'description' => 'required|string',
+            'slug' => 'required|string|unique:products,slug,' . $productId,
+            'price' => 'required|numeric|min:0',
+            'stock' => 'required|integer|min:0',
+            'image_url' => 'nullable|file|image',
+            'is_active' => 'boolean',
+            'category_id' => 'required|uuid|exists:categories,id',
         ];
     }
 }
-                                                                                                                                        

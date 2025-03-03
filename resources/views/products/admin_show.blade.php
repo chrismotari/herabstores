@@ -1,5 +1,5 @@
-@extends('layouts.backend', ['activePage' => 'products', 'title' => $this_product->name])
-@section('title', $this_product->name)
+@extends('layouts.backend', ['activePage' => 'products', 'title' => $selected_product->name])
+@section('title', $selected_product->name)
 
 @section('content')
 <div class="row">
@@ -13,7 +13,7 @@
     </div>
 @endif
 	<div class="col-xl-12">
-		<form action=" {{ route('products.update', $this_product) }} " method="POST" enctype="multipart/form-data">
+		<form action=" {{ route('products.update', $selected_product) }} " method="POST" enctype="multipart/form-data">
 			@method('PATCH')
 			@include('products.form')
 		</form>

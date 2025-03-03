@@ -3,12 +3,12 @@
         <div class="dropdown header-profile2 ">
             <a class="nav-link " href="javascript:void(0);" role="button" data-bs-toggle="dropdown">
                 <div class="header-info2 d-flex align-items-center">
-                    <img src=" {{ asset('images/user.png') }}" alt="">
+                    <img src=" {{ asset('backend/images/user.png') }}" alt="">
                     @auth
                     <div class="d-flex align-items-center sidebar-info">
                         <div>
                             <span class="font-w400 d-block">{{auth()->user()->name}}</span>
-                            <small class="text-end font-w400">{{auth()->user()->main_role}}</small>
+                            <small class="text-end font-w400">Admin</small>
                         </div>
                         <i class="fas fa-chevron-down"></i>
                     </div>
@@ -67,7 +67,6 @@
                 </a>
                 <ul aria-expanded="false">
                     <li><a href=" {{route('categories.index')}} ">All categories</a></li>
-                    <li><a href=" {{route('categories.create')}} ">Add Category</a></li>
                 </ul>
             </li>
             <li><a class="has-arrow " href="javascript:void(0);" aria-expanded="false">

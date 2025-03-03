@@ -24,11 +24,11 @@
                                 <td>{{$order->order_number}}</td>
                                 <td class="wspace-no">{{$order->estate?->name}}</td>
                                 <td>KSHS {{$order->total}}</td>
-                                <td></td>
+                                <td>{{count($order->order_items)}}</td>
                                 <td><span class="badge badge-success badge-lg light">{{$order->status}}</span></td>
                                 <td>
                                     <div class="action-buttons d-flex justify-content-end">
-                                        <a href="javascript:void(0);" class="btn btn-success light mr-2">
+                                        <a href="{{ route('orders.show', $order) }}" class="btn btn-success light mr-2">
                                             <i class="fa fa-eye"></i>
                                         </a>
                                         <a href="javascript:void(0);" class="btn btn-secondary light mr-2">
@@ -41,9 +41,7 @@
                                 </td>
                             </tr>
                             @empty
-                            <tr>
-                                <td colspan="7" class="text-center">No data found</td>
-                            </tr>
+                            No data
                             @endforelse
                         </tbody>
                     </table>
