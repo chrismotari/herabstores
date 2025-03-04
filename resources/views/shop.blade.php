@@ -187,9 +187,20 @@
                                           <h6 class="title"><a href="{{route('products.show', $product)}}">{{$product->name}}</a></h6>
                                           <span class="product-status">{{$product->is_in_stock}}</span>
                                           <div class="sp-cart-wrap">
-                                              <form action="#">
+                                              <form action="{{route('cart_items.store')}}" method="POST">
+                                                  @csrf
+                                                  <input type="hidden" name="product_id" value="{{$product->id}}">
                                                   <div class="cart-plus-minus">
-                                                      <input type="text" value="1">
+                                                      <input type="text" value="1" name="quantity" class="cart-plus-minus-box">
+                                                  </div>
+                                                  <div class="add-to-cart mt-3">
+                                                      {{-- <button type="submit" class="btn-sm btn-primary rounded">Add <i class="fas fa-shopping-cart"></i></button> --}}
+                                                      <button type="submit" class="bg-orange rounded btn-secondary">add to cart</button>
+                                                      {{-- <button type="submit" class="bg-orange rounded btn-secondary">add to cart</button> --}}
+                                                      @if (Auth::user() && Auth::user()->is_admin)
+                                                          
+                                                      <a href="{{route('products.edit', $product)}}" class=" rounded btn-sm" ><i class="fas fa-cog"></i> </a>
+                                                      @endif
                                                   </div>
                                               </form>
                                           </div>

@@ -100,7 +100,7 @@ class UserController extends Controller implements HasMiddleware
     public function show(User $user)
     {
         // dd($user);
-        return view('users.customer_profile', ['this_user' => $user]);
+        return view('users.customer_profile', ['selected_user' => $user]);
     }
 
     /**

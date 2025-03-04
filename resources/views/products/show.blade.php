@@ -53,7 +53,7 @@
                             </div>
                             <div class="tab-pane fade" id="item-three" role="tabpanel" aria-labelledby="item-three-tab">
                                 <div class="shop-details-img">
-                                    <img src="{{ asset($product->image_url) }}" alt="">
+                                    <img src="{{ asset('storage/' . $product->image_url) }}" alt="no image">
                                 </div>
                             </div>
                         </div>

@@ -88,7 +88,7 @@ class ProductController extends Controller implements HasMiddleware
     public function adminShow(Product $product)
     {
         return view('products.admin_show', [
-            'this_product' => $product
+            'selected_product' => $product
         ]);
     }
 
@@ -97,7 +97,9 @@ class ProductController extends Controller implements HasMiddleware
      */
     public function edit(Product $product)
     {
-        //
+        return view('products.edit', [
+            'selected_product' => $product,
+        ]);
     }
 
     /**

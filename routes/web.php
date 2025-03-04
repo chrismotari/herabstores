@@ -51,6 +51,7 @@ Route::middleware('auth')->group(function () {
         return redirect('/'); 
     })->name('home');
 
+    // Route::get('products/admin/show/{product}', [ProductController::class, 'adminShow'])->name("products.admin.show");
 });
 
 Route::get('shop', function () {
@@ -65,7 +66,6 @@ Route::get('/index', function () {
 
 Route::POST('products/search', [ProductController::class, 'search'])->name('products.search');
 Route::get('products/search', [ProductController::class, 'search']);
-Route::get('products/admin/show/{product}', [ProductController::class, 'adminShow'])->name("products.admin.show");
 
 
 Route::get('/', function () {

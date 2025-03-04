@@ -157,13 +157,13 @@
                             @foreach ($cart->cartItems as $cart_item)
                                 <div class="os-products-item">
                                     <div class="thumb">
-                                        <a href="shop-details.html"><img src="img/product/os-products-thumb.jpg" alt=""></a>
+                                        <a href="shop-details.html"><img src="{{ asset('storage/' . $cart_item->product->image_url) }}" alt="no image"></a>
                                     </div>
                                     <div class="content">
-                                        <h6 class="title"><a href="shop-details.html">{{$cart_item->product->name}}</a></h6>
-                                        <span class="price">KSHS {{$cart_item->price}}</span>
+                                        <h6 class="title"><a href="shop-details.html">{{$cart_item->quantity}} x {{$cart_item->product->name}}</a></h6>
+                                        <span class="price">KSHS {{$cart_item->total }}</span>
                                     </div>
-                                    <div class="remove">x</div>
+                                    <div class="remove"><i class="fa fa-times-circle"></i></div>
                                 </div>
                             @endforeach
                         

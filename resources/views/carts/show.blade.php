@@ -45,7 +45,7 @@
                                     <tbody>
                                         @forelse ( $cart->cartItems as $cart_item )
                                             <tr>
-                                                <td class="product-thumbnail"><a href="shop-details.html"><img src="{{ asset($cart_item->product->image_url) }}" alt="{{$cart_item->product->slug}}"></a></td>
+                                                <td class="product-thumbnail"><a href="{{route('products.show', $cart_item->product)}}"><img src="{{ asset('storage/' . $cart_item->product->image_url) }}" alt="no image"></a></td>
                                                 <td class="product-name">
                                                     <h4><a href="shop-details.html">{{$cart_item->product->name}}</a></h4>
                                                 </td>

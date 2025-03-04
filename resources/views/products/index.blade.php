@@ -21,7 +21,7 @@
                     <tbody>
                         @forelse($products as $product)
                         <tr>
-                            <td><a href="{{ route('products.admin.show', $product) }}">{{$product->name}}</a></td>
+                            <td><a href="{{ route('products.edit', $product) }}">{{$product->name}}</a></td>
                             <td class="wspace-no">{{$product->category->name}}</td>
                             <td>KSHS {{$product->price}}</td>
                             <td>{{$product->stock}}</td>
