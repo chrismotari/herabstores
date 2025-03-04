@@ -11,7 +11,7 @@
                         <div class="breadcrumb-content">
                             <nav aria-label="breadcrumb">
                                 <ol class="breadcrumb">
-                                    <li class="breadcrumb-item"><a href="index-2.html">Home</a></li>
+                                    <li class="breadcrumb-item"><a href="/">Home</a></li>
                                     <li class="breadcrumb-item"><a href="{{route('shop')}}">Shop</a></li>
                                     <li class="breadcrumb-item active" aria-current="page">All Products</li>
                                 </ol>
@@ -64,7 +64,7 @@
                                     <ul>
                                         <li>
                                             <div class="sidebar-product-thumb">
-                                                <a href="shop-details.html"><img src="img/product/sidebar_product01.jpg" alt=""></a>
+                                                <a href="shop"><img src="img/product/sidebar_product01.jpg" alt=""></a>
                                             </div>
                                             <div class="sidebar-product-content">
                                                 <div class="rating">
@@ -74,13 +74,13 @@
                                                     <i class="fas fa-star"></i>
                                                     <i class="fas fa-star"></i>
                                                 </div>
-                                                <h5><a href="shop-details.html">Uncle Bens Vanla</a></h5>
+                                                <h5><a href="shop">Uncle Bens Vanla</a></h5>
                                                 <span>$39.00</span>
                                             </div>
                                         </li>
                                         <li>
                                             <div class="sidebar-product-thumb">
-                                                <a href="shop-details.html"><img src="img/product/sidebar_product02.jpg" alt=""></a>
+                                                <a href="shop"><img src="img/product/sidebar_product02.jpg" alt=""></a>
                                             </div>
                                             <div class="sidebar-product-content">
                                                 <div class="rating">
@@ -90,13 +90,13 @@
                                                     <i class="fas fa-star"></i>
                                                     <i class="fas fa-star"></i>
                                                 </div>
-                                                <h5><a href="shop-details.html">Dannon Max</a></h5>
+                                                <h5><a href="shop">Dannon Max</a></h5>
                                                 <span>$29.00</span>
                                             </div>
                                         </li>
                                         <li>
                                             <div class="sidebar-product-thumb">
-                                                <a href="shop-details.html"><img src="img/product/sidebar_product03.jpg" alt=""></a>
+                                                <a href="shop"><img src="img/product/sidebar_product03.jpg" alt=""></a>
                                             </div>
                                             <div class="sidebar-product-content">
                                                 <div class="rating">
@@ -106,7 +106,7 @@
                                                     <i class="fas fa-star"></i>
                                                     <i class="fas fa-star"></i>
                                                 </div>
-                                                <h5><a href="shop-details.html">Vanla Greek Pice</a></h5>
+                                                <h5><a href="shop">Vanla Greek Pice</a></h5>
                                                 <span>$35.00</span>
                                             </div>
                                         </li>
@@ -174,7 +174,7 @@
                                   <div class="sp-product-item">
                                       <div class="sp-product-thumb">
                                           {{-- <span class="batch discount">25%</span> --}}
-                                          <a href="{{route('products.show', $product)}}"><img src="{{ asset('storage/' . $product->image_url) }}" alt="{{ $product->name }}"></a>
+                                          <a href="{{route('products.show', $product)}}"><img src="{{ Str::startsWith($product->image_url, ['http://', 'https://']) ? $product->image_url : asset('storage/' . $product->image_url) }}" alt="{{ $product->name }}"></a>
                                       </div>
                                       <div class="sp-product-content">
                                           <div class="rating">
@@ -186,25 +186,24 @@
                                           </div>
                                           <h6 class="title"><a href="{{route('products.show', $product)}}">{{$product->name}}</a></h6>
                                           <span class="product-status">{{$product->is_in_stock}}</span>
-                                          <div class="sp-cart-wrap">
-                                              <form action="{{route('cart_items.store')}}" method="POST">
+                                          <form action="{{route('cart_items.store')}}" method="POST">
+                                            <div class="sp-cart-wrap">
                                                   @csrf
                                                   <input type="hidden" name="product_id" value="{{$product->id}}">
                                                   <div class="cart-plus-minus">
                                                       <input type="text" value="1" name="quantity" class="cart-plus-minus-box">
                                                   </div>
-                                                  <div class="add-to-cart mt-3">
-                                                      {{-- <button type="submit" class="btn-sm btn-primary rounded">Add <i class="fas fa-shopping-cart"></i></button> --}}
-                                                      <button type="submit" class="bg-orange rounded btn-secondary">add to cart</button>
-                                                      {{-- <button type="submit" class="bg-orange rounded btn-secondary">add to cart</button> --}}
-                                                      @if (Auth::user() && Auth::user()->is_admin)
-                                                          
-                                                      <a href="{{route('products.edit', $product)}}" class=" rounded btn-sm" ><i class="fas fa-cog"></i> </a>
-                                                      @endif
-                                                  </div>
-                                              </form>
-                                          </div>
-                                          <p>KSHS {{$product->price}}</p>
+                                                  
+                                               
+                                                <p>KSHS {{$product->price}}</p>
+                                                <div class="add-to-cart mt-3">
+                                                    <button type="submit" class="bg-orange rounded btn-secondary">Add to cart</button>
+                                                    @if (Auth::user() && Auth::user()->is_admin)
+                                                    <a href="{{route('products.edit', $product)}}" class=" rounded btn-sm" ><i class="fas fa-cog"></i> </a>
+                                                    @endif 
+                                                </div>
+                                            </form>
+                                        </div>
                                       </div>
                                   </div>
                               </div>

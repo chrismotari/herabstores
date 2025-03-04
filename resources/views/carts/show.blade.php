@@ -12,8 +12,8 @@
                         <div class="breadcrumb-content">
                             <nav aria-label="breadcrumb">
                                 <ol class="breadcrumb">
-                                    <li class="breadcrumb-item"><a href="index.html">Home</a></li>
-                                    <li class="breadcrumb-item"><a href="index.html">Pages</a></li>
+                                    <li class="breadcrumb-item"><a href="/">Home</a></li>
+                                    <li class="breadcrumb-item"><a href="#">Pages</a></li>
                                     <li class="breadcrumb-item active" aria-current="page">My cart</li>
                                 </ol>
                             </nav>
@@ -45,9 +45,9 @@
                                     <tbody>
                                         @forelse ( $cart->cartItems as $cart_item )
                                             <tr>
-                                                <td class="product-thumbnail"><a href="{{route('products.show', $cart_item->product)}}"><img src="{{ asset('storage/' . $cart_item->product->image_url) }}" alt="no image"></a></td>
+                                                <td class="product-thumbnail"><a href="{{route('products.show', $cart_item->product)}}"><img src="{{ Str::startsWith($cart_item->product->image_url, ['http://', 'https://']) ? $cart_item->product->image_url : asset('storage/' . $cart_item->product->image_url) }}" alt="no image"></a></td>
                                                 <td class="product-name">
-                                                    <h4><a href="shop-details.html">{{$cart_item->product->name}}</a></h4>
+                                                    <h4><a href="{{route('products.show', $cart_item->product)}}">{{$cart_item->product->name}}</a></h4>
                                                 </td>
                                                 <td class="product-price">{{$cart_item->product->price}}</td>
                                                 {{-- <td class="product-quantity">

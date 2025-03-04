@@ -9,7 +9,7 @@
                     <h2 class="title">PAGE NOT FOUND</h2>
                     <nav aria-label="breadcrumb">
                         <ol class="breadcrumb">
-                            <li class="breadcrumb-item"><a href="index.html">Home</a></li>
+                            <li class="breadcrumb-item"><a href="/">Home</a></li>
                             <li class="breadcrumb-item active" aria-current="page">404 Page</li>
                         </ol>
                     </nav>
@@ -35,7 +35,7 @@
                             <button type="submit" class="icon_search"><i class="flaticon-loupe"></i></button>
                         </form>
                     </div>
-                    <a href="index.html" class="btn rounded-btn">Back To Home</a>
+                    <a href="/" class="btn rounded-btn">Back To Home</a>
                 </div>
             </div>
         </div>

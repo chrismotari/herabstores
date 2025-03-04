@@ -32,8 +32,8 @@
                     <div class="card mb-0 h-auto">
                         <div class="card-body">
                             <div class="text-center mb-3 logo-img">
-                                <a href="index.html"><img class="logo-auth light" src="images/logo.png" alt=""></a>
-                                <!-- <a href="index.html"><img class="logo-auth dark" src="images/logo-dark.png" alt=""></a> -->
+                                <a href="/"><img class="logo-auth light" src="images/logo.png" alt=""></a>
+                                <!-- <a href="/"><img class="logo-auth dark" src="images/logo-dark.png" alt=""></a> -->
                             </div>
                             <h4 class="text-center mb-4">Sign up to {{config('app.name')}}</h4>
                             <form action="{{ route('register') }}" method="POST">

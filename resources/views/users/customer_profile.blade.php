@@ -11,9 +11,9 @@
                         <div class="breadcrumb-content">
                             <nav aria-label="breadcrumb">
                                 <ol class="breadcrumb">
-                                    <li class="breadcrumb-item"><a href="index-2.html">Home</a></li>
-                                    <li class="breadcrumb-item"><a href="index-2.html">Pages</a></li>
-                                    <li class="breadcrumb-item"><a href="index-2.html">Users</a></li>
+                                    <li class="breadcrumb-item"><a href="/">Home</a></li>
+                                    <li class="breadcrumb-item"><a href="/">Pages</a></li>
+                                    <li class="breadcrumb-item"><a href="/">Users</a></li>
                                     <li class="breadcrumb-item active" aria-current="page">{{$selected_user->name}}</li>
                                 </ol>
                             </nav>
