@@ -9,7 +9,7 @@
                     <nav aria-label="breadcrumb">
                         <ol class="breadcrumb">
                             <li class="breadcrumb-item"><a href="/">Home</a></li>
-                            <li class="breadcrumb-item"><a href="shop.html">Shop</a></li>
+                            <li class="breadcrumb-item"><a href="{{route('shop')}}">Shop</a></li>
                             <li class="breadcrumb-item active" aria-current="page">Shop Details</li>
                         </ol>
                     </nav>
@@ -29,7 +29,7 @@
                     <div class="shop-details-nav-wrap">
                         <ul class="nav nav-tabs" id="myTab" role="tablist">
                             <li class="nav-item" role="presentation">
-                                <a class="nav-link active" id="item-one-tab" data-toggle="tab" href="#item-one" role="tab" aria-controls="item-one" aria-selected="true"><img src="img/product/category_img02.png" alt=""></a>
+                                <a class="nav-link active" id="item-one-tab" data-toggle="tab" href="#item-one" role="tab" aria-controls="item-one" aria-selected="true"><img src="{{ Str::startsWith($product->image_url, ['http://', 'https://']) ? $product->image_url : asset('storage/' . $product->image_url) }}" alt="{{$product->slug}}"></a>
                             </li>
                             {{-- <li class="nav-item" role="presentation">
                                 <a class="nav-link" id="item-two-tab" data-toggle="tab" href="#item-two" role="tab" aria-controls="item-two" aria-selected="false"><img src="img/product/sd_nav_img02.jpg" alt=""></a>
@@ -43,7 +43,7 @@
                         <div class="tab-content" id="myTabContent">
                             <div class="tab-pane fade show active" id="item-one" role="tabpanel" aria-labelledby="item-one-tab">
                                 <div class="shop-details-img">
-                                    <img src="img/product/category_img02.png" alt="">
+                                    <img src="{{ Str::startsWith($product->image_url, ['http://', 'https://']) ? $product->image_url : asset('storage/' . $product->image_url) }}" alt="">
                                 </div>
                             </div>
                             <div class="tab-pane fade" id="item-two" role="tabpanel" aria-labelledby="item-two-tab">
@@ -65,7 +65,7 @@
                     <h4 class="title">{{$product->name}}</h4>
                     <div class="shop-details-meta">
                         <ul>
-                            <li>Baands : <a href="shop.html">Herab</a></li>
+                            <li>Baands : <a href="{{route('shop')}}">Herab</a></li>
                             <li class="shop-details-review">
                                 <div class="rating">
                                     <i class="fas fa-star"></i>

@@ -95,8 +95,11 @@ class OrderController extends Controller
      */
     public function show(Order $order)
     {
+        dd('paused');
+        // $order->items['image'];
         return view('orders.show', [
             'selected_order' => $order,
+            'countries' => Country::all(),
         ]);
     }
 

@@ -99,4 +99,9 @@ class Order extends Model
     {
         return number_format($this->total, 2);
     }       
+    
+    public function getItemsAttribute()
+    {
+        return collect($this->order_items);
+    }
 }
