@@ -6,166 +6,166 @@
                 <div class="menu-wrap">
                     <nav class="menu-nav">
                         <div class="logo d-block d-lg-none">
-                            <a href="index-2.html"><img src="img/logo/logo.png" alt=""></a>
+                            <a href="/"><img src="img/logo/logo.png" alt=""></a>
                         </div>
                         <div class="header-category d-none d-lg-block">
                             <a href="#" class="cat-toggle"><i class="fas fa-bars"></i>Unbeatable Deals<i class="fas fa-angle-down"></i></a>
                             <ul class="category-menu">
-                                <!-- <li class="menu-item-has-children"><a href="shop.html"><i class="flaticon-groceries"></i> Grocery & Frozen</a>
+                                {{-- <li class="menu-item-has-children"><a href="{{route('shop')}}"><i class="flaticon-groceries"></i> Grocery & Frozen</a>
                                     <ul class="megamenu">
-                                        <li class="sub-column-item"><a href="shop.html">Grocery & Frozen</a>
+                                        <li class="sub-column-item"><a href="{{route('shop')}}">Grocery & Frozen</a>
                                             <ul>
-                                                <li><a href="shop.html">Organic Broccoli</a></li>
-                                                <li><a href="shop.html">Walnuts Max</a></li>
-                                                <li><a href="shop.html">Mat Orange</a></li>
-                                                <li><a href="shop.html">France Potato</a></li>
+                                                <li><a href="{{route('shop')}}">Organic Broccoli</a></li>
+                                                <li><a href="{{route('shop')}}">Walnuts Max</a></li>
+                                                <li><a href="{{route('shop')}}">Mat Orange</a></li>
+                                                <li><a href="{{route('shop')}}">France Potato</a></li>
                                             </ul>
                                         </li>
-                                        <li class="sub-column-item"><a href="shop.html">Organic Fresh Fruits</a>
+                                        <li class="sub-column-item"><a href="{{route('shop')}}">Organic Fresh Fruits</a>
                                             <ul>
-                                                <li><a href="shop.html">Watermelon</a></li>
-                                                <li><a href="shop.html">Black Grapes</a></li>
-                                                <li><a href="shop.html">Grassland Dairy</a></li>
-                                                <li><a href="shop.html">Organic Broccoli</a></li>
+                                                <li><a href="{{route('shop')}}">Watermelon</a></li>
+                                                <li><a href="{{route('shop')}}">Black Grapes</a></li>
+                                                <li><a href="{{route('shop')}}">Grassland Dairy</a></li>
+                                                <li><a href="{{route('shop')}}">Organic Broccoli</a></li>
                                             </ul>
                                         </li>
-                                        <li class="sub-column-item"><a href="shop.html">Fresh Bread & Bakery</a>
+                                        <li class="sub-column-item"><a href="{{route('shop')}}">Fresh Bread & Bakery</a>
                                             <ul>
-                                                <li><a href="shop.html">Grassland Dairy</a></li>
-                                                <li><a href="shop.html">Walnuts Max</a></li>
-                                                <li><a href="shop.html">Powders Dairy</a></li>
-                                                <li><a href="shop.html">Ice cream</a></li>
+                                                <li><a href="{{route('shop')}}">Grassland Dairy</a></li>
+                                                <li><a href="{{route('shop')}}">Walnuts Max</a></li>
+                                                <li><a href="{{route('shop')}}">Powders Dairy</a></li>
+                                                <li><a href="{{route('shop')}}">Ice cream</a></li>
                                             </ul>
                                         </li>
-                                        <li class="sub-column-item"><a href="shop.html">Organic Fresh Meat</a>
+                                        <li class="sub-column-item"><a href="{{route('shop')}}">Organic Fresh Meat</a>
                                             <ul>
-                                                <li><a href="shop.html">Fresh Butter</a></li>
-                                                <li><a href="shop.html">Orange Sliced</a></li>
-                                                <li><a href="shop.html">Carrots Group</a></li>
-                                                <li><a href="shop.html">Poultry Farm</a></li>
+                                                <li><a href="{{route('shop')}}">Fresh Butter</a></li>
+                                                <li><a href="{{route('shop')}}">Orange Sliced</a></li>
+                                                <li><a href="{{route('shop')}}">Carrots Group</a></li>
+                                                <li><a href="{{route('shop')}}">Poultry Farm</a></li>
                                             </ul>
                                         </li>
-                                        <li class="sub-column-item"><a href="shop.html">Organic Dried Fruit</a>
+                                        <li class="sub-column-item"><a href="{{route('shop')}}">Organic Dried Fruit</a>
                                             <ul>
-                                                <li><a href="shop.html">Fresh Nuts</a></li>
-                                                <li><a href="shop.html">France Potato</a></li>
-                                                <li><a href="shop.html">Green Chilies</a></li>
-                                                <li><a href="shop.html">Organic Broccoli</a></li>
+                                                <li><a href="{{route('shop')}}">Fresh Nuts</a></li>
+                                                <li><a href="{{route('shop')}}">France Potato</a></li>
+                                                <li><a href="{{route('shop')}}">Green Chilies</a></li>
+                                                <li><a href="{{route('shop')}}">Organic Broccoli</a></li>
                                             </ul>
                                         </li>
-                                        <li class="sub-column-item"><a href="shop.html">Organic Other Foods</a>
+                                        <li class="sub-column-item"><a href="{{route('shop')}}">Organic Other Foods</a>
                                             <ul>
-                                                <li class="mega-menu-banner"><a href="shop.html"><img src="img/images/megamenu_banner.jpg" alt=""></a></li>
+                                                <li class="mega-menu-banner"><a href="{{route('shop')}}"><img src="img/images/megamenu_banner.jpg" alt=""></a></li>
                                             </ul>
                                         </li>
                                     </ul>
                                 </li>
-                                <li><a href="shop.html"><i class="flaticon-cherry"></i> Fresh Fruits</a></li>
-                                <li><a href="shop.html"><i class="flaticon-fish"></i> Fresh Fish</a></li>
-                                <li class="menu-item-has-children"><a href="shop.html"><i class="flaticon-hazelnut"></i> Fresh Nuts</a>
+                                <li><a href="{{route('shop')}}"><i class="flaticon-cherry"></i> Fresh Fruits</a></li>
+                                <li><a href="{{route('shop')}}"><i class="flaticon-fish"></i> Fresh Fish</a></li>
+                                <li class="menu-item-has-children"><a href="{{route('shop')}}"><i class="flaticon-hazelnut"></i> Fresh Nuts</a>
                                     <ul class="megamenu">
-                                        <li class="sub-column-item"><a href="shop.html">Grocery & Frozen</a>
+                                        <li class="sub-column-item"><a href="{{route('shop')}}">Grocery & Frozen</a>
                                             <ul>
-                                                <li><a href="shop.html">Organic Broccoli</a></li>
-                                                <li><a href="shop.html">Walnuts Max</a></li>
-                                                <li><a href="shop.html">Mat Orange</a></li>
-                                                <li><a href="shop.html">France Potato</a></li>
+                                                <li><a href="{{route('shop')}}">Organic Broccoli</a></li>
+                                                <li><a href="{{route('shop')}}">Walnuts Max</a></li>
+                                                <li><a href="{{route('shop')}}">Mat Orange</a></li>
+                                                <li><a href="{{route('shop')}}">France Potato</a></li>
                                             </ul>
                                         </li>
-                                        <li class="sub-column-item"><a href="shop.html">Organic Fresh Fruits</a>
+                                        <li class="sub-column-item"><a href="{{route('shop')}}">Organic Fresh Fruits</a>
                                             <ul>
-                                                <li><a href="shop.html">Watermelon</a></li>
-                                                <li><a href="shop.html">Black Grapes</a></li>
-                                                <li><a href="shop.html">Grassland Dairy</a></li>
-                                                <li><a href="shop.html">Organic Broccoli</a></li>
+                                                <li><a href="{{route('shop')}}">Watermelon</a></li>
+                                                <li><a href="{{route('shop')}}">Black Grapes</a></li>
+                                                <li><a href="{{route('shop')}}">Grassland Dairy</a></li>
+                                                <li><a href="{{route('shop')}}">Organic Broccoli</a></li>
                                             </ul>
                                         </li>
-                                        <li class="sub-column-item"><a href="shop.html">Fresh Bread & Bakery</a>
+                                        <li class="sub-column-item"><a href="{{route('shop')}}">Fresh Bread & Bakery</a>
                                             <ul>
-                                                <li><a href="shop.html">Grassland Dairy</a></li>
-                                                <li><a href="shop.html">Walnuts Max</a></li>
-                                                <li><a href="shop.html">Powders Dairy</a></li>
-                                                <li><a href="shop.html">Ice cream</a></li>
+                                                <li><a href="{{route('shop')}}">Grassland Dairy</a></li>
+                                                <li><a href="{{route('shop')}}">Walnuts Max</a></li>
+                                                <li><a href="{{route('shop')}}">Powders Dairy</a></li>
+                                                <li><a href="{{route('shop')}}">Ice cream</a></li>
                                             </ul>
                                         </li>
-                                        <li class="sub-column-item"><a href="shop.html">Organic Fresh Meat</a>
+                                        <li class="sub-column-item"><a href="{{route('shop')}}">Organic Fresh Meat</a>
                                             <ul>
-                                                <li><a href="shop.html">Fresh Butter</a></li>
-                                                <li><a href="shop.html">Orange Sliced</a></li>
-                                                <li><a href="shop.html">Carrots Group</a></li>
-                                                <li><a href="shop.html">Poultry Farm</a></li>
+                                                <li><a href="{{route('shop')}}">Fresh Butter</a></li>
+                                                <li><a href="{{route('shop')}}">Orange Sliced</a></li>
+                                                <li><a href="{{route('shop')}}">Carrots Group</a></li>
+                                                <li><a href="{{route('shop')}}">Poultry Farm</a></li>
                                             </ul>
                                         </li>
-                                        <li class="sub-column-item"><a href="shop.html">Organic Dried Fruit</a>
+                                        <li class="sub-column-item"><a href="{{route('shop')}}">Organic Dried Fruit</a>
                                             <ul>
-                                                <li><a href="shop.html">Fresh Nuts</a></li>
-                                                <li><a href="shop.html">France Potato</a></li>
-                                                <li><a href="shop.html">Green Chilies</a></li>
-                                                <li><a href="shop.html">Organic Broccoli</a></li>
+                                                <li><a href="{{route('shop')}}">Fresh Nuts</a></li>
+                                                <li><a href="{{route('shop')}}">France Potato</a></li>
+                                                <li><a href="{{route('shop')}}">Green Chilies</a></li>
+                                                <li><a href="{{route('shop')}}">Organic Broccoli</a></li>
                                             </ul>
                                         </li>
-                                        <li class="sub-column-item"><a href="shop.html">Organic Other Foods</a>
+                                        <li class="sub-column-item"><a href="{{route('shop')}}">Organic Other Foods</a>
                                             <ul>
-                                                <li class="mega-menu-banner"><a href="shop.html"><img src="img/images/megamenu_banner02.jpg" alt=""></a></li>
+                                                <li class="mega-menu-banner"><a href="{{route('shop')}}"><img src="img/images/megamenu_banner02.jpg" alt=""></a></li>
                                             </ul>
                                         </li>
                                     </ul>
                                 </li>
-                                <li><a href="shop.html"><i class="flaticon-meat"></i> Fresh Meat</a></li>
-                                <li class="menu-item-has-children"><a href="shop.html"><i class="flaticon-cupcake"></i> Bread & Bakery</a>
+                                <li><a href="{{route('shop')}}"><i class="flaticon-meat"></i> Fresh Meat</a></li>
+                                <li class="menu-item-has-children"><a href="{{route('shop')}}"><i class="flaticon-cupcake"></i> Bread & Bakery</a>
                                     <ul class="megamenu">
-                                        <li class="sub-column-item"><a href="shop.html">Grocery & Frozen</a>
+                                        <li class="sub-column-item"><a href="{{route('shop')}}">Grocery & Frozen</a>
                                             <ul>
-                                                <li><a href="shop.html">Organic Broccoli</a></li>
-                                                <li><a href="shop.html">Walnuts Max</a></li>
-                                                <li><a href="shop.html">Mat Orange</a></li>
-                                                <li><a href="shop.html">France Potato</a></li>
+                                                <li><a href="{{route('shop')}}">Organic Broccoli</a></li>
+                                                <li><a href="{{route('shop')}}">Walnuts Max</a></li>
+                                                <li><a href="{{route('shop')}}">Mat Orange</a></li>
+                                                <li><a href="{{route('shop')}}">France Potato</a></li>
                                             </ul>
                                         </li>
-                                        <li class="sub-column-item"><a href="shop.html">Organic Fresh Fruits</a>
+                                        <li class="sub-column-item"><a href="{{route('shop')}}">Organic Fresh Fruits</a>
                                             <ul>
-                                                <li><a href="shop.html">Watermelon</a></li>
-                                                <li><a href="shop.html">Black Grapes</a></li>
-                                                <li><a href="shop.html">Grassland Dairy</a></li>
-                                                <li><a href="shop.html">Organic Broccoli</a></li>
+                                                <li><a href="{{route('shop')}}">Watermelon</a></li>
+                                                <li><a href="{{route('shop')}}">Black Grapes</a></li>
+                                                <li><a href="{{route('shop')}}">Grassland Dairy</a></li>
+                                                <li><a href="{{route('shop')}}">Organic Broccoli</a></li>
                                             </ul>
                                         </li>
-                                        <li class="sub-column-item"><a href="shop.html">Fresh Bread & Bakery</a>
+                                        <li class="sub-column-item"><a href="{{route('shop')}}">Fresh Bread & Bakery</a>
                                             <ul>
-                                                <li><a href="shop.html">Grassland Dairy</a></li>
-                                                <li><a href="shop.html">Walnuts Max</a></li>
-                                                <li><a href="shop.html">Powders Dairy</a></li>
-                                                <li><a href="shop.html">Ice cream</a></li>
+                                                <li><a href="{{route('shop')}}">Grassland Dairy</a></li>
+                                                <li><a href="{{route('shop')}}">Walnuts Max</a></li>
+                                                <li><a href="{{route('shop')}}">Powders Dairy</a></li>
+                                                <li><a href="{{route('shop')}}">Ice cream</a></li>
                                             </ul>
                                         </li>
-                                        <li class="sub-column-item"><a href="shop.html">Organic Fresh Meat</a>
+                                        <li class="sub-column-item"><a href="{{route('shop')}}">Organic Fresh Meat</a>
                                             <ul>
-                                                <li><a href="shop.html">Fresh Butter</a></li>
-                                                <li><a href="shop.html">Orange Sliced</a></li>
-                                                <li><a href="shop.html">Carrots Group</a></li>
-                                                <li><a href="shop.html">Poultry Farm</a></li>
+                                                <li><a href="{{route('shop')}}">Fresh Butter</a></li>
+                                                <li><a href="{{route('shop')}}">Orange Sliced</a></li>
+                                                <li><a href="{{route('shop')}}">Carrots Group</a></li>
+                                                <li><a href="{{route('shop')}}">Poultry Farm</a></li>
                                             </ul>
                                         </li>
-                                        <li class="sub-column-item"><a href="shop.html">Organic Dried Fruit</a>
+                                        <li class="sub-column-item"><a href="{{route('shop')}}">Organic Dried Fruit</a>
                                             <ul>
-                                                <li><a href="shop.html">Fresh Nuts</a></li>
-                                                <li><a href="shop.html">France Potato</a></li>
-                                                <li><a href="shop.html">Green Chilies</a></li>
-                                                <li><a href="shop.html">Organic Broccoli</a></li>
+                                                <li><a href="{{route('shop')}}">Fresh Nuts</a></li>
+                                                <li><a href="{{route('shop')}}">France Potato</a></li>
+                                                <li><a href="{{route('shop')}}">Green Chilies</a></li>
+                                                <li><a href="{{route('shop')}}">Organic Broccoli</a></li>
                                             </ul>
                                         </li>
-                                        <li class="sub-column-item"><a href="shop.html">Organic Other Foods</a>
+                                        <li class="sub-column-item"><a href="{{route('shop')}}">Organic Other Foods</a>
                                             <ul>
-                                                <li class="mega-menu-banner"><a href="shop.html"><img src="img/images/megamenu_banner.jpg" alt=""></a></li>
+                                                <li class="mega-menu-banner"><a href="{{route('shop')}}"><img src="img/images/megamenu_banner.jpg" alt=""></a></li>
                                             </ul>
                                         </li>
                                     </ul>
                                 </li>
-                                <li><a href="shop.html"><i class="flaticon-broccoli"></i> Vegetable</a></li>
-                                <li><a href="shop.html"><i class="flaticon-pop-corn-1"></i> Popcorn</a></li> -->
-                                <li><a href="shop.html"><i class="flaticon-nut"></i> Offers </a></li>
-                                <li><a href="shop.html"><i class="flaticon-nut"></i> Organic Food </a></li>
-                                <li><a href="shop.html"><i class="flaticon-nut"></i> Baskets </a></li>
+                                <li><a href="{{route('shop')}}"><i class="flaticon-broccoli"></i> Vegetable</a></li>
+                                <li><a href="{{route('shop')}}"><i class="flaticon-pop-corn-1"></i> Popcorn</a></li> --}}
+                                <li><a href="#"><i class="flaticon-nut"></i> Offers </a></li>
+                                <li><a href="{{route('shop')}}"><i class="flaticon-nut"></i> Organic Food </a></li>
+                                <li><a href="{{route('shop')}}"><i class="flaticon-nut"></i> Baskets </a></li>
                             </ul>
                         </div>
                         <div class="navbar-wrap main-menu d-none d-lg-flex">
@@ -174,7 +174,7 @@
                                 <li class="menu-item-has-children"><a href="{{route('shop')}}">Fruits & Vegetables</a>
                                     <ul class="submenu">
                                         <li><a href="{{route('shop')}}">Fruits</a></li>
-                                        <li><a href="terms-conditios.html">Vegetables</a></li>
+                                        <li><a href="{{route('shop')}}">Vegetables</a></li>
                                     </ul>
                                 </li>
                                 <li><a href="{{route('shop')}}">Spices and Herbs</a></li>
@@ -201,7 +201,7 @@
                 <div class="mobile-menu">
                     <nav class="menu-box">
                         <div class="close-btn"><i class="fas fa-times"></i></div>
-                        <div class="nav-logo"><a href="index-2.html"><img src="img/logo/logo.png" alt="" title=""></a>
+                        <div class="nav-logo"><a href="/"><img src="img/logo/logo.png" alt="" title=""></a>
                         </div>
                         <div class="menu-outer">
                             <!--Here Menu Will Come Automatically Via Javascript / Same Menu as in Header-->

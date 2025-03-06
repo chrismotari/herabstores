@@ -4,6 +4,7 @@ namespace App\Models;
 
 use App\Traits\UUID;
 use Illuminate\Database\Eloquent\Model;
+use Illuminate\Support\Collection;
 use Illuminate\Support\Str;
 
 class Order extends Model
@@ -36,7 +37,7 @@ class Order extends Model
         'user_id',
         'total',
         'order_items',
-        'status',
+        'status', //New,pending,processing,completed,failed,refunded,canceled,expired, in transit
         'payment_status',
         'payment_method',
         'shipping_method',
@@ -99,4 +100,35 @@ class Order extends Model
     {
         return number_format($this->total, 2);
     }       
+    
+    public function getItemsAttribute()
+    {
+        return collect($this->order_items);
+    }
+
+    public function getProductsAttribute(): Collection
+    {
+        $items = $this->order_items;
+
+        $products = collect($items)->map(function ($item) {
+            $product = Product::find($item['product_id'] ?? null);
+
+            // If it doesn't exist, create an instance (not saved in DB)
+            if (!$product) {
+                $product = new Product([
+                    'id' => null,  // Explicitly null to indicate it’s not in DB
+                    'name' => $item['name'] ?? null,
+                    'sku' => $item['sku'] ?? null,
+                    'price' => $item['price'] ?? null,
+                    'description' => $item['description'] ?? null,
+                    'category_id' => $item['category_id'] ?? null,
+                ]);
+            }
+
+            return $product;
+        });
+
+        return $products;
+
+    }
 }

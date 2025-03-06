@@ -5,10 +5,17 @@ namespace App\Http\Controllers;
 use App\Models\Country;
 use App\Models\Order;
 use Illuminate\Http\Request;
+use Illuminate\Routing\Controllers\Middleware;
 use Illuminate\Support\Facades\Auth;
 
 class OrderController extends Controller
 {
+    public static function middleware(): array
+    {
+        return [
+            new Middleware('admin', except: ['store', 'update', 'track']),
+        ];
+    }
     /**
      * Display a listing of the resource.
      */
@@ -95,8 +102,11 @@ class OrderController extends Controller
      */
     public function show(Order $order)
     {
+        // dd($order->products->first()->name);
+        
         return view('orders.show', [
             'selected_order' => $order,
+            'countries' => Country::all(),
         ]);
     }
 
@@ -114,6 +124,27 @@ class OrderController extends Controller
     public function update(Request $request, Order $order)
     {
         
+
+    }
+
+    public function track(Order $order)
+    {
+        dd('Not available at the moment');
+
+    }
+    public function dispatch(Request $request, Order $order = new Order())
+    {   
+        if ($request->isMethod('get')) {
+            return view('orders.dispatch', ['selected_order'=>$order]);
+        }elseif ($request->isMethod('post')) {
+            $order->update([
+                'status' => 'dispatched',
+                'courier_id' => $request->courier_id,
+                'store_id' => $request->store_id,
+                // 'dispatched_at' => now(),
+            ]);
+            return redirect()->route('orders.show', $order)->with('success', 'Order has been dispatched successfully');
+        }
 
     }
 

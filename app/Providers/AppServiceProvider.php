@@ -6,8 +6,10 @@ use App\Models\Category;
 use App\Models\Company;
 use App\Models\ContractType;
 use App\Models\Country;
+use App\Models\Courier;
 use App\Models\Estate;
 use App\Models\Role;
+use App\Models\Store;
 use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Facades\View;
 use Illuminate\Support\Facades\Vite;
@@ -47,6 +49,12 @@ class AppServiceProvider extends ServiceProvider
         View::composer('products.form', function ($view) {
             $view->with([
                 'categories' => Category::all(), 
+            ]); 
+        });
+        View::composer('orders.dispatch', function ($view) {
+            $view->with([
+                'couriers' => Courier::all(),
+                'stores' => Store::all(), 
             ]); 
         });
 

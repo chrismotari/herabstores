@@ -35,6 +35,9 @@ Route::middleware('auth')->group(function () {
     Route::get('/products/massadd', [MassAddController::class, 'massAddProducts'])->name('products.massadd');
 
     Route::delete('products/{product}/unfavourite', [ProductController::class, 'unfavourite'])->name('products.unfavourite');
+    Route::get('orders/track/{order}', [OrderController::class, 'track'])->name('orders.track');
+    Route::post('orders/dispatch', [OrderController::class, 'dispatch'])->name('orders.dispatch.save');
+    Route::get('orders/dispatch/{order}', [OrderController::class, 'dispatch'])->name('orders.dispatch');
 
     Route::resource('users', UserController::class);
     Route::resource('roles', RoleController::class);

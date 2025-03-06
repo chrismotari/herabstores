@@ -11,8 +11,8 @@
                         <div class="breadcrumb-content">
                             <nav aria-label="breadcrumb">
                                 <ol class="breadcrumb">
-                                    <li class="breadcrumb-item"><a href="index-2.html">Home</a></li>
-                                    <li class="breadcrumb-item"><a href="index-2.html">Pages</a></li>
+                                    <li class="breadcrumb-item"><a href="/">Home</a></li>
+                                    <li class="breadcrumb-item"><a href="/">Pages</a></li>
                                     <li class="breadcrumb-item active" aria-current="page">Checkout</li>
                                 </ol>
                             </nav>
@@ -51,7 +51,7 @@
                                 {{-- <input type="hidden" name="total" value="{{ $cart->total }}"> --}}
                                 <div class="checkout-form-top">
                                     <h5 class="title">Delivery information</h5>
-                                    {{-- <p>Already have an account? <a href="contact.html">Log in</a></p> --}}
+                                    {{-- <p>Already have an account? <a href="contact-us">Log in</a></p> --}}
                                 </div>
                                 <div class="row">
                                     <div class="col-sm-6 mb-4">
@@ -136,7 +136,7 @@
                                             <label class="custom-control-label" for="sda">Ship to a Different Address?</label>
                                         </div>
                                         <div class="account-create-info">
-                                            <a href="contact.html">Create an Account <i class="fas fa-user"></i></a>
+                                            <a href="contact-us">Create an Account <i class="fas fa-user"></i></a>
                                         </div>
                                     </div> --}}
                                     <textarea name="message" id="message" placeholder="Extra Notes ( Optional )"></textarea>
@@ -157,7 +157,7 @@
                             @foreach ($cart->cartItems as $cart_item)
                                 <div class="os-products-item">
                                     <div class="thumb">
-                                        <a href="shop-details.html"><img src="{{ asset('storage/' . $cart_item->product->image_url) }}" alt="no image"></a>
+                                        <a href="shop-details.html"><img src="{{ Str::startsWith($cart_item->product->image_url, ['http://', 'https://']) ? $cart_item->product->image_url : asset('storage/' . $cart_item->product->image_url) }}" alt="no image"></a>
                                     </div>
                                     <div class="content">
                                         <h6 class="title"><a href="shop-details.html">{{$cart_item->quantity}} x {{$cart_item->product->name}}</a></h6>

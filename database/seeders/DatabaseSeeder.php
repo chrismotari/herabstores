@@ -67,6 +67,7 @@ class DatabaseSeeder extends Seeder
             'price' => 100,
             'stock' => 1,
             'is_active' => 1,
+            'image_url' => "https://www.denverfruitier.com/cdn/shop/files/Medium-Tropical-Fruit-Basket.png",
             'category_id' => Category::where('name', 'like', 'Test')->first()->id,
         ]);
 

@@ -76,7 +76,7 @@
                 <ul aria-expanded="false">
                     <li><a href=" {{route('orders.index')}} ">New Orders</a></li>
                     <li><a href=" {{route('orders.index')}} ">All Orders</a></li>
-                    <li><a href="apply-job.html">Reported Cases</a></li>
+                    <li><a href="#">Reported Cases</a></li>
                 </ul>
             </li>
             <li><a class="has-arrow " href="users" aria-expanded="false">
@@ -98,11 +98,11 @@
                     <span class="nav-text">Help</span>
                 </a>
                 <ul aria-expanded="false">
-                    <li><a href="app-profile.html">System Information</a></li>
+                    <li><a href="#">System Information</a></li>
                     <li><a class="has-arrow" href="javascript:void(0);" aria-expanded="false">Contact Us</a>
                         <ul aria-expanded="false">
-                            <li><a href="email-compose.html">Email</a></li>
-                            <li><a href="email-inbox.html">Phone</a></li>
+                            <li><a href="#">Email</a></li>
+                            <li><a href="#">Phone</a></li>
                         </ul>
                     </li>
 
