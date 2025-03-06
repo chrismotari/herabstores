@@ -1,4 +1,5 @@
 @extends('layouts.app')
+
 @section('content')
     <!-- main-area -->
     <main>
@@ -48,7 +49,7 @@
                         <div class="checkout-form-wrap">
                             <form id="place-order" action="{{ route('orders.store') }}" method="POST">
                                 @csrf
-                                {{-- <input type="hidden" name="total" value="{{ $cart->total }}"> --}}
+                                {{-- <input type="hidden" name="total" value="{{ $selected_order->total }}"> --}}
                                 <div class="checkout-form-top">
                                     <h5 class="title">Delivery information</h5>
                                     {{-- <p>Already have an account? <a href="contact-us">Log in</a></p> --}}
@@ -154,14 +155,14 @@
                     <div class="col-lg-5">
                         <div class="shop-cart-total order-summary-wrap">
                             <h3 class="title">Order Summary</h3>
-                            @foreach ($selected_order->order_items as $order_item)
+                            @foreach ($selected_order->products as $product)
                                 <div class="os-products-item">
                                     <div class="thumb">
-                                        <a href="shop-details.html"><img src="{{ Str::startsWith($order_item['image_url'], ['http://', 'https://']) ? $order_item['image_url'] : asset('storage/' . $order_item['image_url']) }}" alt="no image"></a>
+                                        <a href="shop-details.html"><img src="{{ Str::startsWith($product['image_url'], ['http://', 'https://']) ? $product['image_url'] : asset('storage/' . $product['image_url']) }}" alt="no image"></a>
                                     </div>
                                     <div class="content">
-                                        <h6 class="title"><a href="shop-details.html">{{$cart_item->quantity}} x {{$order_item['name']}}</a></h6>
-                                        <span class="price">KSHS {{$cart_item->total }}</span>
+                                        <h6 class="title"><a href="shop-details.html">{{$product->quantity}} x {{$product['name']}}</a></h6>
+                                        <span class="price">KSHS {{$product->total }}</span>
                                     </div>
                                     <div class="remove"><i class="fa fa-times-circle"></i></div>
                                 </div>
@@ -169,7 +170,7 @@
                         
                             <div class="shop-cart-widget">
                                 <ul>
-                                    <li class="sub-total"><span>Subtotal</span> KSHS {{ $cart->total }} </li>
+                                    <li class="sub-total"><span>Subtotal</span> KSHS {{ $selected_order->total }} </li>
                                     <li>
                                         <span>Shipping to Area 57</span>
                                         <div class="shop-check-wrap">
@@ -179,32 +180,13 @@
                                             
                                         </div>
                                     </li>
-                                    <li class="cart-total-amount"><span>Total Price</span> <span class="amount">KSH {{$cart->total+150}}</span></li>
+                                    <li class="cart-total-amount"><span>Total Price</span> <span class="amount">KSH {{$selected_order->total+150}}</span></li>
                                 </ul>
-                                <div class="payment-method-info">
-                                    <div class="paypal-method-flex">
-                                        <div class="custom-control custom-checkbox">
-                                            <input type="checkbox" disabled checked class="custom-control-input" id="customCheck5">
-                                            <label class="custom-control-label" for="customCheck5">Cash on delivery</label>
-                                            <p>Pay with cash upon delivery.</p>
-                                        </div>
-                                    </div>
-                                    <div class="paypal-method-flex">
-                                        <div class="custom-control custom-checkbox">
-                                            <input type="checkbox" disabled class="custom-control-input" id="customCheck6">
-                                            <label class="custom-control-label" for="customCheck6">Coming soon</label>
-                                        </div>
-                                        <div class="paypal-logo"><img src="img/images/card.png" alt=""></div>
-                                    </div>
-                                </div>
-                                <div class="payment-terms">
-                                    <p>Deliveries can take up to 24 hrs.</p>
-                                    <div class="custom-control custom-checkbox">
-                                        <input type="checkbox" class="custom-control-input" id="customCheck7" required>
-                                        <label class="custom-control-label" for="customCheck7">I agree to the website terms and conditions</label>
-                                    </div>
-                                </div>
-                                <button class="btn btn-primary" onclick="document.getElementById('place-order').submit();" class="btn">Place order</button>
+                                @if (Str::lower($selected_order->status) === 'new')
+                                    <a class="btn btn-primary" href="{{route('orders.dispatch', $selected_order)}}" >Dispatch order</a>
+                                @else
+                                    <a class="btn btn-primary" href="{{route("orders.track", $selected_order)}}" class="btn">Track order</a>
+                                @endif
                             </div>
                         </div>
                     </div>
