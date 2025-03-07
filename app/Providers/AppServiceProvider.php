@@ -2,6 +2,7 @@
 
 namespace App\Providers;
 
+use App\Models\Cart;
 use App\Models\Category;
 use App\Models\Company;
 use App\Models\ContractType;
@@ -39,9 +40,14 @@ class AppServiceProvider extends ServiceProvider
                 'estates' => Estate::all(),
             ]); 
         });
+
         View::composer('layouts.includes.header', function ($view) {
+            if(auth()->check()) {
+                $cart = auth()->user()->cart;
+            }else  $cart = session()->get('cart', new Cart());
+            // dd($cart);
             $view->with([
-                'cart' => Auth::user()?->cart, 
+                'cart' => $cart, 
                 'favourites' => Auth::user()?->favourites, 
                 'categories' => Category::all(), 
             ]); 
