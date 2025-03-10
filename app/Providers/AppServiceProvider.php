@@ -3,6 +3,7 @@
 namespace App\Providers;
 
 use App\Models\Cart;
+use App\Models\CartItem;
 use App\Models\Category;
 use App\Models\Company;
 use App\Models\ContractType;
@@ -42,9 +43,21 @@ class AppServiceProvider extends ServiceProvider
         });
 
         View::composer('layouts.includes.header', function ($view) {
+            $cart = New Cart();
             if(auth()->check()) {
                 $cart = auth()->user()->cart;
-            }else  $cart = session()->get('cart', new Cart());
+            }else{
+                $cartItems = session()->get('cart', []); // Retrieve cart from session
+                $cartCollection = collect($cartItems)->map(function ($item, $productId) {
+                    return new CartItem([
+                        'product_id' => $productId,
+                        'quantity' => $item['quantity'],
+                    ]);
+                });
+
+                // Attach the collection to the new Cart instance
+                $cart->setRelation('cartItems', $cartCollection);
+            }  
             // dd($cart);
             $view->with([
                 'cart' => $cart, 

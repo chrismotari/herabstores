@@ -55,7 +55,8 @@ Route::middleware('auth')->group(function () {
     // Route::get('products/admin/show/{product}', [ProductController::class, 'adminShow'])->name("products.admin.show");
 });
 Route::resource('cart_items', CartItemController::class);
-Route::resource('carts', CartController::class);
+Route::resource('carts', CartController::class)->except(['show']);
+Route::get('/carts/show/{cart?}', [CartController::class, 'show'])->name('carts.show');
 
 Route::get('shop', function () {
     return view('shop')->with('products', Product::all()); 

@@ -117,7 +117,7 @@ class CartItemController extends Controller
 
         } else {
             // Handle guest user by storing in session
-            $cart = session()->get('cart', new Cart());
+            $cart = session()->get('cart', []);
 
             if (isset($cart[$request->product_id])) {
                 flash()->error('Product already in cart');
@@ -133,7 +133,6 @@ class CartItemController extends Controller
             flash()->success('Product added to cart');
         }
 
-        dd($cart);
         return redirect()->back();
 
     }

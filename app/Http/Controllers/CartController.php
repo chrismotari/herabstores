@@ -38,6 +38,15 @@ class CartController extends Controller
      */
     public function show(Cart $cart)
     {
+        if (auth()->check()) {
+            $cart = $cart ?? auth()->user()->cart;
+        } else {
+            $cart = session()->get('cart', []);
+            dd(count($cart));
+        }
+        if ($cart->cartItems->isEmpty()) {
+            return redirect()->back()->with('error', 'Your cart is empty');
+        }
         return view('carts.show', compact('cart'));
     }
 
