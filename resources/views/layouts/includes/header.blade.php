@@ -131,7 +131,12 @@
                                                 </div>
                                             </div>
                                             <div class="del-icon">
-                                                <a href="#"><i class="far fa-trash-alt"></i></a>
+                                                <form id="remove_item" action="{{ route('cart_items.destroy', $cart_item->product) }}" method="POST">
+                                                    @csrf
+                                                    @method('DELETE')
+                                                    {{-- <button type="submit"><i class="far fa-trash-alt"></i></button> --}}
+                                                </form>
+                                                <a href="javascript:{}" onclick="document.getElementById('remove_item').submit();"><i class="far fa-trash-alt"></i></a>
                                             </div>
                                         </li>
                                         @empty

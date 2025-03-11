@@ -54,7 +54,9 @@ Route::middleware('auth')->group(function () {
     
     // Route::get('products/admin/show/{product}', [ProductController::class, 'adminShow'])->name("products.admin.show");
 });
-Route::resource('cart_items', CartItemController::class);
+Route::resource('cart_items', CartItemController::class)->except(['delete']);
+Route::delete('/cart-items/remove/{product}', [CartItemController::class, 'destroy'])->name('cart_items.destroy');
+
 Route::resource('carts', CartController::class)->except(['show']);
 Route::get('/carts/show/{cart?}', [CartController::class, 'show'])->name('carts.show');
 

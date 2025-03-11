@@ -64,7 +64,7 @@
                                                 <td class="product-subtotal"><span>{{$cart_item->quantity}}</span></td>
                                                 <td class="product-subtotal"><span>{{$cart_item->total}}</span></td>
                                                 <td class="product-delete">
-                                                    <form id="remove_item" action="{{ route('cart_items.destroy', $cart_item) }}" method="POST">
+                                                    <form id="remove_item" action="{{ route('cart_items.destroy', $cart_item->product) }}" method="POST">
                                                         @csrf
                                                         @method('DELETE')
                                                         {{-- <button type="submit"><i class="far fa-trash-alt"></i></button> --}}

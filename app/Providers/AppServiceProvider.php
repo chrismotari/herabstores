@@ -12,6 +12,7 @@ use App\Models\Courier;
 use App\Models\Estate;
 use App\Models\Role;
 use App\Models\Store;
+use App\Services\CartService;
 use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Facades\View;
 use Illuminate\Support\Facades\Vite;
@@ -43,22 +44,9 @@ class AppServiceProvider extends ServiceProvider
         });
 
         View::composer('layouts.includes.header', function ($view) {
-            $cart = New Cart();
-            if(auth()->check()) {
-                $cart = auth()->user()->cart;
-            }else{
-                $cartItems = session()->get('cart', []); // Retrieve cart from session
-                $cartCollection = collect($cartItems)->map(function ($item, $productId) {
-                    return new CartItem([
-                        'product_id' => $productId,
-                        'quantity' => $item['quantity'],
-                    ]);
-                });
-
-                // Attach the collection to the new Cart instance
-                $cart->setRelation('cartItems', $cartCollection);
-            }  
-            // dd($cart);
+            $cartService = new CartService();
+            $cart = auth()->check() ? auth()->user()->cart : $cartService->getGuestCart();
+            
             $view->with([
                 'cart' => $cart, 
                 'favourites' => Auth::user()?->favourites, 

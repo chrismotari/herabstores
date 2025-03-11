@@ -4,7 +4,9 @@ namespace App\Http\Controllers;
 
 use App\Models\Cart;
 use App\Models\CartItem;
+use App\Models\Product;
 use Illuminate\Http\Request;
+use Illuminate\Support\Facades\Auth;
 
 class CartItemController extends Controller
 {
@@ -164,11 +166,23 @@ class CartItemController extends Controller
     /**
      * Remove the specified resource from storage.
      */
-    public function destroy(CartItem $cartItem)
+    public function destroy(Product $product)
     {
-        // dd($cartItem);
-        $cartItem->delete();
+        // dd($product);
+
+        if (auth()->check()) {
+            $cartItem = Auth::user()->cartItems()->where('product_id', $product->id)->first();
+            $cartItem->delete();
+        } else {
+            $cart = session()->get('cart', []);
+
+            if (isset($cart[$product->id])) {
+                unset($cart[$product->id]); // Remove product from cart session
+                session()->put('cart', $cart);
+            }
+        }
+
         flash()->success('Product removed from cart');
-        return redirect()->back();
+        return back();
     }
 }
