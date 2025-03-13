@@ -4,6 +4,7 @@ namespace App\Http\Controllers;
 
 use App\Models\Country;
 use App\Models\Order;
+use App\Services\CartService;
 use Illuminate\Http\Request;
 use Illuminate\Routing\Controllers\Middleware;
 use Illuminate\Support\Facades\Auth;
@@ -31,9 +32,10 @@ class OrderController extends Controller
      */
     public function create()
     {
+        $cartService = new CartService();
         return view('orders.create', [
-            'cart' => Auth::user()->cart,
             'user' => Auth::user(),
+            'cart' =>  auth()->check() ? auth()->user()->cart : $cartService->getGuestCart(),
             'countries' => Country::all(),
         ]);
     }
@@ -43,14 +45,16 @@ class OrderController extends Controller
      */
     public function store(Request $request)
     {        
-        $cart_items = auth()->user()->cart->cartItems;
+        $cartService = new CartService();
+        $cart = auth()->check() ? auth()->user()->cart : $cartService->getGuestCart();
+        $cart_items = $cart->cartItems;
 
         if ($cart_items->count() < 1 ) {
             flash()->error('Cart is empty');
             return redirect()->back();
         }else{
 
-            $totalPrice = auth()->user()->cart->total;
+            $totalPrice = $cart->total;
             //delivery fees here
     
             $order = Order::create([
@@ -88,8 +92,9 @@ class OrderController extends Controller
     
             // Clear the cart
             if ($order) {
-                auth()->user()->cart->cartItems()->delete();
-                return redirect()->route('home')->with('success', 'Order has been placed successfully');
+                $cart->cartItems()->delete();
+                session()->forget('cart');
+                return redirect()->route('shop')->with('success', 'Order has been placed successfully');
             }else{
                 return back()->with('error', 'An Error occured while placing your order');
             }

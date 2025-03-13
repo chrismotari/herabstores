@@ -56,13 +56,13 @@
                                 <div class="row">
                                     <div class="col-sm-6 mb-4">
                                         <label class="form-label">Email<span class="text-danger scale5 ms-2">*</span></label>
-                                        <input type="text" class="" placeholder="Email" aria-label="fname" 
+                                        <input type="text" class="" required placeholder="Email" aria-label="fname" 
                                             value="{{ old('fname', $selected_user->fname ?? '') }}" name="fname">
                                         <x-input-error :messages="$errors->get('fname')" class="mt-2 text-danger" />
                                     </div>
                                     <div class="col-sm-6 mb-4">
                                         <label class="form-label">Phone<span class="text-danger scale5 ms-2">*</span></label>
-                                        <input type="text" class="" placeholder="Phone" aria-label="lname" 
+                                        <input type="text" class="" required  placeholder="Phone" aria-label="lname" 
                                             value="{{ old('lname', $selected_user->lname ?? '') }}" name="lname">
                                         <x-input-error :messages="$errors->get('lname')" class="mt-2 text-danger" />
                                     </div>

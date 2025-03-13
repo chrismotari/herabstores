@@ -20,7 +20,7 @@
                         <tbody>
                             @forelse($orders as $order)
                             <tr>
-                                <td><a href="{{ route('users.show', $order->user) }}">{{$order->full_name}}</a></td>
+                                <td><a href="">{{$order->full_name}}</a></td>
                                 <td>{{$order->order_number}}</td>
                                 <td class="wspace-no">{{$order->estate?->name}}</td>
                                 <td>KSHS {{$order->total}}</td>
