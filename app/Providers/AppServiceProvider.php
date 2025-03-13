@@ -2,6 +2,8 @@
 
 namespace App\Providers;
 
+use App\Models\Cart;
+use App\Models\CartItem;
 use App\Models\Category;
 use App\Models\Company;
 use App\Models\ContractType;
@@ -10,6 +12,7 @@ use App\Models\Courier;
 use App\Models\Estate;
 use App\Models\Role;
 use App\Models\Store;
+use App\Services\CartService;
 use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Facades\View;
 use Illuminate\Support\Facades\Vite;
@@ -39,9 +42,13 @@ class AppServiceProvider extends ServiceProvider
                 'estates' => Estate::all(),
             ]); 
         });
+
         View::composer('layouts.includes.header', function ($view) {
+            $cartService = new CartService();
+            $cart = auth()->check() ? auth()->user()->cart : $cartService->getGuestCart();
+            
             $view->with([
-                'cart' => Auth::user()?->cart, 
+                'cart' => $cart, 
                 'favourites' => Auth::user()?->favourites, 
                 'categories' => Category::all(), 
             ]); 

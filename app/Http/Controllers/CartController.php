@@ -3,6 +3,7 @@
 namespace App\Http\Controllers;
 
 use App\Models\Cart;
+use App\Services\CartService;
 use Illuminate\Http\Request;
 
 class CartController extends Controller
@@ -38,6 +39,11 @@ class CartController extends Controller
      */
     public function show(Cart $cart)
     {
+        $cartService = new CartService();
+        $cart = auth()->check() ? auth()->user()->cart : $cartService->getGuestCart();
+        if ($cart->cartItems->isEmpty()) {
+            return redirect()->back()->with('error', 'Your cart is empty');
+        }
         return view('carts.show', compact('cart'));
     }
 

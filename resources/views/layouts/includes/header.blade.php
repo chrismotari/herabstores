@@ -112,17 +112,17 @@
                             <li class="header-cart-action">
                                 <div class="header-cart-wrap">
                                     @if ($cart)
-                                    <a href="{{ route('carts.show', $cart) }}"><i class="flaticon-shopping-basket"></i></a>
-                                    <span class="item-count">{{ $cart->cartItems()->count() }}</span>
+                                        <a href="{{ route('carts.show', $cart) }}"><i class="flaticon-shopping-basket"></i></a>
+                                        <span class="item-count">{{ $cart->cartItems->count() }}</span>
                                     @else
-                                    <a href="#"><i class="flaticon-shopping-basket"></i></a>
-                                    <span class="item-count">0</span>
+                                        <a href="#"><i class="flaticon-shopping-basket"></i></a>
+                                        <span class="item-count">0</span>
                                     @endif
                                     <ul class="minicart">
                                         @forelse ($cart?->cartItems ? $cart->cartItems : [] as $cart_item)    
                                         <li class="d-flex align-items-start">
                                             <div class="cart-img">
-                                                <a href="{{route('products.show', $cart_item->product)}}"><img src="{{ asset($cart_item->product->image_url) }}" alt=""></a>
+                                                <a href="{{route('products.show', $cart_item->product)}}"><img src="{{ Str::startsWith($cart_item->product->image_url, ['http://', 'https://']) ? $cart_item->product->image_url : asset('storage/' . $cart_item->product->image_url) }}" alt="{{ $cart_item->product->name }}"></a>
                                             </div>
                                             <div class="cart-content">
                                                 <h4><a href="{{route('products.show', $cart_item->product)}}">{{$cart_item->product->name}}</a></h4>
@@ -131,7 +131,12 @@
                                                 </div>
                                             </div>
                                             <div class="del-icon">
-                                                <a href="#"><i class="far fa-trash-alt"></i></a>
+                                                <form id="remove_item" action="{{ route('cart_items.destroy', $cart_item->product) }}" method="POST">
+                                                    @csrf
+                                                    @method('DELETE')
+                                                    {{-- <button type="submit"><i class="far fa-trash-alt"></i></button> --}}
+                                                </form>
+                                                <a href="javascript:{}" onclick="document.getElementById('remove_item').submit();"><i class="far fa-trash-alt"></i></a>
                                             </div>
                                         </li>
                                         @empty

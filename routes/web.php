@@ -43,19 +43,22 @@ Route::middleware('auth')->group(function () {
     Route::resource('roles', RoleController::class);
     Route::resource('permissions', PermissionController::class);
     Route::resource('products', ProductController::class);
-    Route::resource('carts', CartController::class);
-    Route::resource('cart_items', CartItemController::class);
     Route::resource('users', UserController::class);
     Route::resource('categories', CategoryController::class);
-    Route::resource('orders', OrderController::class);
     Route::resource('favourites', FavouriteController::class);
     
     Route::get('/home', function () {
         return redirect('/'); 
     })->name('home');
-
+    
     // Route::get('products/admin/show/{product}', [ProductController::class, 'adminShow'])->name("products.admin.show");
 });
+Route::resource('orders', OrderController::class);
+Route::resource('cart_items', CartItemController::class)->except(['delete']);
+Route::delete('/cart-items/remove/{product}', [CartItemController::class, 'destroy'])->name('cart_items.destroy');
+
+Route::resource('carts', CartController::class)->except(['show']);
+Route::get('/carts/show/{cart?}', [CartController::class, 'show'])->name('carts.show');
 
 Route::get('shop', function () {
     return view('shop')->with('products', Product::all()); 
