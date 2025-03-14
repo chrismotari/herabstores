@@ -74,8 +74,8 @@
                     <span class="nav-text">Orders</span>
                 </a>
                 <ul aria-expanded="false">
-                    <li><a href=" {{route('orders.index')}} ">New Orders</a></li>
-                    <li><a href=" {{route('orders.index')}} ">All Orders</a></li>
+                    <li><a href=" {{ route('orders.index', ['status' => 'new']) }} ">New Orders</a></li>
+                    <li><a href=" {{ route('orders.index') }} ">All Orders</a></li>
                     <li><a href="#">Reported Cases</a></li>
                 </ul>
             </li>

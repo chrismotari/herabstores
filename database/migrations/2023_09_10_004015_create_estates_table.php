@@ -17,6 +17,7 @@ return new class extends Migration
             $table->string("slug")->unique()->nullable();
             $table->text("description")->nullable();
             $table->decimal("delivery_fees", 10, 2)->default(0);
+            $table->boolean("is_active")->default(1);
             $table->timestamps();
         });
     }

@@ -3,7 +3,11 @@
 namespace App\Http\Controllers;
 
 use App\Models\Ref;
+use App\Models\User;
+use Carbon\Carbon;
 use Illuminate\Http\Request;
+use Stringable;
+use Illuminate\Support\Str;
 
 class RefController extends Controller
 {
@@ -12,7 +16,10 @@ class RefController extends Controller
      */
     public function index()
     {
-        //
+        return view('refs.index', [
+            'refs' => Ref::all(),
+            'users' => User::all(),
+        ]);
     }
 
     /**
@@ -28,7 +35,20 @@ class RefController extends Controller
      */
     public function store(Request $request)
     {
-        //
+        // dd($request->all());
+        $ref = Ref::create([
+            'user_id' => $request->user_id,
+            'description' => $request->description,
+            'is_active' => $request->is_active,
+            'expires_at' => Carbon::createFromFormat('m/d/Y', $request->expires_at)->format('Y-m-d'),
+        ]);
+        if ($ref) {
+            flash()->success('Ref created successfully');
+            return redirect()->route('refs.index');
+        }else{          
+            flash()->success('Error! Ref not created');
+            return redirect()->back();
+        }
     }
 
     /**
@@ -36,7 +56,7 @@ class RefController extends Controller
      */
     public function show(Ref $ref)
     {
-        //
+        return view('refs.show', ['selected_ref'=>$ref]);
     }
 
     /**
@@ -60,6 +80,8 @@ class RefController extends Controller
      */
     public function destroy(Ref $ref)
     {
-        //
+        if($ref->delete()){
+            return back()->with('success', 'Ref has been deleted successfully');
+        }
     }
 }

@@ -5,6 +5,7 @@ use App\Http\Controllers\CartController;
 use App\Http\Controllers\CartItemController;
 use App\Http\Controllers\CategoryController;
 use App\Http\Controllers\ContactController;
+use App\Http\Controllers\EstateController;
 use App\Http\Controllers\FavouriteController;
 use App\Http\Controllers\MassAddController;
 use App\Http\Controllers\ProfileController;
@@ -12,6 +13,7 @@ use App\Http\Controllers\UserController;
 use App\Http\Controllers\OrderController;
 use App\Http\Controllers\PermissionController;
 use App\Http\Controllers\ProductController;
+use App\Http\Controllers\RefController;
 use App\Http\Controllers\RoleController;
 use App\Models\Product;
 use Illuminate\Support\Facades\Route;
@@ -46,6 +48,9 @@ Route::middleware('auth')->group(function () {
     Route::resource('users', UserController::class);
     Route::resource('categories', CategoryController::class);
     Route::resource('favourites', FavouriteController::class);
+    Route::resource('estates', EstateController::class);
+    Route::resource('refs', RefController::class);
+    
     
     Route::get('/home', function () {
         return redirect('/'); 

@@ -17,6 +17,7 @@ return new class extends Migration
             $table->uuid('order_number')->unique();
             $table->foreignUuid("user_id")->nullable()->constrained("users");
             $table->decimal("total", 10, 2)->default(0);//calculated value
+            $table->decimal("shipping_fee", 10, 2)->default(0);
             $table->json('order_items');//add all cart items in json format once the order is placed
             $table->string("status")->nullable();
             $table->string("payment_status")->nullable();

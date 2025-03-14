@@ -798,7 +798,7 @@
    	<script src="{{ asset('backend/js/datatables.init.js') }}"></script>
 	<script src="{{ asset('backend/js/ckeditor.js') }}"></script>
 	
-	@stack('custom_scripts')
+	{{-- @stack('custom_scripts') --}}
 
 </body>
 </html>
