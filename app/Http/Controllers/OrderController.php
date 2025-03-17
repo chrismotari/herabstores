@@ -57,6 +57,7 @@ class OrderController extends Controller
     public function store(Request $request)
     {        
         // dd($request);
+        $estate = Estate::find($request->estate_id);
         $cartService = new CartService();
         $cart = auth()->check() ? auth()->user()->cart : $cartService->getGuestCart();
         $cart_items = $cart->cartItems;
@@ -78,7 +79,7 @@ class OrderController extends Controller
                 'shipping_method' => $request->shipping_method,
                 // 'paid_at',
                 // 'amount_paid',
-                'shipping_fees' => $request->shipping_fees,
+                'shipping_fees' => $estate->delivery_fees,
                 'completed_at' => now(),
                 'fname' => $request->fname,
                 'lname' => $request->lname,

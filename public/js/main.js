@@ -300,7 +300,7 @@ $('.brand-active').slick({
 /*=============================================
 	=    		 Cart Active  	         =
 =============================================*/
-$(".cart-plus-minus").append('<div class="dec qtybutton">-</div><div class="inc qtybutton">+</div>');
+$(".cart-plus-minus").append('');
 $(".qtybutton").on("click", function () {
 	var $button = $(this);
 	var oldValue = $button.parent().find("input").val();
@@ -308,13 +308,21 @@ $(".qtybutton").on("click", function () {
 		var newVal = parseFloat(oldValue) + 1;
 	} else {
 		// Don't allow decrementing below zero
-		if (oldValue > 0) {
+		if (oldValue > 1) {
 			var newVal = parseFloat(oldValue) - 1;
 		} else {
-			newVal = 0;
+			newVal = 1;
 		}
 	}
 	$button.parent().find("input").val(newVal);
+
+	let index = this.dataset.index;
+	var productPrice = document.getElementById('product-price-' + index).textContent;
+    // alert(index);
+	var quantity = document.getElementById('quantity-' + index).value;
+	var totalAmount = quantity * productPrice;
+
+	document.getElementById('total-amount-' + index).textContent = totalAmount.toFixed(2);
 });
 
 

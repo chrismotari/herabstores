@@ -169,47 +169,48 @@
                         </div>
                         <div class="shop-products-wrap">
                             <div class="row justify-content-center">
-                              @forelse ($products as $product)   
-                              <div class="col-xl-3 col-md-4 col-sm-6">
-                                  <div class="sp-product-item">
-                                      <div class="sp-product-thumb">
-                                          {{-- <span class="batch discount">25%</span> --}}
-                                          <a href="{{route('products.show', $product)}}"><img src="{{ Str::startsWith($product->image_url, ['http://', 'https://']) ? $product->image_url : asset('storage/' . $product->image_url) }}" alt="{{ $product->name }}"></a>
-                                      </div>
-                                      <div class="sp-product-content">
-                                          <div class="rating">
-                                              <i class="fas fa-star"></i>
-                                              <i class="fas fa-star"></i>
-                                              <i class="fas fa-star"></i>
-                                              <i class="fas fa-star"></i>
-                                              <i class="fas fa-star"></i>
-                                          </div>
-                                          <h6 class="title"><a href="{{route('products.show', $product)}}">{{$product->name}}</a></h6>
-                                          <span class="product-status">{{$product->is_in_stock}}</span>
-                                          <form action="{{route('cart_items.store')}}" method="POST">
-                                            <div class="sp-cart-wrap">
-                                                  @csrf
-                                                  <input type="hidden" name="product_id" value="{{$product->id}}">
-                                                  <div class="cart-plus-minus">
-                                                      <input type="text" value="1" name="quantity" class="cart-plus-minus-box">
-                                                  </div>
-                                                  
-                                               
-                                                <p>KSHS {{$product->price}}</p>
-                                                <div class="add-to-cart mt-3">
-                                                    <button type="submit" class="bg-orange rounded btn-secondary">Add to cart</button>
-                                                    @if (Auth::user() && Auth::user()->is_admin)
-                                                    <a href="{{route('products.edit', $product)}}" class=" rounded btn-sm" ><i class="fas fa-cog"></i> </a>
-                                                    @endif 
+                                @forelse ($products as $product)
+                                <div class="col-xl-3 col-md-4 col-sm-6">
+                                    <div class="sp-product-item">
+                                        <div class="sp-product-thumb">
+                                            <a href="{{ route('products.show', $product) }}">
+                                                <img src="{{ Str::startsWith($product->image_url, ['http://', 'https://']) ? $product->image_url : asset('storage/' . $product->image_url) }}" alt="{{ $product->name }}">
+                                            </a>
+                                        </div>
+                                        <div class="sp-product-content">
+                                            <div class="rating">
+                                                <i class="fas fa-star"></i>
+                                                <i class="fas fa-star"></i>
+                                                <i class="fas fa-star"></i>
+                                                <i class="fas fa-star"></i>
+                                                <i class="fas fa-star"></i>
+                                            </div>
+                                            <h6 class="title"><a href="{{ route('products.show', $product) }}">{{ $product->name }}</a></h6>
+                                            <span class="product-status">KSHS <span id="product-price-{{ $loop->index }}">{{ $product->price }}</span></span>
+                                            <form action="{{ route('cart_items.store') }}" method="POST">
+                                                <div class="sp-cart-wrap">
+                                                    @csrf
+                                                    <input type="hidden" name="product_id" value="{{ $product->id }}">
+                                                    <div class="cart-plus-minus">
+                                                        <input id="quantity-{{ $loop->index }}"  value="1" name="quantity" class="cart-plus-minus-box" min="1" onchange="manualUpdateTotalAmount({{ $loop->index }}, {{ $product->price }})">
+                                                        <div class="dec qtybutton" data-index="{{ $loop->index }}" >-</div>
+                                                        <div class="inc qtybutton" data-index="{{ $loop->index }}" >+</div>
+                                                    </div>
+                                                    <p>KSHS <span id="total-amount-{{ $loop->index }}">{{ $product->price }}</span></p>
+                                                    <div class="add-to-cart mt-3">
+                                                        <button type="submit" class="bg-orange rounded btn-secondary">Add to cart</button>
+                                                        @if (Auth::user() && Auth::user()->is_admin)
+                                                            <a href="{{ route('products.edit', $product) }}" class="rounded btn-sm"><i class="fas fa-cog"></i> </a>
+                                                        @endif
+                                                    </div>
                                                 </div>
                                             </form>
                                         </div>
-                                      </div>
-                                  </div>
-                              </div>
-                              @empty
-                                  No products found
-                              @endforelse
+                                    </div>
+                                </div>
+                            @empty
+                                <p>No products found</p>
+                            @endforelse
                             </div>
                         </div>
                         {{-- <div class="pagination-wrap">
@@ -233,3 +234,15 @@
     </main>
     <!-- main-area-end -->
 @endsection
+@push('custom_scripts')
+<script>
+    function manualUpdateTotalAmount(index, productPrice) {
+        console.log(index);
+        var quantity = document.getElementById('quantity-' + index).value;
+        var totalAmount = quantity * productPrice;
+
+        document.getElementById('total-amount-' + index).textContent = totalAmount.toFixed(2);
+    }
+
+</script>
+@endpush

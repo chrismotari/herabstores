@@ -44,7 +44,7 @@ Route::middleware('auth')->group(function () {
     Route::resource('users', UserController::class);
     Route::resource('roles', RoleController::class);
     Route::resource('permissions', PermissionController::class);
-    Route::resource('products', ProductController::class);
+    Route::resource('products', ProductController::class)->except(['show']);
     Route::resource('users', UserController::class);
     Route::resource('categories', CategoryController::class);
     Route::resource('favourites', FavouriteController::class);
@@ -64,6 +64,7 @@ Route::delete('/cart-items/remove/{product}', [CartItemController::class, 'destr
 
 Route::resource('carts', CartController::class)->except(['show']);
 Route::get('/carts/show/{cart?}', [CartController::class, 'show'])->name('carts.show');
+Route::get('/products/{product?}', [ProductController::class, 'show'])->name('products.show');
 
 Route::get('shop', function () {
     return view('shop')->with('products', Product::all()); 
