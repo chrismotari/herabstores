@@ -83,23 +83,17 @@
                                     <h5 class="title">Billing Information</h5>
                                     <div class="row">
                                         <div class="row">
-                                            <div class="col-lg-4 col-md-6 col-sm-12 mb-4">
+                                            <div class="col-6 mb-4">
                                                 <label class="form-label">First Name<span class="text-danger scale5 ms-2">*</span></label>
                                                 <input type="text" class="form-control" placeholder="First Name" aria-label="fname" 
                                                     value="{{ old('fname', $selected_user->fname ?? '') }}" name="fname">
                                                 <x-input-error :messages="$errors->get('fname')" class="mt-2 text-danger" />
                                             </div>
-                                            <div class="col-lg-4 col-md-6 col-sm-12 mb-4">
-                                                <label class="form-label">Last Name<span class="text-danger scale5 ms-2">*</span></label>
+                                            <div class="col-6 mb-4">
+                                                <label class="form-label">Lasty Name<span class="text-danger scale5 ms-2">*</span></label>
                                                 <input type="text" class="form-control" placeholder="Last Name" aria-label="lname" 
                                                     value="{{ old('lname', $selected_user->lname ?? '') }}" name="lname">
                                                 <x-input-error :messages="$errors->get('lname')" class="mt-2 text-danger" />
-                                            </div>
-                                            <div class="col-lg-4 col-md-6 col-sm-12 mb-4">
-                                                <label class="form-label">Company Name</label>
-                                                <input type="text" class="form-control" placeholder="Company Name" aria-label="company_name" 
-                                                    value="{{ old('company_name', $selected_user->company_name ?? '') }}" name="company_name">
-                                                <x-input-error :messages="$errors->get('company_name')" class="mt-2 text-danger" />
                                             </div>
                                         </div>
                                         
@@ -115,13 +109,27 @@
                                         </div>
                                     </div>
                                     <div class="row">
-                                        <div class="col-sm-6 mb-4">
-                                            <label class="form-label">City<span class="text-danger scale5 ms-2">*</span></label>
+                                        <div class="col-md-4 col-sm-12 mb-4">
+                                            <label class="form-label">County<span class="text-danger scale5 ms-2">*</span></label>
                                             <input type="text" class="form-control" required placeholder="Nairobi" aria-label="city" 
                                                 value="{{ old('city', $selected_user->city ?? '') }}" name="city">
                                             <x-input-error :messages="$errors->get('city')" class="mt-2 text-danger" />
                                         </div>
-                                        <div class="col-md-6 mb-4">
+                                        <div class="col-md-4 col-sm-12 mb-4">
+                                            <label class="form-label">Estate<span class="text-danger scale5 ms-2">*</span></label>
+                                            <select id="select_estate" required class="nice-select default-select wide form-control" name="estate_id">
+                                                <option value="" disabled {{ old('estate_id', $selected_user->estate_id ?? null) === null ? 'selected' : '' }}>Choose...</option>
+                                                @forelse($estates as $estate)
+                                                <option value="{{ $estate->id }}" data-fee="{{ $estate->delivery_fees }}" data-destination="{{ $estate->name }}" {{ old('estate_id', $selected_user->estate_id ?? null) == $estate->id ? 'selected' : '' }}>
+                                                    {{ $estate->name }}
+                                                </option>
+                                                @empty
+                                                <option disabled>No estates available</option>
+                                                @endforelse
+                                            </select>
+                                            <x-input-error :messages="$errors->get('estate_id')" class="mt-2 text-danger" />
+                                        </div>
+                                        <div class="col-md-4 col-sm-12 mb-4">
                                             <label class="form-label">Estate<span class="text-danger scale5 ms-2">*</span></label>
                                             <select id="select_estate" required class="nice-select default-select wide form-control" name="estate_id">
                                                 <option value="" disabled {{ old('estate_id', $selected_user->estate_id ?? null) === null ? 'selected' : '' }}>Choose...</option>
