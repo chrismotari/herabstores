@@ -192,7 +192,7 @@
                                                     @csrf
                                                     <input type="hidden" name="product_id" value="{{ $product->id }}">
                                                     <div class="cart-plus-minus">
-                                                        <input id="quantity-{{ $loop->index }}"  value="1" name="quantity" class="cart-plus-minus-box" min="1" onchange="manualUpdateTotalAmount({{ $loop->index }}, {{ $product->price }})">
+                                                        <input id="quantity-{{ $loop->index }}" data-index="{{ $loop->index }}" value="1" name="quantity" class="cart-plus-minus-box" min="1" >
                                                         <div class="dec qtybutton" data-index="{{ $loop->index }}" >-</div>
                                                         <div class="inc qtybutton" data-index="{{ $loop->index }}" >+</div>
                                                     </div>
@@ -236,13 +236,7 @@
 @endsection
 @push('custom_scripts')
 <script>
-    function manualUpdateTotalAmount(index, productPrice) {
-        console.log(index);
-        var quantity = document.getElementById('quantity-' + index).value;
-        var totalAmount = quantity * productPrice;
-
-        document.getElementById('total-amount-' + index).textContent = totalAmount.toFixed(2);
-    }
+    
 
 </script>
 @endpush

@@ -125,7 +125,7 @@
                                                 <a href="{{route('products.show', $cart_item->product)}}"><img src="{{ Str::startsWith($cart_item->product->image_url, ['http://', 'https://']) ? $cart_item->product->image_url : asset('storage/' . $cart_item->product->image_url) }}" alt="{{ $cart_item->product->name }}"></a>
                                             </div>
                                             <div class="cart-content">
-                                                <h4><a href="{{route('products.show', $cart_item->product)}}">{{$cart_item->product->name}}</a></h4>
+                                                <h4><a href="{{route('products.show', $cart_item->product)}}"> {{ $cart_item->quantity }}  x {{$cart_item->product->name}}</a></h4>
                                                 <div class="cart-price">
                                                     <span class="new">KShs {{$cart_item->product->price}}</span>
                                                 </div>

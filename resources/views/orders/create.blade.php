@@ -169,7 +169,7 @@
                                             <h6 class="title"><a href="shop-details.html">{{$cart_item->quantity}} x {{$cart_item->product->name}}</a></h6>
                                             <span class="price">KSHS {{$cart_item->total }}</span>
                                         </div>
-                                        <div class="remove"><i class="fa fa-times-circle"></i></div>
+                                        <div class="remove"><i class="far fa-trash-alt"></i></div>
                                     </div>
                                 @endforeach
                             

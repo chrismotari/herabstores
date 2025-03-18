@@ -300,7 +300,6 @@ $('.brand-active').slick({
 /*=============================================
 	=    		 Cart Active  	         =
 =============================================*/
-$(".cart-plus-minus").append('');
 $(".qtybutton").on("click", function () {
 	var $button = $(this);
 	var oldValue = $button.parent().find("input").val();
@@ -317,12 +316,20 @@ $(".qtybutton").on("click", function () {
 	$button.parent().find("input").val(newVal);
 
 	let index = this.dataset.index;
-	var productPrice = document.getElementById('product-price-' + index).textContent;
-    // alert(index);
-	var quantity = document.getElementById('quantity-' + index).value;
+	var productPrice = parseFloat($('#product-price-' + index).text());
+	var quantity =newVal;
 	var totalAmount = quantity * productPrice;
 
-	document.getElementById('total-amount-' + index).textContent = totalAmount.toFixed(2);
+	$('#total-amount-' + index).text(totalAmount.toFixed(2));
+});
+
+$('.cart-plus-minus-box').on('change', function (event) {
+	var index = $(this).data('index');
+	var productPrice = parseFloat($('#product-price-' + index).text());
+    var quantity = parseInt(quantity = $(this).val());
+    var totalAmount = quantity * productPrice;
+
+    $('#total-amount-' + index).text(totalAmount.toFixed(2));
 });
 
 
