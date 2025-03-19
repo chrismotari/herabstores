@@ -4,7 +4,6 @@ namespace App\Http\Controllers;
 
 use App\Models\Estate;
 use Illuminate\Http\Request;
-use Illuminate\Support\Str;
 
 class EstateController extends Controller
 {
@@ -13,9 +12,7 @@ class EstateController extends Controller
      */
     public function index()
     {
-        return view('estates.index', [
-            'estates' => Estate::all()
-        ]);
+        //
     }
 
     /**
@@ -31,20 +28,6 @@ class EstateController extends Controller
      */
     public function store(Request $request)
     {
-        // dd($request->all());
-        $estate = Estate::create([
-            'name' => $request->name,
-            'slug' => Str::slug($request->name, '-'),
-            'description' => $request->description,
-            'delivery_fees' => $request->delivery_fees,
-        ]);
-        if ($estate) {
-            flash()->success('Estate created successfully');
-            return redirect()->route('estates.index');
-        }else{
-            flash()->success('Error! Estate not created');
-            return redirect()->back();
-        }
         //
     }
 
@@ -53,9 +36,7 @@ class EstateController extends Controller
      */
     public function show(Estate $estate)
     {
-        return view('estates.show', [
-            'selected_estate' => $estate
-        ]);
+        //
     }
 
     /**
@@ -79,9 +60,6 @@ class EstateController extends Controller
      */
     public function destroy(Estate $estate)
     {
-        if ($estate->delete()) {
-            flash('Estate deleted successfully')->success();
-            return redirect()->route('estates.index');
-        }
+        //
     }
 }
