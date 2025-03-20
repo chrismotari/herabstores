@@ -1,5 +1,5 @@
-@extends('layouts.backend', ['activePage' => 'categories', 'title' => $selected_category->name])
-@section('title', $selected_category->name)
+@extends('layouts.backend', ['activePage' => 'delivery_zones', 'title' => $selected_delivery_zone->name])
+@section('title', $selected_delivery_zone->name)
 
 @section('content')
 <div class="row">
@@ -13,9 +13,9 @@
     </div>
 @endif
 	<div class="col-xl-12">
-		<form action=" {{ route('categories.update', $selected_category) }} " method="POST" enctype="multipart/form-data">
+		<form action=" {{ route('delivery_zones.update', $selected_delivery_zone) }} " method="POST" enctype="multipart/form-data">
 			@method('PATCH')
-			@include('categories.form')
+			@include('delivery_zones.form')
 		</form>
 	</div>
 </div>

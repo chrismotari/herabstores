@@ -58,17 +58,11 @@
                     <li><a href="{{ route('products.index') }}">All Products</a></li>
                     <li><a href="baskets">Baskets</a></li>
                     <li><a href="offers">Offers & Promotions</a></li>
-                    <li><a href="{{ route('products.create') }}">Add Product</a></li>
+                    {{-- <li><a href="{{ route('products.create') }}">Add Product</a></li> --}}
+                    <li><a href=" {{route('categories.index')}} ">Product Categories</a></li>
                 </ul>
             </li>
-            <li><a class="has-arrow " href="javascript:void(0);" aria-expanded="false">
-                    <i class="fas fa-tasks"></i>
-                    <span class="nav-text">Categories</span>
-                </a>
-                <ul aria-expanded="false">
-                    <li><a href=" {{route('categories.index')}} ">All categories</a></li>
-                </ul>
-            </li>
+            
             <li><a class="has-arrow " href="javascript:void(0);" aria-expanded="false">
                     <i class="fas fa-shopping-cart"></i>
                     <span class="nav-text">Orders</span>
@@ -79,6 +73,16 @@
                     <li><a href="#">Reported Cases</a></li>
                 </ul>
             </li>
+            <li><a class="has-arrow " href="javascript:void(0);" aria-expanded="false">
+                <i class="fas fa-cog"></i>
+                <span class="nav-text">Settings</span>
+            </a>
+            <ul aria-expanded="false">
+                <li><a href=" {{ route('estates.index') }} ">Estates</a></li>
+                <li><a href=" {{ route('delivery_zones.index') }} ">Delivery Zones</a></li>
+                <li><a href="{{ route ('refs.index') }}">Referee Program</a></li>
+            </ul>
+        </li>
             <li><a class="has-arrow " href="users" aria-expanded="false">
                     <i class="fas fa-users"></i>
                     <span class="nav-text">User Management</span>

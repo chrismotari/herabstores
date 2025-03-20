@@ -25,5 +25,23 @@ class DeliveryZone extends Model
     {
         return $this->hasMany(User::class);
     }
+    public function estate()
+    {
+        return $this->belongsTo(Estate::class);
+    }
+    public function county()
+    {
+        return $this->belongsTo(County::class);
+    }
+
+    public function getCoverageAttribute(){
+        if ($this->estate) {
+            return $this->estate->name . ' (Estate)';
+        } elseif ($this->county) {
+            return $this->county->name . ' (County)';
+        }
+    
+        return 'No Coverage';
+    }
 
 }

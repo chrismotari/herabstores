@@ -12,18 +12,20 @@
                         <tr>
                             <th>No.</th>
                             <th>Name</th>
+                            <th>Coverage Area</th>
                             <th>Delivery Fees</th>
                             <th>Status</th>
                             <th>Actions</th>
                         </tr>
                     </thead>
                     <tbody>
-                        @forelse($estates as $estate)
+                        @forelse($delivery_zones as $delivery_zone)
                         <tr>
                             <td>{{$loop->iteration}}</td>
-                            <td class="wspace-no"><a href="{{ route('estates.show', $estate) }}">{{$estate->name}}</a></td>
-                            <td>{{$estate->delivery_fees}}</td>
-                            @if ($estate->is_active)
+                            <td class="wspace-no"><a href="{{ route('delivery_zones.show', $delivery_zone) }}">{{$delivery_zone->name}}</a></td>
+                            <td>{{$delivery_zone->coverage}}</td>
+                            <td>{{$delivery_zone->delivery_fees}}</td>
+                            @if ($delivery_zone->is_active)
                                 <td><span class="badge badge-success badge-lg light">Active </span></td>
                             @else
                                 <td><span class="badge badge-danger badge-lg light">Inactive</span></td>
@@ -56,13 +58,13 @@
 	<div class="modal-dialog modal-lg">
 		<div class="modal-content">
 			<div class="modal-header">
-				<h2 class="modal-title">New estate</h2>
+				<h2 class="modal-title">New delivery zone</h2>
 				<button type="button" class="btn-close" data-bs-dismiss="modal">
 				</button>
 			</div>
 			<div class="modal-body">
-			<form action=" {{ route('estates.store') }} " method="POST" enctype="multipart/form-data">
-				@include('estates.form')
+			<form action=" {{ route('delivery_zones.store') }} " method="POST" enctype="multipart/form-data">
+				@include('delivery_zones.form')
 			</form>
 			</div>
 			

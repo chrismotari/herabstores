@@ -5,6 +5,8 @@ use App\Http\Controllers\CartController;
 use App\Http\Controllers\CartItemController;
 use App\Http\Controllers\CategoryController;
 use App\Http\Controllers\ContactController;
+use App\Http\Controllers\CountyController;
+use App\Http\Controllers\DeliveryZoneController;
 use App\Http\Controllers\EstateController;
 use App\Http\Controllers\FavouriteController;
 use App\Http\Controllers\MassAddController;
@@ -49,6 +51,8 @@ Route::middleware('auth')->group(function () {
     Route::resource('categories', CategoryController::class);
     Route::resource('favourites', FavouriteController::class);
     Route::resource('estates', EstateController::class);
+    Route::resource('delivery_zones', DeliveryZoneController::class);
+    Route::resource('counties', CountyController::class);
     Route::resource('refs', RefController::class);
     
     
