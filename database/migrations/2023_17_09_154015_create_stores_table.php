@@ -22,9 +22,8 @@ return new class extends Migration
             $table->string('email')->unique()->nullable();
             $table->string('phone')->unique();
             $table->string('alt_phone')->unique()->nullable();
-            $table->text('address');
-            $table->foreignUuid('estate_id')->nullable()->constrained()->nullOnDelete();
-            $table->foreignUuid('country_id')->nullable()->constrained()->nullOnDelete(); 
+            $table->text('address'); 
+            $table->foreignUuid('delivery_zone_id')->nullable()->constrained()->nullOnDelete(); 
             $table->string('is_active')->default(1);
             $table->timestamps();
         });

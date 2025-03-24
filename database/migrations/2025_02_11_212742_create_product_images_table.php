@@ -16,6 +16,7 @@ return new class extends Migration
             $table->foreignUuid('product_id')->constrained('products');
             $table->string('image_url');
             $table->integer('sort_order')->default(0);
+            $table->unique(['product_id', 'sort_order']);
             $table->timestamps();
         });
     }

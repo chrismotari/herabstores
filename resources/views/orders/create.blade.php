@@ -117,7 +117,7 @@
                                         </div>
                                         <div class="col-md-4 col-sm-12 mb-4">
                                             <label class="form-label">Estate<span class="text-danger scale5 ms-2">*</span></label>
-                                            <select id="select_estate" required class="nice-select default-select wide form-control" name="estate_id">
+                                            <select id="select_delivery_zone" required class="nice-select default-select wide form-control" name="estate_id">
                                                 <option value="" disabled {{ old('estate_id', $selected_user->estate_id ?? null) === null ? 'selected' : '' }}>Choose...</option>
                                                 @forelse($estates as $estate)
                                                 <option value="{{ $estate->id }}" data-fee="{{ $estate->delivery_fees }}" data-destination="{{ $estate->name }}" {{ old('estate_id', $selected_user->estate_id ?? null) == $estate->id ? 'selected' : '' }}>
@@ -130,18 +130,18 @@
                                             <x-input-error :messages="$errors->get('estate_id')" class="mt-2 text-danger" />
                                         </div>
                                         <div class="col-md-4 col-sm-12 mb-4">
-                                            <label class="form-label">Estate<span class="text-danger scale5 ms-2">*</span></label>
-                                            <select id="select_estate" required class="nice-select default-select wide form-control" name="estate_id">
-                                                <option value="" disabled {{ old('estate_id', $selected_user->estate_id ?? null) === null ? 'selected' : '' }}>Choose...</option>
-                                                @forelse($estates as $estate)
-                                                <option value="{{ $estate->id }}" data-fee="{{ $estate->delivery_fees }}" data-destination="{{ $estate->name }}" {{ old('estate_id', $selected_user->estate_id ?? null) == $estate->id ? 'selected' : '' }}>
-                                                    {{ $estate->name }}
+                                            <label class="form-label">Delivery Zone<span class="text-danger scale5 ms-2">*</span></label>
+                                            <select id="select_delivery_zone" required class="nice-select default-select wide form-control" name="delivery_zone_id">
+                                                <option value="" disabled {{ old('delivery_zone_id', $selected_user->delivery_zone_id ?? null) === null ? 'selected' : '' }}>Choose...</option>
+                                                @forelse($delivery_zones as $delivery_zone)
+                                                <option value="{{ $delivery_zone->id }}" data-fee="{{ $delivery_zone->delivery_fees }}" data-destination="{{ $delivery_zone->name }}" {{ old('delivery_zone_id', $selected_user->delivery_zone_id ?? null) == $delivery_zone->id ? 'selected' : '' }}>
+                                                    {{ $delivery_zone->name }}
                                                 </option>
                                                 @empty
-                                                <option disabled>No estates available</option>
+                                                <option disabled>No zones available</option>
                                                 @endforelse
                                             </select>
-                                            <x-input-error :messages="$errors->get('estate_id')" class="mt-2 text-danger" />
+                                            <x-input-error :messages="$errors->get('delivery_zone_id')" class="mt-2 text-danger" />
                                         </div>
                                     </div>
                                     {{-- <div class="different-address-wrap">
@@ -268,14 +268,14 @@
         // });
 
         document.addEventListener("DOMContentLoaded", function () {
-            let estateSelect = document.getElementById("select_estate");
+            let deliveryZoneSelect = document.getElementById("select_delivery_zone");
             let shippingFeeSpan = document.getElementById("shipping_fee");
             let shippingToSpan = document.getElementById("shipping_to");
             let orderTotalSpan = document.getElementById("order_total");
             let cartTotalSpan = document.getElementById("cart_total");
 
-            estateSelect.addEventListener("change", function () {
-                let selectedOption = estateSelect.options[estateSelect.selectedIndex];
+            deliveryZoneSelect.addEventListener("change", function () {
+                let selectedOption = deliveryZoneSelect.options[deliveryZoneSelect.selectedIndex];
                 let fee = selectedOption.getAttribute("data-fee") || 0;
                 let destination = selectedOption.getAttribute("data-destination") || '';
                 shippingFeeSpan.textContent = fee;
@@ -284,7 +284,7 @@
             });
 
             // Trigger change event on page load if a value is preselected
-            estateSelect.dispatchEvent(new Event("change"));
+            deliveryZoneSelect.dispatchEvent(new Event("change"));
         });
     </script>
 @endpush

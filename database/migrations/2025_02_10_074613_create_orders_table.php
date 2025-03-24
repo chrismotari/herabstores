@@ -41,10 +41,13 @@ return new class extends Migration
             $table->string("email")->nullable();
             $table->string("address")->nullable();
             $table->string("city")->nullable();
-            $table->foreignUuid("estate_id")->nullable()->constrained("estates");
+            // $table->foreignUuid("estate_id")->nullable()->constrained("estates");
             $table->foreignUuid("country_id")->nullable()->constrained("countries");
             $table->string("message")->nullable();
-            $table->string("referee_code")->nullable(); // create referee code table
+            $table->foreignUuid("ref_id")->nullable()->constrained(); 
+            $table->foreignUuid("store_id")->nullable()->constrained(); 
+            $table->foreignUuid("delivery_zone")->constrained(); 
+            $table->foreignUuid("courier_id")->nullable()->constrained(); 
 
             $table->timestamps();
         });

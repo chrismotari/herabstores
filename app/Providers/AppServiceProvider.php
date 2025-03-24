@@ -11,6 +11,7 @@ use App\Models\Country;
 use App\Models\Courier;
 use App\Models\Estate;
 use App\Models\Role;
+use App\Models\DeliveryZone;
 use App\Models\Store;
 use App\Services\CartService;
 use Illuminate\Support\Facades\Auth;
@@ -62,6 +63,11 @@ class AppServiceProvider extends ServiceProvider
             $view->with([
                 'couriers' => Courier::all(),
                 'stores' => Store::all(), 
+            ]); 
+        });
+        View::composer('orders.create', function ($view) {
+            $view->with([
+                'delivery_zones' => DeliveryZone::all(), 
             ]); 
         });
 
