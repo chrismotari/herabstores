@@ -1,5 +1,5 @@
-@extends('layouts.backend', ['activePage' => 'categories', 'title' => 'Herab'])
-@section('title', 'Product Categories')
+@extends('layouts.backend', ['activePage' => 'delivery zone', 'title' => 'Herab'])
+@section('title', 'Delivery Zones')
 @section('add_button')
 <button type="button" class="btn btn-primary" data-bs-toggle="modal" data-bs-target=".bd-example-modal-lg">Add New</button>
 @endsection
