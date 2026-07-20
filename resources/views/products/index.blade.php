@@ -31,12 +31,13 @@
                                     <a href="javascript:void(0);" class="btn btn-success light mr-2">
                                         <i class="fa fa-eye"></i>
                                     </a>
-                                    <a href="javascript:void(0);" class="btn btn-secondary light mr-2">
+                                    <a href="{{ route('products.edit', $product) }}" class="btn btn-secondary light mr-2">
                                         <i class="fa fa-pen"></i>
                                     </a>
-                                    <a href="javascript:void(0);" class="btn btn-danger light">
-                                        <i class="fa fa-trash"></i>
-                                    </a>
+                                    <form action="{{ route('products.destroy', $product) }}" method="POST" onsubmit="return confirm('Are you sure you want to delete this product?');">
+                                        @csrf @method('DELETE')
+                                        <button class="btn btn-danger light" type="submit"><i class="fa fa-trash"></i></button>
+                                    </form>
                                 </div>
                             </td>
                         </tr>

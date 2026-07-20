@@ -18,6 +18,7 @@ return new class extends Migration
             $table->string('phone')->nullable();
             $table->boolean('consented')->default(true);
             $table->text('message')->nullable();
+            $table->string('subject')->nullable();
             $table->string('source')->nullable();
             $table->string('ref_code')->nullable();
             $table->string('country_id')->nullable();

@@ -33,12 +33,18 @@ class ContactController extends Controller
                 'email' => ['required', 'email', ],
             ]);
         } catch (\Illuminate\Validation\ValidationException $e) {
-            return redirect()->back()->with('error', 'Sorry, an issue occured, try again later.');
+            return redirect()->back()->with('error', 'Invalid inputs.');
         }
         Contact::create([
             'email' => $request->email,
+            'name' => $request->name,
+            'phone' => $request->phone,
+            'consented' => $request->consented ? true : false,
+            'subject' => $request->subject,
+            'message' => $request->message,
+            'source' => "Website",
         ]);
-        return redirect()->back()->with('success', 'You have successfully subscribed to our newsletter.');
+        return redirect()->back()->with('success', "Your request was successful! You'll hear from us soon.");
     }
 
     /**

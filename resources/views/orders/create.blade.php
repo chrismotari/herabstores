@@ -25,29 +25,30 @@
 
         <!-- checkout-area -->
         <div class="checkout-area pt-90 pb-90">
-            <div class="container">
-                <div class="row justify-content-center">
-                    <div class="col-lg-7">
-                        <div class="checkout-progress-wrap">
-                            <div class="progress">
-                                <div class="progress-bar" role="progressbar" style="width: 50%;" aria-valuenow="50" aria-valuemin="0" aria-valuemax="100"></div>
+            <form id="place-order" action="{{ route('orders.store') }}" method="POST">
+                @csrf
+                <div class="container">
+                    <div class="row justify-content-center">
+                        <div class="col-lg-7">
+                            <div class="checkout-progress-wrap">
+                                <div class="progress">
+                                    <div class="progress-bar" role="progressbar" style="width: 50%;" aria-valuenow="50" aria-valuemin="0" aria-valuemax="100"></div>
+                                </div>
+                                <div class="checkout-progress-step">
+                                    <ul>
+                                        <li class="active">
+                                            <div class="icon"><i class="fas fa-check"></i></div>
+                                            <span>Shipping</span>
+                                        </li>
+                                        <li>
+                                            <div class="icon">2</div>
+                                            <span>Order Successful</span>
+                                        </li>
+                                    </ul>
+                                </div>
                             </div>
-                            <div class="checkout-progress-step">
-                                <ul>
-                                    <li class="active">
-                                        <div class="icon"><i class="fas fa-check"></i></div>
-                                        <span>Shipping</span>
-                                    </li>
-                                    <li>
-                                        <div class="icon">2</div>
-                                        <span>Order Successful</span>
-                                    </li>
-                                </ul>
-                            </div>
-                        </div>
-                        <div class="checkout-form-wrap">
-                            <form id="place-order" action="{{ route('orders.store') }}" method="POST">
-                                @csrf
+                            <div class="checkout-form-wrap">
+                                
                                 {{-- <input type="hidden" name="total" value="{{ $cart->total }}"> --}}
                                 <div class="checkout-form-top">
                                     <h5 class="title">Delivery information</h5>
@@ -56,19 +57,19 @@
                                 <div class="row">
                                     <div class="col-sm-6 mb-4">
                                         <label class="form-label">Email<span class="text-danger scale5 ms-2">*</span></label>
-                                        <input type="text" class="" required placeholder="Email" aria-label="fname" 
-                                            value="{{ old('fname', $selected_user->fname ?? '') }}" name="fname">
-                                        <x-input-error :messages="$errors->get('fname')" class="mt-2 text-danger" />
+                                        <input type="text" class="form-control" required placeholder="Email" aria-label="email" 
+                                            value="{{ old('email', $selected_user->email ?? '') }}" name="email">
+                                        <x-input-error :messages="$errors->get('email')" class="mt-2 text-danger" />
                                     </div>
                                     <div class="col-sm-6 mb-4">
                                         <label class="form-label">Phone<span class="text-danger scale5 ms-2">*</span></label>
-                                        <input type="text" class="" required  placeholder="Phone" aria-label="lname" 
-                                            value="{{ old('lname', $selected_user->lname ?? '') }}" name="lname">
-                                        <x-input-error :messages="$errors->get('lname')" class="mt-2 text-danger" />
+                                        <input type="text" class="form-control" required  placeholder="Phone" aria-label="phone" 
+                                            value="{{ old('phone', $selected_user->phone ?? '') }}" name="phone">
+                                        <x-input-error :messages="$errors->get('phone')" class="mt-2 text-danger" />
                                     </div>
                                 </div>
                                 <div class="news-and-offers custom-control custom-checkbox">
-                                    <input type="checkbox" class="custom-control-input" id="nao">
+                                    <input type="checkbox" class="custom-control-input" id="nao" name="consented">
                                     <label class="custom-control-label" for="nao">Keep me up to date on news and offers</label>
                                 </div>
                                 
@@ -77,19 +78,19 @@
                                     <div class="row">
                                         <div class="col-md-6 mb-4">
                                             <label class="form-label">First Name<span class="text-danger scale5 ms-2">*</span></label>
-                                            <input type="text" class="" placeholder="First Name" aria-label="fname" 
+                                            <input type="text" class="form-control" placeholder="First Name" aria-label="fname" 
                                                 value="{{ old('fname', $selected_user->fname ?? '') }}" name="fname">
                                             <x-input-error :messages="$errors->get('fname')" class="mt-2 text-danger" />
                                         </div>
                                         <div class="col-md-6 mb-4">
                                             <label class="form-label">Last Name<span class="text-danger scale5 ms-2">*</span></label>
-                                            <input type="text" class="" placeholder="Last Name" aria-label="phone" 
+                                            <input type="text" class="form-control" placeholder="Last Name" aria-label="phone" 
                                                 value="{{ old('phone', $selected_user->phone ?? '') }}" name="phone">
                                             <x-input-error :messages="$errors->get('phone')" class="mt-2 text-danger" />
                                         </div>
                                         <div class="col-md-6 mb-4">
                                             <label class="form-label">Company Name<span class="text-danger scale5 ms-2">*</span></label>
-                                            <input type="text" class="" placeholder="Company Name" aria-label="company_name" 
+                                            <input type="text" class="form-control" placeholder="Company Name" aria-label="company_name" 
                                                 value="{{ old('company_name', $selected_user->company_name ?? '') }}" name="company_name">
                                             <x-input-error :messages="$errors->get('company_name')" class="mt-2 text-danger" />
                                         </div>
@@ -108,24 +109,24 @@
                                             <x-input-error :messages="$errors->get('country_id')" class="mt-2 text-danger" />
                                         </div>
                                     </div>
-                                   
+                                
 
                                     <div class=" col-md-12 mb-4">
                                         <label class="form-label">Address<span class="text-danger scale5 ms-2">*</span></label>
-                                        <input type="text" class="" placeholder="Address" aria-label="address" 
+                                        <input type="text" class="form-control" placeholder="Address" aria-label="address" 
                                             value="{{ old('address', $selected_user->address ?? '') }}" name="address">
                                         <x-input-error :messages="$errors->get('address')" class="mt-2 text-danger" />
                                     </div>
                                     <div class="row">
                                         <div class="col-sm-6 mb-4">
                                             <label class="form-label">City<span class="text-danger scale5 ms-2">*</span></label>
-                                            <input type="text" class="" placeholder="City" aria-label="city" 
+                                            <input type="text" class="form-control" placeholder="City" aria-label="city" 
                                                 value="{{ old('city', $selected_user->city ?? '') }}" name="city">
                                             <x-input-error :messages="$errors->get('city')" class="mt-2 text-danger" />
                                         </div>
                                         <div class="col-sm-6 mb-4">
                                             <label class="form-label">Estate<span class="text-danger scale5 ms-2">*</span></label>
-                                            <input type="text" class="" placeholder="Estate" aria-label="estate" 
+                                            <input type="text" class="form-control" placeholder="Estate" aria-label="estate" 
                                                 value="{{ old('estate', $selected_user->estate ?? '') }}" name="estate">
                                             <x-input-error :messages="$errors->get('estate')" class="mt-2 text-danger" />
                                         </div>
@@ -139,7 +140,11 @@
                                             <a href="contact-us">Create an Account <i class="fas fa-user"></i></a>
                                         </div>
                                     </div> --}}
-                                    <textarea name="message" id="message" placeholder="Extra Notes ( Optional )"></textarea>
+                                    <div class=row>
+                                        <div class="col-sm-12 mb-4">
+                                            <textarea class="form-control" rows="4" name="message" id="message" placeholder="Extra Notes ( Optional )"></textarea>
+                                        </div>
+                                    </div>
                                     <div class="payment-terms">
                                         <p>Deliveries can take up to 24 hrs.</p>
                                         <div class="custom-control custom-checkbox">
@@ -148,68 +153,71 @@
                                         </div>
                                     </div>
                                 </div>
-                            </form>
+                                
+                            </div>
                         </div>
-                    </div>
-                    <div class="col-lg-5">
-                        <div class="shop-cart-total order-summary-wrap">
-                            <h3 class="title">Order Summary</h3>
-                            @foreach ($cart->cartItems as $cart_item)
-                                <div class="os-products-item">
-                                    <div class="thumb">
-                                        <a href="shop-details.html"><img src="{{ Str::startsWith($cart_item->product->image_url, ['http://', 'https://']) ? $cart_item->product->image_url : asset('storage/' . $cart_item->product->image_url) }}" alt="no image"></a>
+                        <div class="col-lg-5">
+                            <div class="shop-cart-total order-summary-wrap">
+                                <h3 class="title">Order Summary</h3>
+                                @foreach ($cart->cartItems as $cart_item)
+                                    <div class="os-products-item">
+                                        <div class="thumb">
+                                            <a href="shop-details.html"><img src="{{ Str::startsWith($cart_item->product->image_url, ['http://', 'https://']) ? $cart_item->product->image_url : asset('storage/' . $cart_item->product->image_url) }}" alt="no image"></a>
+                                        </div>
+                                        <div class="content">
+                                            <h6 class="title"><a href="shop-details.html">{{$cart_item->quantity}} x {{$cart_item->product->name}}</a></h6>
+                                            <span class="price">KSHS {{$cart_item->total }}</span>
+                                        </div>
+                                        <div class="remove"><i class="fa fa-times-circle"></i></div>
                                     </div>
-                                    <div class="content">
-                                        <h6 class="title"><a href="shop-details.html">{{$cart_item->quantity}} x {{$cart_item->product->name}}</a></h6>
-                                        <span class="price">KSHS {{$cart_item->total }}</span>
-                                    </div>
-                                    <div class="remove"><i class="fa fa-times-circle"></i></div>
-                                </div>
-                            @endforeach
-                        
-                            <div class="shop-cart-widget">
-                                <ul>
-                                    <li class="sub-total"><span>Subtotal</span> KSHS {{ $cart->total }} </li>
-                                    <li>
-                                        <span>Shipping to Area 57</span>
-                                        <div class="shop-check-wrap">
-                                            <div class="custom-control custom-checkbox">
-                                                <label for="customCheck1">KSHS 150</label>
+                                @endforeach
+                            
+                                <div class="shop-cart-widget">
+                                    <ul>
+                                        <li class="sub-total"><span>Subtotal</span> KSHS {{ $cart->total }} </li>
+                                        <li>
+                                            <span>Shipping to Area 57</span>
+                                            <div class="shop-check-wrap">
+                                                <div class="custom-control custom-checkbox">
+                                                    <label for="customCheck1">KSHS 150</label>
+                                                </div>
+                                                
                                             </div>
-                                            
+                                        </li>
+                                        <li class="cart-total-amount"><span>Total Price</span> <span class="amount">KSH {{$cart->total+150}}</span></li>
+                                    </ul>
+                                    <div class="payment-method-info">
+                                        <div class="paypal-method-flex">
+                                            <div class="custom-control custom-checkbox">
+                                                <input type="checkbox" disabled checked class="custom-control-input" id="customCheck5">
+                                                <label class="custom-control-label" for="customCheck5">Cash on delivery</label>
+                                                <p>Pay with cash upon delivery.</p>
+                                            </div>
                                         </div>
-                                    </li>
-                                    <li class="cart-total-amount"><span>Total Price</span> <span class="amount">KSH {{$cart->total+150}}</span></li>
-                                </ul>
-                                <div class="payment-method-info">
-                                    <div class="paypal-method-flex">
-                                        <div class="custom-control custom-checkbox">
-                                            <input type="checkbox" disabled checked class="custom-control-input" id="customCheck5">
-                                            <label class="custom-control-label" for="customCheck5">Cash on delivery</label>
-                                            <p>Pay with cash upon delivery.</p>
+                                        <div class="paypal-method-flex">
+                                            <div class="custom-control custom-checkbox">
+                                                <input type="checkbox" disabled class="custom-control-input" id="customCheck6">
+                                                <label class="custom-control-label" for="customCheck6">Coming soon</label>
+                                            </div>
+                                            <div class="paypal-logo"><img src="img/images/card.png" alt=""></div>
                                         </div>
                                     </div>
-                                    <div class="paypal-method-flex">
-                                        <div class="custom-control custom-checkbox">
-                                            <input type="checkbox" disabled class="custom-control-input" id="customCheck6">
-                                            <label class="custom-control-label" for="customCheck6">Coming soon</label>
+                                    <div class="payment-terms">
+                                        <p>Deliveries can take up to 24 hrs.</p>
+                                        <div class="col-md-6 mb-4">
+                                            <label class="form-label">Referee Code</label>
+                                            <input type="text" class="form-control" placeholder="Referee Code" aria-label="referee_code" 
+                                                value="{{ old('referee_code', $referee_code ?? '') }}" name="referee_code">
+                                            <x-input-error :messages="$errors->get('referee_code')" class="mt-2 text-danger" />
                                         </div>
-                                        <div class="paypal-logo"><img src="img/images/card.png" alt=""></div>
                                     </div>
+                                    <button class="btn btn-primary" type="submit" class="btn">Place order</button>
                                 </div>
-                                <div class="payment-terms">
-                                    <p>Deliveries can take up to 24 hrs.</p>
-                                    <div class="custom-control custom-checkbox">
-                                        <input type="checkbox" class="custom-control-input" id="customCheck7" required>
-                                        <label class="custom-control-label" for="customCheck7">I agree to the website terms and conditions</label>
-                                    </div>
-                                </div>
-                                <button class="btn btn-primary" onclick="document.getElementById('place-order').submit();" class="btn">Place order</button>
                             </div>
                         </div>
                     </div>
                 </div>
-            </div>
+            </form>
         </div>
         <!-- checkout-area-end -->
 

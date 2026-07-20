@@ -56,7 +56,7 @@
                 </a>
                 <ul aria-expanded="false">
                     <li><a href="{{ route('products.index') }}">All Products</a></li>
-                    <li><a href="baskets">Baskets</a></li>
+                    <li><a href="{{ route('baskets.index') }}">Baskets</a></li>
                     <li><a href="offers">Offers & Promotions</a></li>
                     <li><a href="{{ route('products.create') }}">Add Product</a></li>
                 </ul>

@@ -15,6 +15,7 @@ class Contact extends Model
         'name',
         'phone',
         'consented',
+        'subject',
         'message',
         'source',
         'referree_code',
