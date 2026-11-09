@@ -155,7 +155,7 @@
     <div class="card-footer text-end">
         <div>
             <a href="javascript:void(0);" class="btn btn-danger light me-3">Close</a>
-            <button type="submit" class="btn btn-primary">Submit</a>
+            <button type="submit" class="btn btn-primary">Submit</button>
         </div>
     </div>
 </div>

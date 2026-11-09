@@ -457,6 +457,7 @@ class MassAddController extends Controller
                 'image_url'     => null, // default value if not provided
                 'is_active'     => true, // default value
                 'category_id'   => $productData['category_id'],
+                'image_url' => "https://www.denverfruitier.com/cdn/shop/files/Medium-Tropical-Fruit-Basket.png",
                 'user_id'       => Auth::user()->id,  // default value if not provided
             ]);
         }

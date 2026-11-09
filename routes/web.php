@@ -13,6 +13,7 @@ use App\Http\Controllers\OrderController;
 use App\Http\Controllers\PermissionController;
 use App\Http\Controllers\ProductController;
 use App\Http\Controllers\RoleController;
+use App\Http\Controllers\BasketController;
 use App\Models\Product;
 use Illuminate\Support\Facades\Route;
 
@@ -24,7 +25,7 @@ Route::middleware('auth')->group(function () {
     Route::get('/masscreate', [MassAddController::class, 'massAddProducts'])->name('masscreate')->middleware('admin');
 
     Route::get('/admin', function () {
-        return redirect('/dashboard'); 
+        return redirect('/dashboard');
     })->name('admin');
 
     Route::get('/profile', [ProfileController::class, 'edit'])->name('profile.edit');
@@ -39,6 +40,8 @@ Route::middleware('auth')->group(function () {
     Route::post('orders/dispatch', [OrderController::class, 'dispatch'])->name('orders.dispatch.save');
     Route::get('orders/dispatch/{order}', [OrderController::class, 'dispatch'])->name('orders.dispatch');
 
+    Route::resource('baskets', BasketController::class);
+
     Route::resource('users', UserController::class);
     Route::resource('roles', RoleController::class);
     Route::resource('permissions', PermissionController::class);
@@ -46,11 +49,11 @@ Route::middleware('auth')->group(function () {
     Route::resource('users', UserController::class);
     Route::resource('categories', CategoryController::class);
     Route::resource('favourites', FavouriteController::class);
-    
+
     Route::get('/home', function () {
-        return redirect('/'); 
+        return redirect('/');
     })->name('home');
-    
+
     // Route::get('products/admin/show/{product}', [ProductController::class, 'adminShow'])->name("products.admin.show");
 });
 Route::resource('orders', OrderController::class);
@@ -61,13 +64,13 @@ Route::resource('carts', CartController::class)->except(['show']);
 Route::get('/carts/show/{cart?}', [CartController::class, 'show'])->name('carts.show');
 
 Route::get('shop', function () {
-    return view('shop')->with('products', Product::all()); 
+    return view('shop')->with('products', Product::all());
 })->name('shop');
 
 Route::resource('contacts', ContactController::class);
 
 Route::get('/index', function () {
-    return redirect('/'); 
+    return redirect('/');
 })->name('index');
 
 Route::POST('products/search', [ProductController::class, 'search'])->name('products.search');
@@ -75,23 +78,23 @@ Route::get('products/search', [ProductController::class, 'search']);
 
 
 Route::get('/', function () {
-    return view('index')->with('products', Product::all()); 
+    return view('index')->with('products', Product::all());
 });
 
 Route::get('/terms-and-conditions', function () {
-    return view('terms-and-conditions'); 
+    return view('terms-and-conditions');
 })->name('terms.and.conditions');
 
 Route::get('/about-us', function () {
-    return view('about-us'); 
+    return view('about-us');
 })->name('about.us');
 
 Route::get('/contact-us', function () {
-    return view('contact-us'); 
+    return view('contact-us');
 })->name('contact.us');
 
 Route::get('/faq', function () {
-    return view('contact-us'); 
+    return view('contact-us');
 })->name('faq');
 
 

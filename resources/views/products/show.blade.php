@@ -29,8 +29,28 @@
                     <div class="shop-details-nav-wrap">
                         <ul class="nav nav-tabs" id="myTab" role="tablist">
                             <li class="nav-item" role="presentation">
-                                <a class="nav-link active" id="item-one-tab" data-toggle="tab" href="#item-one" role="tab" aria-controls="item-one" aria-selected="true"><img src="{{ Str::startsWith($product->image_url, ['http://', 'https://']) ? $product->image_url : asset('storage/' . $product->image_url) }}" alt="{{$product->slug}}"></a>
+                                <a class="nav-link active" id="item-one-tab" data-toggle="tab"
+                                    href="#item-one" role="tab" aria-controls="item-one" aria-selected="true">
+                                    <img src="{{ Str::startsWith($product->image_url, ['http://', 'https://']) ? $product->image_url : asset('storage/' . $product->image_url) }}"
+                                        alt="{{$product->slug}}"
+                                    >
+                                </a>
                             </li>
+                            @forelse ($product_images = $product->images as $product_image)
+                                @if ($product->image_url == $product_image->image_url)
+                                    @continue
+                                @endif
+                                <li class="nav-item" role="presentation">
+                                    <a class="nav-link" id="item-{{ $loop->index }}-tab" data-toggle="tab"
+                                        href="#item-{{ $loop->index }}" role="tab" aria-controls="item-{{ $loop->index }}" aria-selected="true">
+                                        <img src="{{ Str::startsWith($product_image->image_url, ['http://', 'https://']) ? $product_image->image_url : asset('storage/' . $product_image->image_url) }}"
+                                            alt="{{$product->slug}}"
+                                        >
+                                    </a>
+                                </li>
+                            @empty
+
+                            @endforelse
                             {{-- <li class="nav-item" role="presentation">
                                 <a class="nav-link" id="item-two-tab" data-toggle="tab" href="#item-two" role="tab" aria-controls="item-two" aria-selected="false"><img src="img/product/sd_nav_img02.jpg" alt=""></a>
                             </li>
@@ -43,19 +63,24 @@
                         <div class="tab-content" id="myTabContent">
                             <div class="tab-pane fade show active" id="item-one" role="tabpanel" aria-labelledby="item-one-tab">
                                 <div class="shop-details-img">
-                                    <img src="{{ Str::startsWith($product->image_url, ['http://', 'https://']) ? $product->image_url : asset('storage/' . $product->image_url) }}" alt="">
+                                    <img src="{{ Str::startsWith($product->image_url, ['http://', 'https://']) ? $product->image_url : asset('storage/' . $product->image_url) }}" alt="$product->slug">
                                 </div>
                             </div>
-                            <div class="tab-pane fade" id="item-two" role="tabpanel" aria-labelledby="item-two-tab">
-                                <div class="shop-details-img">
-                                    <img src="img/product/shop_details_img02.jpg" alt="">
+
+                            @forelse ($product_images as $product_image)
+                                <div class="tab-pane fade" id="item-{{ $loop->index }}" role="tabpanel" aria-labelledby="item-{{ $loop->index }}-tab">
+                                    <div class="shop-details-img">
+                                        <img src="{{ Str::startsWith($product_image->image_url, ['http://', 'https://']) ? $product_image->image_url : asset('storage/' . $product_image->image_url) }}" alt="$product->slug">
+                                    </div>
                                 </div>
-                            </div>
-                            <div class="tab-pane fade" id="item-three" role="tabpanel" aria-labelledby="item-three-tab">
+                            @empty
+
+                            @endforelse
+                            {{-- <div class="tab-pane fade" id="item-three" role="tabpanel" aria-labelledby="item-three-tab">
                                 <div class="shop-details-img">
                                     <img src="{{ asset('storage/' . $product->image_url) }}" alt="no image">
                                 </div>
-                            </div>
+                            </div> --}}
                         </div>
                     </div>
                 </div>

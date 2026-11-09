@@ -3,6 +3,7 @@
 namespace App\Http\Controllers;
 
 use App\Models\Country;
+use App\Models\Contact;
 use App\Models\Order;
 use App\Services\CartService;
 use Illuminate\Http\Request;
@@ -45,6 +46,7 @@ class OrderController extends Controller
      */
     public function store(Request $request)
     {        
+        // dd($request->all());
         $cartService = new CartService();
         $cart = auth()->check() ? auth()->user()->cart : $cartService->getGuestCart();
         $cart_items = $cart->cartItems;
@@ -89,6 +91,16 @@ class OrderController extends Controller
                     ];
                 })->toArray(),
             ]);
+
+            if ($request->consented) {
+                Contact::create([
+                    'email' => $request->email,
+                    'name' => "{$request->fname} {$request->lname}",
+                    'phone' => $request->phone,
+                    'consented' => true ,
+                    'source' => "Purchase",
+                ]);
+            }
     
             // Clear the cart
             if ($order) {

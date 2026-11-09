@@ -24,10 +24,10 @@
             <div class="mb-4">
                 <label class="form-label">Status<span class="text-danger scale5 ms-2">*</span></label>
                 <select class="nice-select default-select wide form-control" name="is_active">
-                    <option value="1" @selected(old('status', $selected_category->status ?? '') == '1')>Active</option>
-                    <option value="0" @selected(old('status', $selected_category->status ?? '') == '0')>Inactive</option>
+                    <option value="1" @selected(old('is_active', $selected_category->is_active ?? '') == '1')>Active</option>
+                    <option value="0" @selected(old('is_active', $selected_category->is_active ?? '') == '0')>Inactive</option>
                 </select>
-                <x-input-error :messages="$errors->get('status')" class="mt-2 text-danger" />
+                <x-input-error :messages="$errors->get('is_active')" class="mt-2 text-danger" />
             </div>
         </div>
 
@@ -35,7 +35,7 @@
     <div class="card-footer text-end">
         <div>
             <a href="javascript:void(0);" class="btn btn-danger light me-3">Close</a>
-            <button type="submit" class="btn btn-primary">Submit</a>
+            <button type="submit" class="btn btn-primary">Submit</button>
         </div>
     </div>
 </div>

@@ -6,6 +6,7 @@ use App\Http\Requests\ProductRequest;
 use App\Models\Category;
 use App\Models\Favourite;
 use App\Models\Product;
+use App\Models\ProductImage;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Validator;
 use Illuminate\Routing\Controllers\HasMiddleware;
@@ -47,16 +48,15 @@ class ProductController extends Controller implements HasMiddleware
      */
     public function store(ProductRequest $request)
     {
-       try {
-            
+        // dd($request->all());
+        try {
             $filename = null;
             $file_path = null;
 
             if ($request->hasFile('image_url')) {
                 $filename = time(). '-' . $request->slug. '.' . $request->image_url->extension();
                 $file_path = $request->image_url->storeAs('images/product_images',  $filename, 'public');
-            } 
-            // dd( $request->is_active);
+            }
            $product = Product::create([
                'name' => $request->name,
                'description' => $request->description,
@@ -68,6 +68,31 @@ class ProductController extends Controller implements HasMiddleware
                'category_id' => $request->category_id,
                'user_id' => Auth::user()->id,
            ]);
+            // handle multiple images upload
+            if ($request->hasFile('images')) {
+                foreach ($request->file('images') as $index => $image) {
+                    $filename = time() . "-{$index}-" . $request->slug . '.' . $image->extension();
+                    $path = $image->storeAs('images/product_images', $filename, 'public');
+                    $img = ProductImage::create([
+                        'product_id' => $product->id,
+                        'image_url' => $path,
+                        'sort_order' => $index,
+                    ]);
+                    if (!$product->image_url) {
+                        $product->image_url = $path;
+                        $product->save();
+                    }
+                }
+            }
+
+            // set explicit primary image if provided
+            if ($request->filled('primary_image')) {
+                $primary = ProductImage::where('id', $request->primary_image)->where('product_id', $product->id)->first();
+                if ($primary) {
+                    $product->image_url = $primary->image_url;
+                    $product->save();
+                }
+            }
        } catch (\Throwable $th) {
         throw $th;
        }
@@ -108,21 +133,61 @@ class ProductController extends Controller implements HasMiddleware
     public function update(ProductRequest $request, Product $product)
     {
         // dd($request->all());
-
         try {
-            $filename = $product->image_url; // Keep existing image
             $file_path = $product->image_url;
-    
-            if ($request->hasFile('image_url')) {
-                // Delete old image if exists
-                if ($product->image_url && Storage::disk('public')->exists($product->image_url)) {
-                    Storage::disk('public')->delete($product->image_url);
+
+            // Single primary upload (optional)
+            // if ($request->hasFile('image_url')) {
+            //     if ($product->image_url && Storage::disk('public')->exists($product->image_url)) {
+            //         Storage::disk('public')->delete($product->image_url);
+            //     }
+
+            //     $filename = time() . '-' . $request->slug . '.' . $request->image_url->extension();
+            //     $file_path = $request->image_url->storeAs('images/product_images', $filename, 'public');
+            // }
+
+            // Remove selected images
+            if ($request->filled('remove_images')) {
+                foreach ($request->remove_images as $removeId) {
+                    $img = ProductImage::where('id', $removeId)->where('product_id', $product->id)->first();
+                    if ($img) {
+                        if ($img->image_url && Storage::disk('public')->exists($img->image_url)) {
+                            Storage::disk('public')->delete($img->image_url);
+                        }
+                        // If the removed image was the product primary, clear it so we can set another
+                        if ($product->image_url === $img->image_url) {
+                            $file_path = null;
+                        }
+                        $img->delete();
+                    }
                 }
-    
-                $filename = time() . '-' . $request->slug . '.' . $request->image_url->extension();
-                $file_path = $request->image_url->storeAs('images/product_images', $filename, 'public');
             }
-    
+
+            // Add newly uploaded gallery images
+            if ($request->hasFile('images')) {
+                $maxSort = $product->images()->max('sort_order') ?? 0;
+                foreach ($request->file('images') as $index => $image) {
+                    $filename = time() . "-{$index}-" . $request->slug . '.' . $image->extension();
+                    $path = $image->storeAs('images/product_images', $filename, 'public');
+                    ProductImage::create([
+                        'product_id' => $product->id,
+                        'image_url' => $path,
+                        'sort_order' => ++$maxSort,
+                    ]);
+                    if (!$file_path) {
+                        $file_path = $path;
+                    }
+                }
+            }
+
+            // Set primary image from selection
+            if ($request->filled('primary_image')) {
+                $primary = ProductImage::where('id', $request->primary_image)->where('product_id', $product->id)->first();
+                if ($primary) {
+                    $file_path = $primary->image_url;
+                }
+            }
+
             $product->update([
                 'name' => $request->name,
                 'description' => $request->description,
@@ -133,11 +198,11 @@ class ProductController extends Controller implements HasMiddleware
                 'is_active' => $request->is_active ? 1 : 0,
                 'category_id' => $request->category_id,
             ]);
-    
+
         } catch (\Throwable $th) {
             throw $th;
         }
-    
+
         flash()->success('Product updated successfully');
         return back();
     }
@@ -150,9 +215,12 @@ class ProductController extends Controller implements HasMiddleware
         if ($product->image_url && Storage::disk('public')->exists($product->image_url)) {
             Storage::disk('public')->delete($product->image_url);
         }
-        foreach ($product->images as $image) {
-            if ($image->image_url && Storage::disk('public')->exists($image->image_url)) {
-                Storage::disk('public')->delete($image->image_url);
+        $product_images = $product->images;
+        if ($product_images) {
+            foreach ($product_images as $image) {
+                if ($image->image_url && Storage::disk('public')->exists($image->image_url)) {
+                    Storage::disk('public')->delete($image->image_url);
+                }
             }
         }
         foreach ($product->favourites as $favourite) {
