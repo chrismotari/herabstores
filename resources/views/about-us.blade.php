@@ -164,8 +164,8 @@
                             <div class="newsletter-form">
                                 <form action="{{route('contacts.store')}}" method="post">
                                     @csrf
-                                    <input type="email" placeholder="Email address">
-                                    <button typee="submit" class="btn">subscribe</button>
+                                    <input type="email" placeholder="Email address" required name="email">
+                                    <button type="submit" class="btn">subscribe</button>
                                 </form>
                             </div>
                             <img src="img/images/newsletter_shape01.png" alt="" class="newsletter-shape top-shape wow fadeInDownBig" data-wow-delay=".3s">

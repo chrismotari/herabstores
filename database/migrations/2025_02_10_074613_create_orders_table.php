@@ -17,6 +17,7 @@ return new class extends Migration
             $table->uuid('order_number')->unique();
             $table->foreignUuid("user_id")->nullable()->constrained("users");
             $table->decimal("total", 10, 2)->default(0);//calculated value
+            $table->decimal("shipping_fee", 10, 2)->default(0);
             $table->json('order_items');//add all cart items in json format once the order is placed
             $table->string("status")->nullable();
             $table->string("payment_status")->nullable();
@@ -40,10 +41,13 @@ return new class extends Migration
             $table->string("email")->nullable();
             $table->string("address")->nullable();
             $table->string("city")->nullable();
-            $table->foreignUuid("estate_id")->nullable()->constrained("estates");
+            // $table->foreignUuid("estate_id")->nullable()->constrained("estates");
             $table->foreignUuid("country_id")->nullable()->constrained("countries");
             $table->string("message")->nullable();
-            $table->string("referee_code")->nullable(); // create referee code table
+            $table->foreignUuid("ref_id")->nullable()->constrained(); 
+            $table->foreignUuid("store_id")->nullable()->constrained(); 
+            $table->foreignUuid("delivery_zone")->constrained(); 
+            $table->foreignUuid("courier_id")->nullable()->constrained(); 
 
             $table->timestamps();
         });

@@ -90,7 +90,7 @@
                     <h4 class="title">{{$product->name}}</h4>
                     <div class="shop-details-meta">
                         <ul>
-                            <li>Baands : <a href="{{route('shop')}}">Herab</a></li>
+                            <li>Brands : <a href="{{route('shop')}}">Herab</a></li>
                             <li class="shop-details-review">
                                 <div class="rating">
                                     <i class="fas fa-star"></i>
@@ -105,7 +105,7 @@
                         </ul>
                     </div>
                     <div class="shop-details-price">
-                        <h2 class="price"> Ksh {{$product->price}}</h2>
+                        <h2 class="price"> Ksh <span id="product-price-product">{{$product->price}}</span></h2>
                         <h5 class="stock-status">- {{$product->is_in_stock}}</h5>
                     </div>
                     <p>{{$product->description}}</p>
@@ -118,13 +118,14 @@
                         @csrf
                         <div class="shop-perched-info">
                             <div class="sd-cart-wrap">
-                                
-                                    <div class="cart-plus-minus">
-                                        <input type="text" value="1" name="quantity">
-                                    </div>
-                                    
+                                <div class="cart-plus-minus">
+                                    <input type="text" value="1" name="quantity" class="cart-plus-minus-box" data-index="product">
+                                    <div class="dec qtybutton" data-index="product" >-</div>
+                                    <div class="inc qtybutton" data-index="product" >+</div>
                                 </div>
-                                <input type="text" hidden value="{{$product->id}}" name="product_id">
+                            </div>
+                            <h5 class="price"> Ksh <span class="mr-4" id="total-amount-product">{{$product->price}}</span></h5>    
+                            <input type="text" hidden value="{{$product->id}}" name="product_id">
                             <button type="submit" class="btn">add to cart</button>
                         </div>
                     </form>

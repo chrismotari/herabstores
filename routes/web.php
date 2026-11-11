@@ -5,6 +5,9 @@ use App\Http\Controllers\CartController;
 use App\Http\Controllers\CartItemController;
 use App\Http\Controllers\CategoryController;
 use App\Http\Controllers\ContactController;
+use App\Http\Controllers\CountyController;
+use App\Http\Controllers\DeliveryZoneController;
+use App\Http\Controllers\EstateController;
 use App\Http\Controllers\FavouriteController;
 use App\Http\Controllers\MassAddController;
 use App\Http\Controllers\ProfileController;
@@ -12,6 +15,7 @@ use App\Http\Controllers\UserController;
 use App\Http\Controllers\OrderController;
 use App\Http\Controllers\PermissionController;
 use App\Http\Controllers\ProductController;
+use App\Http\Controllers\RefController;
 use App\Http\Controllers\RoleController;
 use App\Http\Controllers\BasketController;
 use App\Models\Product;
@@ -45,11 +49,16 @@ Route::middleware('auth')->group(function () {
     Route::resource('users', UserController::class);
     Route::resource('roles', RoleController::class);
     Route::resource('permissions', PermissionController::class);
-    Route::resource('products', ProductController::class);
+    Route::resource('products', ProductController::class)->except(['show']);
     Route::resource('users', UserController::class);
     Route::resource('categories', CategoryController::class);
     Route::resource('favourites', FavouriteController::class);
-
+    Route::resource('estates', EstateController::class);
+    Route::resource('delivery_zones', DeliveryZoneController::class);
+    Route::resource('counties', CountyController::class);
+    Route::resource('refs', RefController::class);
+    
+    
     Route::get('/home', function () {
         return redirect('/');
     })->name('home');
@@ -62,6 +71,7 @@ Route::delete('/cart-items/remove/{product}', [CartItemController::class, 'destr
 
 Route::resource('carts', CartController::class)->except(['show']);
 Route::get('/carts/show/{cart?}', [CartController::class, 'show'])->name('carts.show');
+Route::get('/products/{product?}', [ProductController::class, 'show'])->name('products.show');
 
 Route::get('shop', function () {
     return view('shop')->with('products', Product::all());

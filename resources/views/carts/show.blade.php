@@ -113,7 +113,7 @@
                                                 </div> --}}
                                             </div>
                                         </li>
-                                        <li class="cart-total-amount"><span>Total Payable</span> <span class="amount">KSHS {{$cart->total + 150}} </span></li>
+                                        <li class="cart-total-amount"><span>Cart Total</span> <span class="amount">KSHS {{$cart->total + 150}} </span></li>
                                     </ul>
                                     <a href="{{ route("orders.create") }}" class="btn">PROCEED TO CHECKOUT</a>
                                 </form>

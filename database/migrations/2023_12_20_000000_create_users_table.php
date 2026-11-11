@@ -22,9 +22,9 @@ return new class extends Migration
             $table->string('alt_email')->unique()->nullable();
             $table->string('address');
             $table->string('city');
-            $table->foreignUuid('estate_id')->nullable()->constrained('estates');
+            $table->foreignUuid('delivery_zone_id')->nullable()->constrained();
             $table->string('street')->nullable();
-            $table->foreignUuid("country_id")->restrictOnDelete()->constrained('countries');
+            $table->foreignUuid("country_id")->nullable()->restrictOnDelete()->constrained('countries');
             $table->string('photo_url')->nullable();
             $table->date('dob')->nullable();
             $table->boolean('is_active')->default(1);

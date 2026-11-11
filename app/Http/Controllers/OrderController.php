@@ -3,8 +3,10 @@
 namespace App\Http\Controllers;
 
 use App\Models\Country;
+use App\Models\Estate;
 use App\Models\Contact;
 use App\Models\Order;
+use App\Models\Ref;
 use App\Services\CartService;
 use Illuminate\Http\Request;
 use Illuminate\Routing\Controllers\Middleware;
@@ -21,10 +23,18 @@ class OrderController extends Controller
     /**
      * Display a listing of the resource.
      */
-    public function index()
+    public function index(Request $request)
     {
+        $query = Order::query();
+
+        if ($request->query('status') === 'new') {
+            $query->where('status', 'new'); 
+        }
+
+        $orders = $query->get();
+
         return view('orders.index', [
-            'orders' => Order::all(),
+            'orders' => $orders,
         ]);
     }
 
@@ -35,9 +45,10 @@ class OrderController extends Controller
     {
         $cartService = new CartService();
         return view('orders.create', [
-            'user' => Auth::user(),
+            'selected_user' => Auth::user(),
             'cart' =>  auth()->check() ? auth()->user()->cart : $cartService->getGuestCart(),
-            'countries' => Country::all(),
+            'estates' => Estate::all(),
+            'refs' => Ref::all(),
         ]);
     }
 
@@ -46,7 +57,8 @@ class OrderController extends Controller
      */
     public function store(Request $request)
     {        
-        // dd($request->all());
+        // dd($request);
+        $estate = Estate::find($request->estate_id);
         $cartService = new CartService();
         $cart = auth()->check() ? auth()->user()->cart : $cartService->getGuestCart();
         $cart_items = $cart->cartItems;
@@ -67,6 +79,8 @@ class OrderController extends Controller
                 'payment_method' => $request->payment_method,
                 'shipping_method' => $request->shipping_method,
                 // 'paid_at',
+                // 'amount_paid',
+                'shipping_fees' => $estate->delivery_fees,
                 'completed_at' => now(),
                 'fname' => $request->fname,
                 'lname' => $request->lname,
@@ -79,7 +93,7 @@ class OrderController extends Controller
                 'estate_id' => $request->estate_id,
                 'country_id' => $request->country_id,
                 'message' => $request->message,
-                'referee_code' => $request->referee_code,
+                'ref_id' => $request->ref_id,
                 'order_items' => $cart_items->map(function ($item) {
                     return [
                         'product_id' => $item->product_id,
@@ -87,7 +101,7 @@ class OrderController extends Controller
                         'price' => $item->price,
                         'quantity' => $item->quantity,
                         'discount' => 0,
-                        'description' => "Description",
+                        'description' => "No description",
                     ];
                 })->toArray(),
             ]);
