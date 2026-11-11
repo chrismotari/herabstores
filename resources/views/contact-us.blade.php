@@ -22,18 +22,26 @@
                                 @csrf
                                 <div class="form-grp">
                                     <label for="name">Your Name <span>*</span></label>
-                                    <input type="text" id="name" placeholder="Jon Deo..." name="name">
+                                    <input type="text" id="name" placeholder="Jon Deo..." name="name" required>
+                                </div>
+                                <div class="form-grp">
+                                    <label for="phone">Your Phone no. <span></span></label>
+                                    <input type="text" id="phone" placeholder="+254 712 345 678" name="phone">
                                 </div>
                                 <div class="form-grp">
                                     <label for="email">Your Email <span>*</span></label>
-                                    <input type="text" id="email" placeholder="info.example@.com" name="email">
+                                    <input type="text" id="email" placeholder="info.example@.com" name="email" required>
+                                </div>
+                                <div class="form-grp">
+                                    <label for="subject">Subject <span>*</span></label>
+                                    <input type="email" id="subject" placeholder="Just to inquire" name="subject" required>
                                 </div>
                                 <div class="form-grp">
                                     <label for="message">Your Message <span>*</span></label>
-                                    <textarea id="message" placeholder="Opinion..." name='message' ></textarea>
+                                    <textarea id="message" placeholder="Opinion..." name='message' required></textarea>
                                 </div>
                                 <div class="form-grp checkbox-grp">
-                                    <input type="checkbox" id="checkbox">
+                                    <input type="checkbox" id="checkbox" name="consented">
                                     <label for="checkbox">Don’t show your email address</label>
                                 </div>
                                 <button type="submit" class="btn rounded-btn">Send Now</button>

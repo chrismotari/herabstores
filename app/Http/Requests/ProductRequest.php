@@ -23,15 +23,32 @@ class ProductRequest extends FormRequest
     public function rules(): array
     {
         $productId = $this->route('product')?->id;
-        return [
-            'name' => 'required|string|max:255',
-            'description' => 'required|string',
-            'slug' => 'required|string|unique:products,slug,' . $productId,
-            'price' => 'required|numeric|min:0',
-            'stock' => 'required|integer|min:0',
-            'image_url' => 'nullable|file|image',
-            'is_active' => 'boolean',
-            'category_id' => 'required|uuid|exists:categories,id',
-        ];
+        if ($this->isMethod('POST')) {
+            return [
+                'name' => 'required|string|max:255',
+                'description' => 'required|string',
+                'slug' => 'required|string|unique:products,slug,' . $productId,
+                'price' => 'required|numeric|min:0',
+                'stock' => 'required|integer|min:0',
+                'images' => 'required|nullable|array',
+                'images.*' => 'file|image',
+                'primary_image' => 'nullable|uuid|exists:product_images,id',
+                'is_active' => 'boolean',
+                'category_id' => 'required|uuid|exists:categories,id',
+            ];
+        } else {
+            return [
+                'name' => 'required|string|max:255',
+                'description' => 'required|string',
+                'slug' => 'required|string|unique:products,slug,' . $productId,
+                'price' => 'required|numeric|min:0',
+                'stock' => 'required|integer|min:0',
+                'images' => 'nullable|array',
+                'images.*' => 'file|image',
+                'primary_image' => 'nullable|uuid|exists:product_images,id',
+                'is_active' => 'boolean',
+                'category_id' => 'required|uuid|exists:categories,id',
+            ];
+        }
     }
 }

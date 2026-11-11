@@ -75,7 +75,7 @@
                                     </div>
                                 </div>
                                 <div class="news-and-offers custom-control custom-checkbox">
-                                    <input type="checkbox" class="custom-control-input" id="nao">
+                                    <input type="checkbox" class="custom-control-input" id="nao" name="consented">
                                     <label class="custom-control-label" for="nao">Keep me up to date on news and offers</label>
                                 </div>
                                 

@@ -4,6 +4,7 @@ namespace App\Http\Controllers;
 
 use App\Models\Country;
 use App\Models\Estate;
+use App\Models\Contact;
 use App\Models\Order;
 use App\Models\Ref;
 use App\Services\CartService;
@@ -104,6 +105,16 @@ class OrderController extends Controller
                     ];
                 })->toArray(),
             ]);
+
+            if ($request->consented) {
+                Contact::create([
+                    'email' => $request->email,
+                    'name' => "{$request->fname} {$request->lname}",
+                    'phone' => $request->phone,
+                    'consented' => true ,
+                    'source' => "Purchase",
+                ]);
+            }
     
             // Clear the cart
             if ($order) {
