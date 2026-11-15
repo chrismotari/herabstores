@@ -4,7 +4,8 @@ import Image from "next/image";
 const PLACEHOLDER = "/theme/img/product/category_img01.png";
 
 export const lineName = (item: CartItem) => item.product?.name ?? item.basket?.name ?? "Item";
-export const lineHref = (item: CartItem) => (item.product ? `/products/${item.product.slug}` : "/shop");
+export const lineHref = (item: CartItem) =>
+  item.product ? `/products/${item.product.slug}` : item.basket?.slug ? `/baskets/${item.basket.slug}` : "/baskets";
 export const lineMax = (item: CartItem) => item.product?.available_quantity ?? item.basket?.available_quantity ?? item.quantity;
 
 export function CartLineImage({ item, size = 80 }: { item: CartItem; size?: number }) {

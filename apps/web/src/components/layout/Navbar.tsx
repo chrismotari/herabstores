@@ -6,6 +6,7 @@ import { CategoryMenu, MobileMenu, MobileMenuToggle, StickyHeader } from "./Navb
 export const MAIN_NAV = [
   { href: "/", label: "Home" },
   { href: "/shop", label: "Shop" },
+  { href: "/baskets", label: "Baskets" },
   { href: "/account/orders", label: "My Orders" },
   { href: "/about-us", label: "About Us" },
   { href: "/contact-us", label: "Contact" },
