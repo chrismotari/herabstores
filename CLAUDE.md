@@ -70,4 +70,4 @@ Seeded logins: `admin@mail.com` / `password` (admin), `user@mail.com` / `passwor
 - Don't commit `.env`, `vendor/`, `node_modules/`, or `database/database.sqlite`.
 - Don't edit files under `public/ganic-live`, `public/backend` or `vendor/`. They're third-party theme and library assets.
 - Don't delete Blade views or web routes until the matching `spec.md` cut-over task says so. The site must keep working during migration.
-- Commit on a feature branch, never directly on `main`. Keep commits scoped to one spec task.
+- Work directly on `main` (no feature branches or PRs unless asked). Commit at every stage: one commit per spec task (or per step within a large task), with tests and Pint passing first.

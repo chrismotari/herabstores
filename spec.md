@@ -4,8 +4,7 @@ Legend: `[ ]` todo · `[~]` in progress · `[x]` done (with date) · `[-]` dropp
 
 ## Current focus
 
-**Phase 2 → task 2.1**: upgrade Laravel 11 → 12.
-Waiting on review (stacked, merge in order): PRs #5 → #6 → #7 → #8 → #9 → #10.
+**Phase 2 → task 2.1**: upgrade Laravel 11 → 12. Then 2.3 (drop Inertia/Breeze), then 2.2 (→ 13).
 
 ## Goal
 
@@ -20,9 +19,9 @@ sharing one generated TypeScript client (`packages/shared`). Payments: **pay on 
 
 | Phase | Status |
 |---|---|
-| 0. Prep repo for Claude | done (PR awaiting merge) |
-| 1. Safety net and security fixes | done (PRs awaiting merge) |
-| 2. Upgrade to Laravel 13 | todo |
+| 0. Prep repo for Claude | done |
+| 1. Safety net and security fixes | done |
+| 2. Upgrade to Laravel 13 | in progress |
 | 3. REST API v1 | todo |
 | 4. Filament admin | todo |
 | 5. Next.js storefront | todo |
@@ -37,7 +36,7 @@ sharing one generated TypeScript client (`packages/shared`). Payments: **pay on 
 - [x] 0.2 Add `CLAUDE.md` and `spec.md` at repo root. *2026-11-15*
 - [x] 0.3 Make tests use in-memory SQLite (`api/phpunit.xml`). They were wiping the dev DB. *2026-11-15*
 - [x] 0.4 Record the test baseline: **4 passed, 21 failed** (Breeze tests don't fill required `users.fname`). *2026-11-15*
-- [~] 0.5 Open a PR for Phase 0 and merge it. Branch pushed. PR waiting on `gh auth login`.
+- [x] 0.5 Open a PR for Phase 0 and merge it. *2026-11-15*: #5. Phase 1 went in as #11.
 - [x] 0.6 Add a GitHub Actions CI workflow for `api/` that runs Pint (`--test`) and Pest.
   - Accept: CI runs on PRs. *2026-11-15*: `.github/workflows/api.yml`. Pint was applied to all of `api/` in one style-only commit.
 
@@ -144,4 +143,5 @@ sharing one generated TypeScript client (`packages/shared`). Payments: **pay on 
 | 2026-11-15 | Delivery is priced **per delivery zone**. Estates don't carry a fee | One source of truth for fees. Matches the `orders.delivery_zone` column |
 | 2026-11-15 | Sanctum: SPA cookies for web, tokens for mobile | First-party clients, no OAuth needed |
 | 2026-11-15 | Guest cart via `X-Cart-Token` instead of session | The API must be stateless for mobile |
+| 2026-11-15 | Work directly on `main` and commit at every stage | Owner's preference after Phase 1 |
 | 2026-11-15 | Upgrade Laravel 11 → 12 → 13 one major at a time, after tests exist | Lower risk, and failures are easy to attribute |
