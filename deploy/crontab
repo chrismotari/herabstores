@@ -1,0 +1,3 @@
+# Laravel scheduler (housekeeping: guest carts, expired tokens, failed jobs). Install with `crontab -e`
+# as the web user; set the path.
+* * * * * cd /var/www/herabstores/api && php artisan schedule:run >> /dev/null 2>&1

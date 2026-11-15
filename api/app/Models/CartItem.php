@@ -21,6 +21,9 @@ class CartItem extends Model
         'quantity',
     ];
 
+    /** Changing an item counts as activity on the cart (see Cart::prunable). */
+    protected $touches = ['cart'];
+
     public function cart()
     {
         return $this->belongsTo(Cart::class);

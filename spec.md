@@ -158,8 +158,8 @@ sharing one generated TypeScript client (`packages/shared`). Payments: **pay on 
 
 ## Phase 7: Cut-over and cleanup
 
-- [ ] 7.1 Run a queue worker in production (revalidation webhooks, emails).
-- [ ] 7.2 Deploy: API on `api.<domain>`, Next.js on `<domain>`. Set env/CORS/Sanctum domains for production.
+- [~] 7.1 Run a queue worker in production (revalidation webhooks, emails). *2026-11-15*: ready to install: `deploy/herabs-worker.conf` (Supervisor) and `deploy/crontab` (scheduler). Scheduled daily housekeeping: abandoned guest carts pruned after 30 days (`Cart::prunable`; item changes now touch the cart), expired Sanctum tokens, password resets, failed jobs. Remaining: install on the server (needs hosting).
+- [ ] 7.2 Deploy: API on `api.<domain>`, Next.js on `<domain>`. Set env/CORS/Sanctum domains for production. Step-by-step checklist with every env var: `deploy/README.md` (waiting on hosting and the domain).
 - [ ] 7.3 Switch DNS to Next.js and check that 301s, the sitemap (submitted to Search Console) and canonicals work.
 - [x] 7.4 Remove the Blade storefront views, web routes, `public/ganic-live`, Vite/Tailwind config in `api/`, and `php-flasher`. *2026-11-15*: done ahead of 7.2/7.3 at the user's request; the last commit with the Blade site is tagged `blade-storefront-final` (deploy that tag if the old site must keep running until DNS moves). Removed Blade views, storefront and Breeze controllers/routes, theme assets (`public/ganic-live`, `backend`, `css`, `js`, `fonts`, `img`, `vendor`; Filament's generated assets stay), Vite/Tailwind/npm, php-flasher. Before removing, the business rules only the Blade tests covered were ported to `tests/Feature/Api/V1/CheckoutRulesTest.php`, and email verification moved to a signed API link (`GET /api/v1/auth/email/verify/{id}/{hash}`, no login needed, redirects to the website). The API domain: `/` redirects to the shop, `/dashboard` to `/admin`, robots.txt disallows all, guests needing a login go to the website's /login. Tests: 269 (web-route tests removed).
 - [ ] 7.5 Update `CLAUDE.md` and `README.md` to the final architecture.
