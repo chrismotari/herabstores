@@ -62,6 +62,12 @@ Route::prefix('v1')->name('api.v1.')->group(function () {
 
         Route::get('session', 'session')->name('session');
 
+        // Opened from the verification email: signed + expiring, no login needed.
+        // The verification email links here (VerifyEmail::createUrlUsing in AppServiceProvider).
+        Route::get('email/verify/{id}/{hash}', 'verifyEmail')
+            ->middleware(['signed', 'throttle:6,1'])->whereUuid('id')
+            ->name('verify-email');
+
         Route::middleware('auth:sanctum')->group(function () {
             Route::post('logout', 'logout')->name('logout');
             Route::post('email/verification-notification', 'sendVerificationEmail')

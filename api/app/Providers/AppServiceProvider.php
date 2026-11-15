@@ -16,11 +16,13 @@ use Dedoc\Scramble\Scramble;
 use Dedoc\Scramble\Support\Generator\OpenApi;
 use Dedoc\Scramble\Support\Generator\SecurityScheme;
 use Illuminate\Auth\Notifications\ResetPassword;
+use Illuminate\Auth\Notifications\VerifyEmail;
 use Illuminate\Cache\RateLimiting\Limit;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Facades\Gate;
 use Illuminate\Support\Facades\RateLimiter;
+use Illuminate\Support\Facades\URL;
 use Illuminate\Support\Facades\View;
 use Illuminate\Support\Facades\Vite;
 use Illuminate\Support\ServiceProvider;
@@ -42,14 +44,15 @@ class AppServiceProvider extends ServiceProvider
     {
         $this->configureRateLimiting();
 
-        // Password reset emails link to the Next.js storefront when it is configured.
-        ResetPassword::createUrlUsing(function ($user, string $token) {
-            $base = config('services.storefront.url');
-
-            return $base
-                ? rtrim($base, '/').'/reset-password?'.http_build_query(['token' => $token, 'email' => $user->getEmailForPasswordReset()])
-                : url(route('password.reset', ['token' => $token, 'email' => $user->getEmailForPasswordReset()], false));
-        });
+        // Email links. Reset: the website's reset page (it calls POST /auth/reset-password).
+        // Verify: a signed API URL that confirms and then redirects to the website.
+        ResetPassword::createUrlUsing(fn ($user, string $token) => rtrim((string) config('services.storefront.url'), '/')
+            .'/reset-password?'.http_build_query(['token' => $token, 'email' => $user->getEmailForPasswordReset()]));
+        VerifyEmail::createUrlUsing(fn ($user) => URL::temporarySignedRoute(
+            'api.v1.auth.verify-email',
+            now()->addMinutes(config('auth.verification.expire', 60)),
+            ['id' => $user->getKey(), 'hash' => sha1($user->getEmailForVerification())],
+        ));
 
         // Catalog changes revalidate the Next.js storefront (see RevalidateStorefront).
         foreach ([Product::class, Category::class, Basket::class] as $model) {

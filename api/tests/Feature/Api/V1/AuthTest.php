@@ -4,10 +4,13 @@ use App\Models\Cart;
 use App\Models\Product;
 use App\Models\User;
 use App\Services\CartService;
+use Illuminate\Auth\Events\Verified;
 use Illuminate\Auth\Notifications\ResetPassword;
 use Illuminate\Auth\Notifications\VerifyEmail;
+use Illuminate\Support\Facades\Event;
 use Illuminate\Support\Facades\Notification;
 use Illuminate\Support\Facades\Password;
+use Illuminate\Support\Facades\URL;
 
 const SPA = ['Origin' => 'http://localhost:3000', 'Referer' => 'http://localhost:3000/'];
 
@@ -192,7 +195,41 @@ test('unverified users can request a verification email', function () {
     Notification::assertSentTo($user, VerifyEmail::class);
 });
 
-test('reset links point to the storefront when configured', function () {
+test('the verification email links to a signed API URL that works without logging in', function () {
+    config(['services.storefront.url' => 'https://shop.example']);
+    Notification::fake();
+    Event::fake([Verified::class]);
+    $user = User::factory()->unverified()->create();
+    $user->sendEmailVerificationNotification();
+
+    $url = null;
+    Notification::assertSentTo($user, VerifyEmail::class, function (VerifyEmail $n) use ($user, &$url) {
+        $url = $n->toMail($user)->actionUrl;
+
+        return true;
+    });
+    expect($url)->toContain('/api/v1/auth/email/verify/'.$user->id.'/');
+
+    $this->get($url)->assertRedirect('https://shop.example/account?verified=1');
+    expect($user->fresh()->hasVerifiedEmail())->toBeTrue();
+    Event::assertDispatched(Verified::class);
+
+    $this->get($url)->assertRedirect('https://shop.example/account?verified=1'); // clicking again is harmless
+});
+
+test('verification links with a bad signature or hash are rejected', function () {
+    $user = User::factory()->unverified()->create();
+    $signed = fn (string $hash) => URL::temporarySignedRoute('api.v1.auth.verify-email', now()->addHour(), ['id' => $user->id, 'hash' => $hash]);
+
+    $this->getJson($signed(sha1('someone-else@example.com')))->assertForbidden();
+    $this->getJson('/api/v1/auth/email/verify/'.$user->id.'/'.sha1($user->email))->assertForbidden(); // unsigned
+    $this->getJson(URL::temporarySignedRoute('api.v1.auth.verify-email', now()->subMinute(), ['id' => $user->id, 'hash' => sha1($user->email)]))
+        ->assertForbidden(); // expired
+
+    expect($user->fresh()->hasVerifiedEmail())->toBeFalse();
+});
+
+test('reset links point to the storefront', function () {
     config(['services.storefront.url' => 'https://shop.example']);
     Notification::fake();
     $user = User::factory()->create(['email' => 'reset@example.com']);

@@ -11,7 +11,9 @@ use App\Models\User;
 use App\Services\CartService;
 use Illuminate\Auth\Events\PasswordReset;
 use Illuminate\Auth\Events\Registered;
+use Illuminate\Auth\Events\Verified;
 use Illuminate\Http\JsonResponse;
+use Illuminate\Http\RedirectResponse;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Facades\Hash;
@@ -164,6 +166,31 @@ class AuthController extends Controller
         }
 
         return response()->json(['message' => 'Verification link sent.']);
+    }
+
+    /**
+     * Confirm an email address from the link in the verification email.
+     *
+     * The link is signed and expires, so no login is needed (it's opened from an inbox,
+     * often on another device). Redirects to the website's account page; JSON clients get JSON.
+     */
+    public function verifyEmail(Request $request, string $id, string $hash): JsonResponse|RedirectResponse
+    {
+        $user = User::find($id);
+
+        if (! $user || ! hash_equals(sha1($user->getEmailForVerification()), $hash)) {
+            abort(403, 'This verification link is invalid.');
+        }
+
+        if (! $user->hasVerifiedEmail() && $user->markEmailAsVerified()) {
+            event(new Verified($user));
+        }
+
+        $storefront = config('services.storefront.url');
+
+        return $request->expectsJson() || ! $storefront
+            ? response()->json(['message' => 'Email address confirmed.'])
+            : redirect()->away(rtrim($storefront, '/').'/account?verified=1');
     }
 
     private function ensureCanAuthenticate(Request $request): void

@@ -224,6 +224,27 @@ export interface paths {
         patch?: never;
         trace?: never;
     };
+    "/auth/email/verify/{id}/{hash}": {
+        parameters: {
+            query?: never;
+            header?: never;
+            path?: never;
+            cookie?: never;
+        };
+        /**
+         * Confirm an email address from the link in the verification email
+         * @description The link is signed and expires, so no login is needed (it's opened from an inbox,
+         *     often on another device). Redirects to the website's account page; JSON clients get JSON.
+         */
+        get: operations["v1.auth.verify-email"];
+        put?: never;
+        post?: never;
+        delete?: never;
+        options?: never;
+        head?: never;
+        patch?: never;
+        trace?: never;
+    };
     "/auth/logout": {
         parameters: {
             query?: never;
@@ -1183,6 +1204,53 @@ export interface operations {
                 content: {
                     "application/json": {
                         data: components["schemas"]["UserResource"] | null;
+                    };
+                };
+            };
+        };
+    };
+    "v1.auth.verify-email": {
+        parameters: {
+            query?: never;
+            header?: never;
+            path: {
+                id: string;
+                hash: string;
+            };
+            cookie?: never;
+        };
+        requestBody?: never;
+        responses: {
+            200: {
+                headers: {
+                    [name: string]: unknown;
+                };
+                content: {
+                    "application/json": {
+                        /** @constant */
+                        message: "Email address confirmed.";
+                    };
+                };
+            };
+            302: {
+                headers: {
+                    Location: string;
+                    [name: string]: unknown;
+                };
+                content?: never;
+            };
+            /** @description An error */
+            403: {
+                headers: {
+                    [name: string]: unknown;
+                };
+                content: {
+                    "application/json": {
+                        /**
+                         * @description Error overview.
+                         * @example This verification link is invalid.
+                         */
+                        message: string;
                     };
                 };
             };
