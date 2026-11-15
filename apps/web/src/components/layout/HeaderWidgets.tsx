@@ -3,14 +3,37 @@
 import { formatPrice } from "@herabs/shared";
 import Link from "next/link";
 import { CartLineImage, lineHref, lineName } from "@/components/cart/CartLineImage";
+import { useSession } from "@/components/auth/SessionProvider";
 import { useCart } from "@/components/cart/CartProvider";
 
-/** Account icon. Becomes session-aware in spec 5.8. */
+/** Account icon; when logged in, the theme dropdown with account links. */
 export function HeaderAccount() {
+  const { user, logout } = useSession();
+
   return (
     <li className="header-cart-action">
       <div className="header-cart-wrap">
-        <Link href="/account" aria-label="My account"><i className="flaticon-user" /></Link>
+        <Link href={user ? "/account" : "/login"} aria-label={user ? "My account" : "Log in"}><i className="flaticon-user" /></Link>
+        <ul className="minicart">
+          {user ? (
+            <>
+              <li><div className="cart-content"><h4><Link href="/account">Hello, {user.fname}</Link></h4></div></li>
+              <li>
+                <div className="checkout-link">
+                  <Link href="/account/orders">My orders</Link>
+                  <button type="button" className="black-color border-0" onClick={() => logout()}>Log out</button>
+                </div>
+              </li>
+            </>
+          ) : (
+            <li>
+              <div className="checkout-link">
+                <Link href="/login">Log in</Link>
+                <Link className="black-color" href="/register">Register</Link>
+              </div>
+            </li>
+          )}
+        </ul>
       </div>
     </li>
   );

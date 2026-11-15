@@ -5,6 +5,7 @@ import { notFound } from "next/navigation";
 import { Breadcrumb } from "@/components/Breadcrumb";
 import { AddToCart } from "@/components/cart/AddToCart";
 import { JsonLd } from "@/components/JsonLd";
+import { FavouriteButton } from "@/components/product/FavouriteButton";
 import { getProduct, getSitemapFeed } from "@/lib/api";
 import { describe, productJsonLd } from "@/lib/seo";
 import { ProductGallery } from "./ProductGallery";
@@ -82,6 +83,9 @@ export default async function ProductPage(props: PageProps<"/products/[slug]">) 
                   </div>
                 )}
                 <AddToCart productId={product.id} maxQuantity={product.available_quantity} variant="detail" />
+                <div className="shop-details-bottom">
+                  <FavouriteButton productId={product.id} slug={product.slug} />
+                </div>
               </div>
             </div>
           </div>

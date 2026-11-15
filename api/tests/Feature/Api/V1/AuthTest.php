@@ -191,3 +191,17 @@ test('unverified users can request a verification email', function () {
 
     Notification::assertSentTo($user, VerifyEmail::class);
 });
+
+test('reset links point to the storefront when configured', function () {
+    config(['services.storefront.url' => 'https://shop.example']);
+    Notification::fake();
+    $user = User::factory()->create(['email' => 'reset@example.com']);
+
+    $this->postJson('/api/v1/auth/forgot-password', ['email' => $user->email]);
+
+    Notification::assertSentTo($user, ResetPassword::class, function (ResetPassword $notification) use ($user) {
+        $url = $notification->toMail($user)->actionUrl;
+
+        return str_starts_with($url, 'https://shop.example/reset-password?token=') && str_contains($url, 'email=reset%40example.com');
+    });
+});

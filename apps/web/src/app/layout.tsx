@@ -1,6 +1,7 @@
 import type { Metadata } from "next";
 import { Suspense } from "react";
 import { JsonLd } from "@/components/JsonLd";
+import { SessionProvider } from "@/components/auth/SessionProvider";
 import { CartProvider } from "@/components/cart/CartProvider";
 import { Footer } from "@/components/layout/Footer";
 import { HeaderSearch } from "@/components/layout/HeaderSearch";
@@ -31,6 +32,7 @@ export default function RootLayout({ children }: Readonly<{ children: React.Reac
         ))}
         <JsonLd data={organizationJsonLd()} />
         <CartProvider>
+        <SessionProvider>
         <ScrollTop />
         <header>
           <HeaderTop />
@@ -43,6 +45,7 @@ export default function RootLayout({ children }: Readonly<{ children: React.Reac
         </header>
         <main>{children}</main>
         <Footer />
+        </SessionProvider>
         </CartProvider>
       </body>
     </html>

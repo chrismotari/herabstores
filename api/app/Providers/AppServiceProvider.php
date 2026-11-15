@@ -15,6 +15,7 @@ use App\Services\CartService;
 use Dedoc\Scramble\Scramble;
 use Dedoc\Scramble\Support\Generator\OpenApi;
 use Dedoc\Scramble\Support\Generator\SecurityScheme;
+use Illuminate\Auth\Notifications\ResetPassword;
 use Illuminate\Cache\RateLimiting\Limit;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Auth;
@@ -40,6 +41,15 @@ class AppServiceProvider extends ServiceProvider
     public function boot(): void
     {
         $this->configureRateLimiting();
+
+        // Password reset emails link to the Next.js storefront when it is configured.
+        ResetPassword::createUrlUsing(function ($user, string $token) {
+            $base = config('services.storefront.url');
+
+            return $base
+                ? rtrim($base, '/').'/reset-password?'.http_build_query(['token' => $token, 'email' => $user->getEmailForPasswordReset()])
+                : url(route('password.reset', ['token' => $token, 'email' => $user->getEmailForPasswordReset()], false));
+        });
 
         // Catalog changes revalidate the Next.js storefront (see RevalidateStorefront).
         foreach ([Product::class, Category::class, Basket::class] as $model) {
