@@ -3,6 +3,7 @@
 namespace App\Models;
 
 use App\Traits\UUID;
+use Illuminate\Database\Eloquent\Builder;
 use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Database\Eloquent\Model;
 
@@ -39,7 +40,7 @@ class Product extends Model
 
     public function images()
     {
-        return $this->hasMany(ProductImage::class);
+        return $this->hasMany(ProductImage::class)->orderBy('sort_order');
     }
 
     public const LOW_STOCK_THRESHOLD = 5;
@@ -64,5 +65,14 @@ class Product extends Model
     public function getIsFavouriteAttribute()
     {
         return $this->favourites()->where('user_id', auth()->id())->exists();
+    }
+
+    /**
+     * Products customers can see and buy: active, in an active category.
+     */
+    public function scopeAvailable(Builder $query): Builder
+    {
+        return $query->where('products.is_active', true)
+            ->whereHas('category', fn (Builder $q) => $q->where('is_active', true));
     }
 }

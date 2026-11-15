@@ -1,6 +1,8 @@
 <?php
 
 use App\Http\Controllers\Api\V1\AuthController;
+use App\Http\Controllers\Api\V1\CategoryController;
+use App\Http\Controllers\Api\V1\ProductController;
 use Illuminate\Support\Facades\Route;
 
 /*
@@ -12,6 +14,14 @@ use Illuminate\Support\Facades\Route;
 
 Route::prefix('v1')->name('api.v1.')->group(function () {
     Route::get('/', fn () => ['name' => config('app.name'), 'version' => 'v1'])->name('index');
+
+    // Catalog (public, cacheable)
+    Route::middleware('cache.headers:public;max_age=60;s_maxage=300;etag')->group(function () {
+        Route::get('categories', [CategoryController::class, 'index'])->name('categories.index');
+        Route::get('categories/{slug}', [CategoryController::class, 'show'])->name('categories.show');
+        Route::get('products', [ProductController::class, 'index'])->middleware('throttle:search')->name('products.index');
+        Route::get('products/{slug}', [ProductController::class, 'show'])->name('products.show');
+    });
 
     // Auth
     Route::prefix('auth')->name('auth.')->controller(AuthController::class)->group(function () {

@@ -4,7 +4,7 @@ Legend: `[ ]` todo · `[~]` in progress · `[x]` done (with date) · `[-]` dropp
 
 ## Current focus
 
-**Phase 3 → task 3.9**: public catalog endpoints (categories, products by slug).
+**Phase 3 → task 3.10**: baskets and offers (public read).
 
 ## Goal
 
@@ -81,8 +81,8 @@ sharing one generated TypeScript client (`packages/shared`). Payments: **pay on 
 
 ### 3c. Endpoints (each has a Resource, a Form Request, a Policy and Pest tests)
 - [x] 3.8 Auth: register, login (token + SPA), logout, me, forgot/reset password, verify email. *2026-11-15*: `Api\V1\AuthController` under `/api/v1/auth/*` + `GET /me` (`UserResource`, no admin flag). `device_name` → bearer token; omitted → SPA session. Login/register merge the `X-Cart-Token` guest cart. `throttle:auth` on public endpoints. Logout revokes only the current token. Password reset signs out all devices. Forgot-password doesn't reveal whether an email exists. Inactive users can't log in. The reset/verify email links still point to the Blade pages (see 5.8).
-- [ ] 3.9 Catalog (public): `GET categories`, `GET categories/{slug}`, `GET products` (paginate, filter by category/price, sort, search), `GET products/{slug}`.
-  - Accept: lookups by slug, no N+1 queries (tested), `Cache-Control` headers set.
+- [x] 3.9 Catalog (public): `GET categories`, `GET categories/{slug}`, `GET products` (paginate, filter by category/price, sort, search), `GET products/{slug}`.
+  - Accept: lookups by slug, no N+1 queries (tested), `Cache-Control` headers set. *2026-11-15*: only active products in active categories (`Product::available()`). Filters: `q` (ILIKE, wildcards escaped), `category` (slug), `min_price`/`max_price`, `in_stock`, `sort` (newest/price_asc/price_desc/name), `per_page` ≤ 60. `Cache-Control: public, max-age=60, s-maxage=300` + ETag. `throttle:search` on the listing. `App\Support\MediaUrl` turns stored paths into full URLs.
 - [ ] 3.10 Baskets and offers (public read).
 - [~] 3.11 Guest cart (token storage, header resolution and web-login merge done in 3.5; API endpoints + merge on API login remain): `POST carts` returns a `cart_token`. Cart endpoints accept the `X-Cart-Token` header. The guest cart merges into the user's cart at login.
 - [ ] 3.12 Checkout: `POST orders` (pay on delivery). Delivery locations: `GET counties`, `GET counties/{id}/estates`, `GET delivery-zones` (with fee).
