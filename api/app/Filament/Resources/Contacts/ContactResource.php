@@ -21,7 +21,7 @@ class ContactResource extends Resource
 
     protected static string|UnitEnum|null $navigationGroup = 'Sales';
 
-    protected static ?int $navigationSort = 4;
+    protected static ?int $navigationSort = 5;
 
     protected static ?string $modelLabel = 'message';
 
