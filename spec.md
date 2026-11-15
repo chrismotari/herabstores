@@ -4,7 +4,7 @@ Legend: `[ ]` todo · `[~]` in progress · `[x]` done (with date) · `[-]` dropp
 
 ## Current focus
 
-**Phase 4 → task 4.4**: Delivery zones, Counties/Estates, Refs, Stores, admin Users, Roles/Permissions, Contacts.
+**Phase 4 → task 4.5**: dashboard widgets.
 
 ## Goal
 
@@ -98,7 +98,7 @@ sharing one generated TypeScript client (`packages/shared`). Payments: **pay on 
 - [x] 4.2 Resources: Products (multi-image upload, fixes the README TODO; CSV import action), Categories, Baskets. *2026-11-15*: Filament resources under `app/Filament/Resources` ("Catalogue" group). Products: auto-slug, category picker, KES prices, main image + reorderable gallery (dropped the `product_images` unique sort index, which broke reordering), stock badges, filters, bulk show/hide instead of bulk delete. Deleting a product cleans up images, cart lines, favourites and basket entries. Categories: parent picker, product counts; can't delete while it has products. Baskets: availability window + contents repeater. `ProductImporter` CSV import (matches on slug; blank stock/visible keeps current values; category by slug or name) with in-panel completion notices. Fixed Filament/Laravel stubs for UUID users (`imports`/`exports.user_id`, `notifications` `uuidMorphs`) and `notifications.data` → `jsonb` (Filament queries it as JSON). Offers/OfferTypes are left out (Backlog).
 - [x] 4.3 Resources: Orders (status workflow, dispatch to courier, tracking), Couriers, Customers. *2026-11-15*: `OrderStatus` enum (new → dispatched → delivered; new/dispatched → canceled) with guarded transitions. Actions `DispatchOrder` (courier, store, `shipped_at`), `MarkOrderDelivered` (also marks the COD payment paid), `CancelOrder` (locks, restocks products and baskets). Filament: Orders (list with status/zone/date filters + a new-order badge, view page with workflow buttons; no create), Couriers, Customers (non-admins; edit contact, address, active). Fixed: the Blade dispatch never worked (it posted a disabled field to a route with no order); `Courier` had the wrong fillable fields and no UUID trait.
 - [x] 4.0 Upgrade spatie/laravel-permission 6 → 8 (read both upgrade guides; custom UUID `Role`/`Permission` models) before using it in Filament. *2026-11-15*: 8.5.0. No breaking changes affect us (no custom contracts, events, commands or middleware). Added the new config keys (`models.team`, `models.default_model`, `team_resolver`, `events_enabled`). Schema unchanged (ours uses UUIDs). Tests cover UUID roles and permissions. Also fixed: admin user creation always failed on Postgres (`dob` stored `strtotime()` output in a date column).
-- [ ] 4.4 Resources: Delivery zones, Counties, Estates, Refs, Users, Roles/Permissions (spatie plugin), Contacts inbox.
+- [x] 4.4 Resources: Delivery zones, Counties, Estates, Refs, Users, Roles/Permissions (spatie plugin), Contacts inbox. *2026-11-15*: plus Stores. Groups: Catalogue / Sales / Delivery / Access. Staff = admin users (hashed password, roles, can't deactivate or delete yourself); Customers stay separate. Roles get permissions via a checkbox list (plain resources, no plugin). Contacts inbox is view + delete only. Fixed: `Estate` had no fillable fields; `DeliveryZone`, `County` and `Store` fillables/relations were wrong; `DeliveryZone::orders()` used the wrong key; `Contact` `referree_code` typo; `Ref` ids were UUID objects. Dropped `estates.delivery_fees` (pricing is per zone).
 - [ ] 4.5 Dashboard widgets: orders today, revenue, low stock.
 - [ ] 4.6 Remove the Blade admin (`layouts/backend`, admin views/routes, `public/backend` if unused).
   - Accept: everything the old admin did is possible in Filament. Checked against the old routes list.
@@ -151,6 +151,7 @@ sharing one generated TypeScript client (`packages/shared`). Payments: **pay on 
 | 2026-11-15 | Sign-up asks only name, phone, email and password. Address is collected at checkout | Less friction at sign-up |
 | 2026-11-15 | Delivery is priced **per delivery zone**. Estates don't carry a fee | One source of truth for fees. Matches the `orders.delivery_zone` column |
 | 2026-11-15 | Baskets are sold as one line at the basket's price and stock. Offers deferred | Baskets already have their own price and stock. Offers are a new feature |
+| 2026-11-15 | Admin access stays on `is_admin` + `is_active`; spatie roles/permissions are for finer-grained rights later | Switching every policy to roles now adds risk with no visible benefit |
 | 2026-11-15 | Sanctum: SPA cookies for web, tokens for mobile | First-party clients, no OAuth needed |
 | 2026-11-15 | Guest cart via `X-Cart-Token` instead of session | The API must be stateless for mobile |
 | 2026-11-15 | Work directly on `main` and commit at every stage | Owner's preference after Phase 1 |

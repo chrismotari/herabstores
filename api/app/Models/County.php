@@ -11,11 +11,21 @@ class County extends Model
     use HasFactory, UUID;
 
     protected $fillable = [
-        'id',
         'name',
         'code',
         'description',
-        'store_id',
         'is_active',
     ];
+
+    protected $casts = ['is_active' => 'boolean'];
+
+    public function estates()
+    {
+        return $this->hasMany(Estate::class);
+    }
+
+    public function deliveryZones()
+    {
+        return $this->hasMany(DeliveryZone::class);
+    }
 }

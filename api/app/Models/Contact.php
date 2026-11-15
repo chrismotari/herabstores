@@ -19,7 +19,7 @@ class Contact extends Model
         'subject',
         'message',
         'source',
-        'referree_code',
+        'ref_code',
         'country_id',
         'city',
         'region',

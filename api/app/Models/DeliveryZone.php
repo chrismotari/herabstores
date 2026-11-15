@@ -15,15 +15,16 @@ class DeliveryZone extends Model
         'slug',
         'description',
         'delivery_fees',
+        'estate_id',
+        'county_id',
+        'is_active',
     ];
 
-    protected $casts = [
-        'delivery_fees' => 'decimal:2',
-    ];
+    protected $casts = ['is_active' => 'boolean', 'delivery_fees' => 'decimal:2'];
 
     public function orders()
     {
-        return $this->hasMany(Order::class);
+        return $this->hasMany(Order::class, 'delivery_zone');
     }
 
     public function users()

@@ -15,7 +15,6 @@ class EstateFactory extends Factory
     {
         return [
             'name' => fake()->unique()->streetName(),
-            'delivery_fees' => fake()->randomElement([100, 150, 200, 300]),
             'is_active' => true,
             'county_id' => County::factory(),
         ];

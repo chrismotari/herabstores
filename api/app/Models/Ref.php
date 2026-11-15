@@ -16,7 +16,7 @@ class Ref extends Model
 
         static::creating(function ($ref) {
             if (! $ref->id) {
-                $ref->id = Str::uuid();
+                $ref->id = Str::uuid()->toString();
             }
             $ref->ref_code = self::generateNHexa();
         });
@@ -30,6 +30,13 @@ class Ref extends Model
 
         return $code;
     }
+
+    protected $casts = [
+        'is_active' => 'boolean',
+        'expires_at' => 'datetime',
+        'used_at' => 'datetime',
+        'canceled_at' => 'datetime',
+    ];
 
     protected $fillable = [
         'ref_code',

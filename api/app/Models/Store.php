@@ -21,13 +21,17 @@ class Store extends Model
         'phone',
         'alt_phone',
         'address',
-        'estate_id',
-        'country_id',
+        'delivery_zone_id',
         'is_active',
     ];
 
     public function manager()
     {
         return $this->belongsTo(User::class, 'manager_id');
+    }
+
+    public function deliveryZone()
+    {
+        return $this->belongsTo(DeliveryZone::class);
     }
 }
