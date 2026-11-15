@@ -11,6 +11,7 @@ import createClient, { type Middleware } from "openapi-fetch";
 import type { components, paths } from "./schema";
 
 export type { components, paths };
+export type { Middleware } from "openapi-fetch";
 
 type Schemas = components["schemas"];
 export type Product = Schemas["ProductResource"];

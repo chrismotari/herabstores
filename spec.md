@@ -4,7 +4,7 @@ Legend: `[ ]` todo · `[~]` in progress · `[x]` done (with date) · `[-]` dropp
 
 ## Current focus
 
-**Phase 5 → task 5.4**: SEO groundwork (metadata defaults, sitemap, robots, Organization JSON-LD).
+**Phase 5 → task 5.6**: content pages (about, contact, terms, FAQ).
 
 ## Goal
 
@@ -108,8 +108,13 @@ sharing one generated TypeScript client (`packages/shared`). Payments: **pay on 
 - [x] 5.1 Monorepo: pnpm workspaces at the root, `apps/web` (Next.js latest stable, TypeScript, App Router), `packages/shared`. *2026-11-15*: pnpm 12 (via corepack), Next.js 16.4.6 + React 19.3, `cacheComponents` on. **No Tailwind**: the owner chose to keep the current theme, so its CSS is reused. CI: `.github/workflows/web.yml` (types up to date, typecheck, lint, build).
 - [x] 5.2 `packages/shared`: generate a typed API client from `openapi.json` (e.g. `openapi-typescript` + `openapi-fetch`). *2026-11-15*: `createApiClient({ baseUrl, getAuthToken, getCartToken, credentials, fetch })` plus resource type aliases (`Product`, `Cart`, `Order`, ...). `pnpm api:types` regenerates the types.
 - [x] 5.3 Layout: header, nav, footer and the design system ported from the current theme. Use our own components and don't copy the theme's licensed JS. Owner (2026-11-15): **keep the current design, with a little tidying.** *2026-11-15*: [x] theme CSS, fonts and the 65 referenced images served from `apps/web/public/theme` (4.8 MB, down from 11+ MB; legacy .eot/.svg fonts dropped). Header (top bar, search as a plain GET form to `/shop`, phone), sticky navbar with **real categories** from the API (replacing the theme's hard-coded demo mega-menu), mobile menu, back-to-top, footer with a working newsletter form (`POST /contacts`). jQuery behaviours rewritten as small client components; preloader removed. Fixed the theme's Google Fonts URL (`&amp;` meant Nunito/Poppins never loaded). Cart/account header widgets are placeholders until 5.7/5.8. **Not yet visually reviewed in a browser.**
-- [ ] 5.4 SEO groundwork: `generateMetadata` defaults, `sitemap.ts`, `robots.ts`, Organization JSON-LD, canonical URLs.
-- [ ] 5.5 Pages (server-rendered, ISR): home (`index.blade.php`), shop (`shop.blade.php`), category, product detail (Product + Breadcrumb JSON-LD).
+- [x] 5.4 SEO groundwork: `generateMetadata` defaults, `sitemap.ts`, `robots.ts`, Organization JSON-LD, canonical URLs. *2026-11-15*: `metadataBase` + title template; canonicals set **per page** (never in the root layout, which would make every page claim to be the home page). `GroceryStore` JSON-LD in the layout; `JsonLd` helper (`<` escaped). `sitemap.xml` from the API feed (79 URLs locally). `robots.txt` disallows cart/checkout/account/auth.
+- [x] 5.5 Pages (server-rendered, ISR): home (`index.blade.php`), shop (`shop.blade.php`), category, product detail (Product + Breadcrumb JSON-LD). *2026-11-15*: all data via `'use cache'` loaders tagged `products` / `product:{slug}` / `categories` / `category:{slug}` (`cacheLife('max')`, refreshed by the webhook).
+  - Home: one static hero (was a 3-slide carousel of identical slides), real categories, newest products. **Tidied out:** the fake "UP TO 35/50% OFF" promos (now truthful copy) and the "Herabs123 KES 300 coupon" box (no coupon system exists).
+  - Shop/category: sidebar of real categories, URL-driven sort/pagination/search (`?q`, `?sort`, `?page`, `?in_stock`); search/filter variants are `noindex`, canonical `/shop`.
+  - Product: pre-rendered per product (`generateStaticParams` from the sitemap feed), gallery, Product/Offer/BreadcrumbList JSON-LD, add to cart. `ensureStatic = 'navigation'` so unknown slugs return a **real 404**. Unknown *category* slugs return 200 + noindex (soft 404), because category pages read `searchParams`.
+  - **Removed the fake 5-star ratings** on every product (no reviews exist; also bad for Rich Results).
+  - Browser cart layer built early for add-to-cart: `lib/browser-api.ts` (session cookie + Sanctum CSRF + `X-Cart-Token` from localStorage) and `CartProvider` (live header count). Verified the CORS/CSRF flow against the API.
 - [ ] 5.6 Content pages: about-us, contact-us (+form), terms-and-conditions, faq (currently reuses contact-us; give it real content).
 - [ ] 5.7 Cart and checkout (client components, guest cart token in a cookie, county → estate → delivery fee, pay on delivery).
 - [ ] 5.8 Auth (Sanctum SPA) and account: orders, order tracking, favourites, profile. Point password-reset and verify-email links at the Next.js pages (`ResetPassword::createUrlUsing`, `VerifyEmail::createUrlUsing`).

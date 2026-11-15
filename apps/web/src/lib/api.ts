@@ -1,6 +1,6 @@
 import "server-only";
 
-import { createApiClient, type Category } from "@herabs/shared";
+import { createApiClient, type Category, type Product } from "@herabs/shared";
 import { cacheLife, cacheTag } from "next/cache";
 import { SERVER_API_URL } from "./config";
 
@@ -23,6 +23,87 @@ export async function getCategories(): Promise<Category[]> {
 
   const { data, error } = await api.GET("/categories");
   if (error || !data) throw new Error("Failed to load categories");
+
+  return data.data;
+}
+
+export type SitemapFeed = {
+  products: { slug: string; updated_at: string | null }[];
+  categories: { slug: string; updated_at: string | null }[];
+  baskets: { slug: string; updated_at: string | null }[];
+};
+
+export async function getSitemapFeed(): Promise<SitemapFeed> {
+  "use cache";
+  cacheTag("products", "categories", "baskets");
+  cacheLife("max");
+  if (!apiAvailable()) return { products: [], categories: [], baskets: [] };
+
+  const { data, error } = await api.GET("/seo/sitemap");
+  if (error || !data) throw new Error("Failed to load the sitemap feed");
+
+  return data.data as SitemapFeed;
+}
+
+export type ProductQuery = {
+  q?: string;
+  category?: string;
+  sort?: "newest" | "price_asc" | "price_desc" | "name";
+  min_price?: number;
+  max_price?: number;
+  in_stock?: boolean;
+  page?: number;
+  per_page?: number;
+};
+
+export type ProductPage = {
+  data: Product[];
+  meta: { current_page: number; last_page: number; total: number; per_page: number; from: number | null; to: number | null };
+};
+
+const EMPTY_PAGE: ProductPage = { data: [], meta: { current_page: 1, last_page: 1, total: 0, per_page: 24, from: null, to: null } };
+
+/** A page of available products. Arguments are part of the cache key. */
+export async function getProducts(query: ProductQuery = {}): Promise<ProductPage> {
+  "use cache";
+  cacheTag("products");
+  if (query.category) cacheTag(`category:${query.category}`);
+  cacheLife("max");
+  if (!apiAvailable()) return EMPTY_PAGE;
+
+  const { data, error, response } = await api.GET("/products", {
+    params: { query: { ...query, in_stock: query.in_stock ? true : undefined } as never },
+  });
+  if (response?.status === 422) return EMPTY_PAGE; // invalid filters from the URL
+  if (error || !data) throw new Error("Failed to load products");
+
+  const { meta } = data as unknown as ProductPage;
+  return { data: data.data, meta };
+}
+
+/** One available product, or null when it doesn't exist / is hidden. */
+export async function getProduct(slug: string): Promise<Product | null> {
+  "use cache";
+  cacheTag("products", `product:${slug}`);
+  cacheLife("max");
+  if (!apiAvailable()) return null;
+
+  const { data, response } = await api.GET("/products/{slug}", { params: { path: { slug } } });
+  if (response.status === 404) return null;
+  if (!data) throw new Error(`Failed to load product ${slug}`);
+
+  return data.data;
+}
+
+export async function getCategory(slug: string): Promise<Category | null> {
+  "use cache";
+  cacheTag("categories", `category:${slug}`);
+  cacheLife("max");
+  if (!apiAvailable()) return null;
+
+  const { data, response } = await api.GET("/categories/{slug}", { params: { path: { slug } } });
+  if (response.status === 404) return null;
+  if (!data) throw new Error(`Failed to load category ${slug}`);
 
   return data.data;
 }
