@@ -4,7 +4,7 @@ Legend: `[ ]` todo · `[~]` in progress · `[x]` done (with date) · `[-]` dropp
 
 ## Current focus
 
-**Phase 6 → task 6.6**: deep links, app icon/splash, EAS build config. Open from 5.11: re-run Lighthouse on catalog pages once real product photos are uploaded.
+**Phase 7 → task 7.1**: production queue worker, then deploy. Waiting on: hosting/domain choice; for the app stores, an Expo account (`eas init`), Apple/Google developer accounts and a square app icon. Open from 5.11: re-run Lighthouse on catalog pages once real product photos are uploaded.
 
 ## Goal
 
@@ -25,7 +25,7 @@ sharing one generated TypeScript client (`packages/shared`). Payments: **pay on 
 | 3. REST API v1 | done |
 | 4. Filament admin | done |
 | 5. Next.js storefront | in progress |
-| 6. React Native app | in progress |
+| 6. React Native app | done |
 | 7. Cut-over and cleanup | todo |
 
 ---
@@ -154,15 +154,16 @@ sharing one generated TypeScript client (`packages/shared`). Payments: **pay on 
 - [x] 6.3 Catalog: home, categories, product list/search, product detail. *2026-11-15*: Home (search, categories, baskets, newest), Shop tab (debounced search, category and sort chips, infinite two-column grid), `/categories/{slug}`, `/products/{slug}` (image pager, stock badge), `/baskets/{slug}` (contents link to products). Same paths as the website, ready for deep links (6.6). Query definitions in `src/lib/catalog.ts`. API: `GET /products` now documents `page` (the web client no longer casts its query). Gotcha: `Link asChild` passes styles through a Slot that rejects style arrays; size linked cards with a wrapping View.
 - [x] 6.4 Cart and checkout (pay on delivery), with a guest cart token persisted locally. *2026-11-15*: `src/lib/cart.ts` (TanStack Query `['cart']`; the guest token from each cart response goes to the secure store). Add to cart with a quantity stepper on product and basket screens; Cart tab with badge, quantity/remove, discount codes; checkout (prefilled for signed-in customers, delivery-zone picker with fees, terms opens the website) and a confirmation screen. Checked in Expo web as a guest: add, WELCOME10, terms error, order placed, cart emptied (test order canceled, test carts removed). `EXPO_PUBLIC_SITE_URL` added.
 - [x] 6.5 Account: orders and tracking, favourites, profile. *2026-11-15*: Account menu; `/account/orders` (infinite list) and `/account/orders/{id}` (Received → On the way → Delivered timeline, or canceled); favourites screen plus a save toggle on products (signed-out taps go to sign in); profile (details, default delivery zone, change password, delete account). Confirmation offers "Track this order". Fixed: checkout opened cold (before the session loaded) wasn't prefilled. API: `GET /me/orders` documents `page`; `DELETE /me` no longer documents the password as a query param (send it in the body; Scramble can't document DELETE bodies). Checked in Expo web as the seed customer; test order #62450 canceled, test tokens removed.
-- [ ] 6.6 Deep links (`/products/{slug}` opens the app), app icons/splash, EAS build config.
+- [x] 6.6 Deep links (`/products/{slug}` opens the app), app icons/splash, EAS build config. *2026-11-15*: `app.config.ts` adds iOS associated domains and Android App Links (autoVerify) for `/products`, `/categories`, `/baskets`, `/account/orders` when `EXPO_PUBLIC_SITE_URL` is https; the website serves `/.well-known/apple-app-site-association` and `/.well-known/assetlinks.json` from `APPLE_TEAM_ID` / `ANDROID_SHA256_CERT_FINGERPRINTS` (read at build time; 404 until set). `herabstores://` scheme always works. `+not-found` screen for links the app doesn't have. Interim icons/splash generated from `api/public/img/logo/logoLG.png` (the wide wordmark is weak as a square icon: replace before store submission). `eas.json` with development (dev client) / preview (internal APK) / production profiles using EAS environments. Checked: config resolves with and without the domain, well-known files from a production build, iOS/Android export, expo-doctor 20/20.
 
 ## Phase 7: Cut-over and cleanup
 
 - [ ] 7.1 Run a queue worker in production (revalidation webhooks, emails).
-- [ ] 7.1 Deploy: API on `api.<domain>`, Next.js on `<domain>`. Set env/CORS/Sanctum domains for production.
-- [ ] 7.2 Switch DNS to Next.js and check that 301s, the sitemap (submitted to Search Console) and canonicals work.
-- [ ] 7.3 Remove the Blade storefront views, web routes, `public/ganic-live`, Vite/Tailwind config in `api/`, and `php-flasher`.
-- [ ] 7.4 Update `CLAUDE.md` and `README.md` to the final architecture.
+- [ ] 7.2 Deploy: API on `api.<domain>`, Next.js on `<domain>`. Set env/CORS/Sanctum domains for production.
+- [ ] 7.3 Switch DNS to Next.js and check that 301s, the sitemap (submitted to Search Console) and canonicals work.
+- [ ] 7.4 Remove the Blade storefront views, web routes, `public/ganic-live`, Vite/Tailwind config in `api/`, and `php-flasher`.
+- [ ] 7.5 Update `CLAUDE.md` and `README.md` to the final architecture.
+- [ ] 7.6 Publish the app: `eas init` (Expo account), set `EXPO_PUBLIC_API_URL` / `EXPO_PUBLIC_SITE_URL` in the EAS `production` environment, replace the interim icon with a square mark, build and submit (`eas build -p all --profile production`, `eas submit`). Then set `APPLE_TEAM_ID` and `ANDROID_SHA256_CERT_FINGERPRINTS` on the website build so links open the app.
 
 ---
 
@@ -174,6 +175,7 @@ sharing one generated TypeScript client (`packages/shared`). Payments: **pay on 
 
 | Date | Decision | Why |
 |---|---|---|
+| 2026-11-15 | App links cover product, category, basket and order pages only | Home, shop and content pages stay on the web, so people can browse the site; links to things you act on open the app |
 | 2026-11-15 | Mobile data layer: **TanStack Query** over the shared openapi-fetch client; secrets in `expo-secure-store` | Caching, pull-to-refresh and retries for free; tokens stay out of AsyncStorage |
 | 2026-11-15 | Mobile uses **native tabs** (`expo-router/native-tabs`); Expo web is only a dev preview | Native look on iOS/Android; the real website is `apps/web` |
 | 2026-11-15 | Admin moves to **Filament**, not Next.js | Admin needs no SEO, and Filament is far less work |
