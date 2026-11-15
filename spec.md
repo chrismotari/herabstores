@@ -4,7 +4,7 @@ Legend: `[ ]` todo · `[~]` in progress · `[x]` done (with date) · `[-]` dropp
 
 ## Current focus
 
-**Phase 3 → task 3.2**: Sanctum SPA and token auth, CORS.
+**Phase 3 → task 3.3**: OpenAPI docs with Scramble.
 
 ## Goal
 
@@ -70,7 +70,7 @@ sharing one generated TypeScript client (`packages/shared`). Payments: **pay on 
 
 ### 3a. Foundation
 - [x] 3.1 Enable `routes/api.php` (`php artisan install:api`), add the `/api/v1` prefix and `App\Http\Controllers\Api\V1` namespace. *2026-11-15*: `routes/api.php` (v1 prefix, `api.v1.*` names). `api/*` always renders JSON errors. User has `HasApiTokens`. The token table was recreated with `uuidMorphs`: the integer morphs meant UUID users could never get a token.
-- [ ] 3.2 Configure Sanctum for the SPA (stateful domains for `apps/web`, CORS) and token auth for mobile.
+- [x] 3.2 Configure Sanctum for the SPA (stateful domains for `apps/web`, CORS) and token auth for mobile. *2026-11-15*: `statefulApi()`; CORS for `api/*` and `sanctum/csrf-cookie` with credentials, origins from `FRONTEND_URL` / `CORS_ALLOWED_ORIGINS`; `SANCTUM_STATEFUL_DOMAINS`. Mobile tokens expire after 90 days (`SANCTUM_TOKEN_EXPIRATION`). `GET /api/v1/me` works with either mode.
 - [ ] 3.3 Add Scramble (OpenAPI) at `/docs/api`, and export `openapi.json` in CI.
 - [ ] 3.4 Rate limiting (auth, search, cart) and an API exception rendering check (JSON for `api/*`).
 

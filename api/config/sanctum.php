@@ -50,7 +50,8 @@ return [
     |
     */
 
-    'expiration' => null,
+    // Mobile bearer tokens expire after this many minutes (null = never). Default 90 days.
+    'expiration' => env('SANCTUM_TOKEN_EXPIRATION', 60 * 24 * 90),
 
     /*
     |--------------------------------------------------------------------------

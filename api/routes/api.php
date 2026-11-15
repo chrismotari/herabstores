@@ -1,5 +1,6 @@
 <?php
 
+use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Route;
 
 /*
@@ -10,4 +11,9 @@ use Illuminate\Support\Facades\Route;
 
 Route::prefix('v1')->name('api.v1.')->group(function () {
     Route::get('/', fn () => ['name' => config('app.name'), 'version' => 'v1'])->name('index');
+
+    // Works with a Bearer token (mobile) or the Sanctum session cookie (Next.js).
+    Route::middleware('auth:sanctum')->group(function () {
+        Route::get('me', fn (Request $request) => ['data' => $request->user()->only('id', 'fname', 'lname', 'email', 'phone')])->name('me');
+    });
 });

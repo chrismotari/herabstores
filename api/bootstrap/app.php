@@ -15,6 +15,9 @@ return Application::configure(basePath: dirname(__DIR__))
         health: '/up',
     )
     ->withMiddleware(function (Middleware $middleware) {
+        // Cookie-based Sanctum auth for first-party SPA requests (Next.js).
+        $middleware->statefulApi();
+
         $middleware->web(append: [
             AddLinkHeadersForPreloadedAssets::class,
 
