@@ -2,14 +2,17 @@
 
 namespace App\Providers;
 
+use App\Models\Basket;
 use App\Models\Category;
 use App\Models\Country;
 use App\Models\Courier;
 use App\Models\DeliveryZone;
 use App\Models\Estate;
+use App\Models\Product;
 use App\Models\Role;
 use App\Models\Store;
 use App\Models\User;
+use App\Observers\StorefrontCacheObserver;
 use App\Services\CartService;
 use Dedoc\Scramble\Scramble;
 use Dedoc\Scramble\Support\Generator\OpenApi;
@@ -39,6 +42,11 @@ class AppServiceProvider extends ServiceProvider
     public function boot(): void
     {
         $this->configureRateLimiting();
+
+        // Catalog changes revalidate the Next.js storefront (see RevalidateStorefront).
+        foreach ([Product::class, Category::class, Basket::class] as $model) {
+            $model::observe(StorefrontCacheObserver::class);
+        }
 
         // API docs (/docs/api): open locally, admins only elsewhere.
         Gate::define('viewApiDocs', fn (?User $user = null) => app()->isLocal() || (bool) $user?->is_admin);

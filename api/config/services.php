@@ -35,4 +35,10 @@ return [
         ],
     ],
 
+    // Next.js storefront: on-demand revalidation webhook (POST {url}/api/revalidate).
+    'storefront' => [
+        'url' => env('FRONTEND_URL'),
+        'revalidate_secret' => env('STOREFRONT_REVALIDATE_SECRET'),
+    ],
+
 ];

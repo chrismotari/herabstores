@@ -4,7 +4,8 @@ Legend: `[ ]` todo · `[~]` in progress · `[x]` done (with date) · `[-]` dropp
 
 ## Current focus
 
-**Phase 3 → task 3.15**: SEO support (sitemap feed + revalidation webhook).
+**Phase 4 → task 4.0**: upgrade spatie/laravel-permission, then install Filament.
+Waiting on owner: **3.10a** (purchasable baskets? offers/discount codes?).
 
 ## Goal
 
@@ -22,7 +23,7 @@ sharing one generated TypeScript client (`packages/shared`). Payments: **pay on 
 | 0. Prep repo for Claude | done |
 | 1. Safety net and security fixes | done |
 | 2. Upgrade to Laravel 13 | done |
-| 3. REST API v1 | in progress |
+| 3. REST API v1 | done |
 | 4. Filament admin | todo |
 | 5. Next.js storefront | todo |
 | 6. React Native app | todo |
@@ -89,7 +90,7 @@ sharing one generated TypeScript client (`packages/shared`). Payments: **pay on 
 - [x] 3.12 Checkout: `POST orders` (pay on delivery). Delivery locations: `GET counties`, `GET counties/{id}/estates`, `GET delivery-zones` (with fee). *2026-11-15*: `POST /api/v1/orders` (PlaceOrder, 201 + `OrderResource` with subtotal/delivery_fee/total, 10/min) and `GET /api/v1/delivery-zones`. Counties and estates aren't exposed, since pricing is per zone and checkout no longer asks for them.
 - [x] 3.13 Customer account: my orders (list, show, track), favourites (add/remove/list), profile update, addresses. *2026-11-15*: `/api/v1/me`: PATCH profile + default address (email change → unverified), PUT password (revokes other tokens), DELETE account, `orders` (own only; others' are 404), `favourites` (idempotent add/remove; unavailable products hidden). New `DeleteAccount` action, also used by the web profile page, which used to crash for users with orders. Orders are kept but unlinked. Tracking = order `status` + timestamps.
 - [x] 3.14 Contact form `POST contacts`. *2026-11-15*: `POST /api/v1/contacts` (5/min) with a shared `ContactRequest` (the web form now uses it too: only allowed fields are stored). Fixed: `contacts.email` was NOT NULL, so checkout consent from a customer without an email would have failed the whole order.
-- [ ] 3.15 SEO support: `GET seo/sitemap` (slugs + `updated_at` for products and categories), and a revalidation webhook that calls the Next.js `/api/revalidate` when a product or category is saved (queued, signed secret).
+- [x] 3.15 SEO support: `GET seo/sitemap` (slugs + `updated_at` for products and categories), and a revalidation webhook that calls the Next.js `/api/revalidate` when a product or category is saved (queued, signed secret). *2026-11-15*: `GET /api/v1/seo/sitemap` (products/categories/baskets: slug + updated_at). `StorefrontCacheObserver` on Product/Category/Basket queues `RevalidateStorefront` after commit. Contract: `POST {FRONTEND_URL}/api/revalidate`, `Authorization: Bearer {STOREFRONT_REVALIDATE_SECRET}`, body `{"tags": [...]}` with tags `products`, `categories`, `baskets`, `product:{slug}`, `category:{slug}`, `basket:{slug}` (old slugs included on rename). 5 retries with backoff; does nothing when unconfigured.
 
 ## Phase 4: Filament admin
 
@@ -112,7 +113,7 @@ sharing one generated TypeScript client (`packages/shared`). Payments: **pay on 
 - [ ] 5.6 Content pages: about-us, contact-us (+form), terms-and-conditions, faq (currently reuses contact-us; give it real content).
 - [ ] 5.7 Cart and checkout (client components, guest cart token in a cookie, county → estate → delivery fee, pay on delivery).
 - [ ] 5.8 Auth (Sanctum SPA) and account: orders, order tracking, favourites, profile. Point password-reset and verify-email links at the Next.js pages (`ResetPassword::createUrlUsing`, `VerifyEmail::createUrlUsing`).
-- [ ] 5.9 `/api/revalidate` route handler (secret-protected) used by the API webhook from 3.15.
+- [ ] 5.9 `/api/revalidate` route handler (secret-protected) used by the API webhook from 3.15. Tag every `fetch` with the same tags (see the 3.15 contract) and call `revalidateTag` for each one received.
 - [ ] 5.10 404/500 pages, and a `redirects()` map from old URLs (`/products/{uuid}` → `/products/{slug}`, `/index` → `/`, `/carts/show` → `/cart`).
 - [ ] 5.11 Quality gate: Lighthouse SEO ≥ 95 and Performance ≥ 90 on home, category and product pages. Structured data passes Google's Rich Results test.
 
@@ -127,6 +128,7 @@ sharing one generated TypeScript client (`packages/shared`). Payments: **pay on 
 
 ## Phase 7: Cut-over and cleanup
 
+- [ ] 7.1 Run a queue worker in production (revalidation webhooks, emails).
 - [ ] 7.1 Deploy: API on `api.<domain>`, Next.js on `<domain>`. Set env/CORS/Sanctum domains for production.
 - [ ] 7.2 Switch DNS to Next.js and check that 301s, the sitemap (submitted to Search Console) and canonicals work.
 - [ ] 7.3 Remove the Blade storefront views, web routes, `public/ganic-live`, Vite/Tailwind config in `api/`, and `php-flasher`.

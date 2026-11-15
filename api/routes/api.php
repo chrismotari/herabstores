@@ -8,6 +8,7 @@ use App\Http\Controllers\Api\V1\CategoryController;
 use App\Http\Controllers\Api\V1\CheckoutController;
 use App\Http\Controllers\Api\V1\ContactController;
 use App\Http\Controllers\Api\V1\ProductController;
+use App\Http\Controllers\Api\V1\SeoController;
 use Illuminate\Support\Facades\Route;
 
 /*
@@ -28,6 +29,7 @@ Route::prefix('v1')->name('api.v1.')->group(function () {
         Route::get('products/{slug}', [ProductController::class, 'show'])->name('products.show');
         Route::get('baskets', [BasketController::class, 'index'])->name('baskets.index');
         Route::get('baskets/{slug}', [BasketController::class, 'show'])->name('baskets.show');
+        Route::get('seo/sitemap', [SeoController::class, 'sitemap'])->name('seo.sitemap');
     });
 
     // Cart: logged-in user's cart, or a guest cart via the X-Cart-Token header
