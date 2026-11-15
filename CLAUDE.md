@@ -53,6 +53,7 @@ pnpm typecheck && pnpm lint && pnpm build:web
 
 - **Next.js 16 is newer than your training data.** Before writing Next code, read the relevant guide in `apps/web/node_modules/next/dist/docs/` (see `apps/web/AGENTS.md`). `cacheComponents` is on.
 - Call the API only through `@herabs/shared` (`createApiClient`), never with hand-written fetch URLs or types.
+- **Theme CSS is purged at build time.** Edit `apps/web/theme/theme.full.css` (the full theme); `scripts/build-theme-css.mjs` writes the slimmed, gitignored `public/theme/css/theme.css` before `dev`/`build`. Classes toggled at runtime or built from strings need adding to `SAFELIST` in that script; rules using attribute selectors (`[class*=…]`) need a `/* purgecss ignore */` comment before them in the source. After changing styling, compare screenshots: a missing class fails silently.
 
 ## Architecture (api/)
 

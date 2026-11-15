@@ -32,7 +32,7 @@ export default async function Home() {
       <section className="slider-area" style={{ backgroundImage: "url(/theme/img/bg/slider_area_bg.webp)" }}>
         <div className="container custom-container">
           <div className="row">
-            <div className="col-lg-7">
+            <div className="col-12">
               <div className="single-slider slider-bg" style={{ backgroundImage: "url(/theme/img/slider/slider_bg01.webp)" }}>
                 <div className="slider-content">
                   <h5 className="sub-title">fresh &amp; local</h5>
@@ -40,19 +40,6 @@ export default async function Home() {
                   <p>Fresh produce and pantry staples, delivered across Nairobi. Pay on delivery.</p>
                   <Link href="/shop" className="btn rounded-btn">Shop Now</Link>
                 </div>
-              </div>
-            </div>
-            <div className="col-lg-3 d-none d-lg-block">
-              <div className="slider-banner-img mb-20">
-                <Link href="/shop"><Image src="/theme/img/slider/slider_banner01.jpg" alt="Fresh produce" width={300} height={250} style={{ width: "100%", height: "auto" }} /></Link>
-              </div>
-              <div className="slider-banner-img">
-                <Link href="/shop"><Image src="/theme/img/slider/slider_banner02.jpg" alt="Pantry staples" width={300} height={250} style={{ width: "100%", height: "auto" }} /></Link>
-              </div>
-            </div>
-            <div className="col-lg-2 d-none d-lg-block">
-              <div className="slider-banner-img">
-                <Link href="/shop"><Image src="/theme/img/slider/slider_banner03.jpg" alt="Shop all groceries" width={200} height={520} style={{ width: "100%", height: "auto" }} /></Link>
               </div>
             </div>
           </div>

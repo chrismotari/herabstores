@@ -25,3 +25,29 @@
 .payment-accepted span {
   font-weight: 600;
 }
+
+/* "Shop by Category" toggle: space between icons and label */
+.header-category .cat-toggle i:first-child { margin-right: 10px; }
+.header-category .cat-toggle i:last-child { margin-left: 6px; }
+
+/* Add to cart on product cards, in the theme's colours */
+.card-cart-btn {
+  border: 0;
+  border-radius: 30px;
+  padding: 8px 18px;
+  font-size: 13px;
+  font-weight: 700;
+  text-transform: uppercase;
+  color: #fff;
+  background: var(--color-primary);
+  transition: background 0.2s;
+}
+.card-cart-btn:hover:not(:disabled) { background: var(--color-secondary); }
+.card-cart-btn:disabled { opacity: 0.6; cursor: not-allowed; }
+
+/* Two cards per row on phones: tighter card padding */
+@media (max-width: 575px) {
+  .shop-products-wrap .sp-product-item { padding: 15px 10px; }
+  .shop-products-wrap .sp-product-content .title { font-size: 14px; }
+  .card-cart-btn { padding: 7px 12px; font-size: 11px; white-space: nowrap; }
+}

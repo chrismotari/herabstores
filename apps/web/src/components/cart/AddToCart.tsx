@@ -43,7 +43,7 @@ export function AddToCart({ productId, basketId, maxQuantity, variant = "card" }
   const button = (
     <button
       type="button"
-      className={variant === "detail" ? "btn" : "bg-orange rounded btn-secondary"}
+      className={variant === "detail" ? "btn" : "card-cart-btn"}
       onClick={onAdd}
       disabled={soldOut || state.status === "adding"}
     >

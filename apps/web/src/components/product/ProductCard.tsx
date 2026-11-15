@@ -41,7 +41,7 @@ export function ProductGrid({ products }: { products: Product[] }) {
   return (
     <div className="row justify-content-center">
       {products.map((product, i) => (
-        <div key={product.id} className="col-xl-3 col-md-4 col-sm-6">
+        <div key={product.id} className="col-xl-3 col-md-4 col-6">
           <ProductCard product={product} eager={i < 4} highPriority={i === 0} />
         </div>
       ))}

@@ -4,7 +4,7 @@ Legend: `[ ]` todo · `[~]` in progress · `[x]` done (with date) · `[-]` dropp
 
 ## Current focus
 
-**Phase 6 → task 6.1**: Expo app. Open from 5.11: Performance ≥ 90 on catalog pages (owner decision: slim the theme CSS?).
+**Phase 6 → task 6.1**: Expo app. Open from 5.11: re-run Lighthouse on catalog pages once real product photos are uploaded.
 
 ## Goal
 
@@ -133,7 +133,9 @@ sharing one generated TypeScript client (`packages/shared`). Payments: **pay on 
     | `/about-us` | **99** | 100 | 96 | 96 |
   - **SEO ≥ 95: met everywhere.** Performance ≥ 90: **not met** (best 99 on content pages, 71–85 on catalog pages).
   - Fixes made: the 6 theme stylesheets combined into one bundled CSS file (`public/theme/css/theme.css`, imported in the root layout; content-hashed by Next); Google Fonts `@import` chain replaced by self-hosted `next/font` (mapped onto the theme's `--font-family-*` variables); correct logo dimensions (was squashed 187×96 → 177×45); heading order; `/shop` meta description (static metadata; the search-variant noindex is a hoisted `<meta>` in the listing); guest start-up uses new `GET /auth/session` (200 + null) instead of a 401 from `/me` (console errors); single add-to-cart button on grid cards (stepper on the product page); first-row product images eager + `fetchpriority=high`; hero preloaded and converted to WebP (155 KB → 11 KB, 372 KB → 104 KB).
-  - **Remaining bottleneck:** the theme's 370 KB render-blocking CSS (Bootstrap 4 + Font Awesome + theme; ~50 KB unused per page) and hydration on listing pages. Next step if the target matters: PurgeCSS the theme CSS (needs care with classes toggled at runtime) and/or replace Font Awesome with inline SVG icons. **Owner decision.**
+  - *2026-11-15, theme CSS slimming (owner: "now")*: build-time PurgeCSS (`apps/web/scripts/build-theme-css.mjs`, source `apps/web/theme/theme.full.css`) cuts theme CSS from **361 KB to 94 KB**. Attribute-selector rules (`[class*="col-"]` gutters, Flaticon's base rule) are kept via `purgecss ignore` comments; the first pass dropped them (no icons, broken grid gutters), which a 30-shot before/after screenshot diff caught (Playwright + pixel diff). Final diff: 29/30 identical; the 30th is a 3 px animation-timing offset.
+  - Visual tidy found in the screenshots: removed the hero's side banners (discounts baked into the images), so the hero title no longer overlaps the picture; theme-coloured add-to-cart buttons on cards (they were unstyled grey); spacing on "Shop by Category"; **two product cards per row on phones**.
+  - Lighthouse after slimming (median of 3): home **86**, shop **77**, category **76**, product **92**, FAQ **91**, about **99**; SEO 100 everywhere; FCP 0.9 s. Remaining listing-page cost is product images: every seeded product uses the same large external placeholder PNG. **Re-measure with real product photos** (uploaded to the API's storage) before deciding on more work.
   - Rich Results test is Google's online tool: run it on the production URL after deploy (7.2). Locally verified that Product, Offer, BreadcrumbList and GroceryStore JSON-LD render on the right pages.
 
 ## Phase 6: React Native app (`apps/mobile`)

@@ -3,7 +3,10 @@
   "version": "0.1.0",
   "private": true,
   "scripts": {
+    "theme:css": "node scripts/build-theme-css.mjs",
+    "predev": "node scripts/build-theme-css.mjs",
     "dev": "next dev",
+    "prebuild": "node scripts/build-theme-css.mjs",
     "build": "next build",
     "start": "next start",
     "lint": "eslint",
@@ -22,6 +25,7 @@
     "@types/react-dom": "^19",
     "eslint": "^9",
     "eslint-config-next": "16.4.6",
+    "purgecss": "9.1.0",
     "typescript": "^5"
   }
 }
