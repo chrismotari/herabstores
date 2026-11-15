@@ -4,8 +4,8 @@ Legend: `[ ]` todo · `[~]` in progress · `[x]` done (with date) · `[-]` dropp
 
 ## Current focus
 
-**Phase 0 → task 0.5**: open a PR for Phase 0 and get it reviewed.
-Next up: **Phase 1 → 1.1**
+**Phase 1 → task 1.2**: add factories for the core models.
+Waiting on review: PR for Phase 0 (`chore/prep-repo-for-claude`) and PR for 0.6 + 1.1 (`chore/ci-and-auth-tests`).
 
 ## Goal
 
@@ -20,8 +20,8 @@ sharing one generated TypeScript client (`packages/shared`). Payments: **pay on 
 
 | Phase | Status |
 |---|---|
-| 0. Prep repo for Claude | in progress |
-| 1. Safety net and security fixes | todo |
+| 0. Prep repo for Claude | done (PR awaiting merge) |
+| 1. Safety net and security fixes | in progress |
 | 2. Upgrade to Laravel 13 | todo |
 | 3. REST API v1 | todo |
 | 4. Filament admin | todo |
@@ -37,14 +37,14 @@ sharing one generated TypeScript client (`packages/shared`). Payments: **pay on 
 - [x] 0.2 Add `CLAUDE.md` and `spec.md` at repo root. *2026-11-15*
 - [x] 0.3 Make tests use in-memory SQLite (`api/phpunit.xml`). They were wiping the dev DB. *2026-11-15*
 - [x] 0.4 Record the test baseline: **4 passed, 21 failed** (Breeze tests don't fill required `users.fname`). *2026-11-15*
-- [ ] 0.5 Open a PR for Phase 0 and merge it.
-- [ ] 0.6 Add a GitHub Actions CI workflow for `api/` that runs Pint (`--test`) and Pest.
-  - Accept: CI runs on PRs. It may be red until 1.1 lands.
+- [~] 0.5 Open a PR for Phase 0 and merge it. Branch pushed, PR to be opened on GitHub (`gh` isn't installed locally).
+- [x] 0.6 Add a GitHub Actions CI workflow for `api/` that runs Pint (`--test`) and Pest.
+  - Accept: CI runs on PRs. *2026-11-15*: `.github/workflows/api.yml`. Pint was applied to all of `api/` in one style-only commit.
 
 ## Phase 1: Safety net and security fixes (still Laravel 11)
 
-- [ ] 1.1 Fix the Breeze auth/profile tests to match the custom `users` schema (fname/lname/phone/country_id). Update `UserFactory`.
-  - Accept: `./vendor/bin/pest` passes.
+- [x] 1.1 Fix the Breeze auth/profile tests to match the custom `users` schema (fname/lname/phone/country_id). Update `UserFactory`.
+  - Accept: `./vendor/bin/pest` passes. *2026-11-15*: 25/25. Also fixed: registration redirected new customers to the admin-only dashboard (403), and profile update dropped the non-existent `name` field.
 - [ ] 1.2 Add factories for Product, Category, Cart, CartItem, Order, Favourite, Basket, DeliveryZone, County, Estate.
 - [ ] 1.3 Characterization tests for current web flows: guest cart add/remove, logged-in cart, checkout → order, favourites, baskets, product search.
   - Accept: each flow has at least one passing feature test that captures today's behaviour.
@@ -52,6 +52,7 @@ sharing one generated TypeScript client (`packages/shared`). Payments: **pay on 
   - Accept: tests show a customer gets 403 and an admin gets 200.
 - [ ] 1.5 **Security:** `Route::resource('orders')` is public. Require auth and scope orders to their owner (policy), with admin seeing all.
 - [ ] 1.6 Fix `Product::getIsInStockAttribute`, which always returns "In Stock" because of an early return.
+- [ ] 1.8 **Bug:** the Blade register form (`auth/register.blade.php`) only sends name/email/password, but `UserRequest` requires fname, lname, phone, address, city, estate and country_id, so nobody can sign up on the website. Fix the form, or relax the rules to what checkout really needs. Also: `estate` is validated as `max:10` and never saved.
 - [ ] 1.7 Remove the duplicate `Route::resource('users')` and dead code (`testRequest.php`, `layouts/app-old.blade.php`).
 
 ## Phase 2: Upgrade to Laravel 13
