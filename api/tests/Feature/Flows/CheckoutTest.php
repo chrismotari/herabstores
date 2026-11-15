@@ -1,6 +1,7 @@
 <?php
 
 use App\Models\Cart;
+use App\Models\CartItem;
 use App\Models\Contact;
 use App\Models\DeliveryZone;
 use App\Models\Order;
@@ -133,4 +134,48 @@ test('marketing consent is recorded as a contact', function () {
         ->post(route('orders.store'), checkoutPayload(['consented' => 'on']));
 
     expect(Contact::where('phone', '0711000000')->exists())->toBeTrue();
+});
+
+test('placing an order decrements stock', function () {
+    $product = Product::factory()->create(['stock' => 5]);
+
+    $this->withSession(guestCartWith($product))->post(route('orders.store'), checkoutPayload());
+
+    expect($product->fresh()->stock)->toBe(3);
+});
+
+test('checkout fails without changes when stock ran out after adding to cart', function () {
+    $product = Product::factory()->create(['stock' => 5]);
+    $session = guestCartWith($product); // quantity 2
+    $product->update(['stock' => 1]);
+
+    $this->withSession($session)
+        ->post(route('orders.store'), checkoutPayload())
+        ->assertSessionHasErrors('cart');
+
+    expect(Order::count())->toBe(0)
+        ->and($product->fresh()->stock)->toBe(1)
+        ->and(CartItem::count())->toBe(1);
+});
+
+test('checkout fails when a product was deactivated', function () {
+    $product = Product::factory()->create();
+    $session = guestCartWith($product);
+    $product->update(['is_active' => false]);
+
+    $this->withSession($session)
+        ->post(route('orders.store'), checkoutPayload())
+        ->assertSessionHasErrors('cart');
+
+    expect(Order::count())->toBe(0);
+});
+
+test('order prices are taken from the product at checkout time', function () {
+    $product = Product::factory()->create(['price' => 100]);
+    $session = guestCartWith($product);
+    $product->update(['price' => 120]);
+
+    $this->withSession($session)->post(route('orders.store'), checkoutPayload());
+
+    expect((float) Order::sole()->total)->toBe(240.0);
 });

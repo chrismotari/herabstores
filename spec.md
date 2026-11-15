@@ -4,7 +4,7 @@ Legend: `[ ]` todo · `[~]` in progress · `[x]` done (with date) · `[-]` dropp
 
 ## Current focus
 
-**Phase 3 → task 3.6**: move order placement into `PlaceOrder` (stock decrement in a transaction).
+**Phase 3 → task 3.7**: move product import out of `MassAddController`.
 
 ## Goal
 
@@ -76,7 +76,7 @@ sharing one generated TypeScript client (`packages/shared`). Payments: **pay on 
 
 ### 3b. Extract domain logic
 - [x] 3.5 Move cart logic into `app/Actions/Cart/*` (add, update qty, remove, merge guest→user), used by both web and API controllers. *2026-11-15*: guest carts moved from the session array into the DB (`carts.token`), resolved by `CartService::current()` from the `X-Cart-Token` header (API) or the session (web). Actions: `AddItemToCart` (adding again increases the quantity; it used to error "already in cart"), `UpdateCartItem`, `RemoveCartItem`, `MergeGuestCart` (runs on web login via a listener; quantities capped at stock). Stock and active status are enforced when adding. The cart page no longer shows a hard-coded 150 shipping.
-- [ ] 3.6 Move checkout/order placement into `app/Actions/Orders/PlaceOrder` (pay on delivery, delivery zone fee, stock decrement in a transaction).
+- [x] 3.6 Move checkout/order placement into `app/Actions/Orders/PlaceOrder` (pay on delivery, delivery zone fee, stock decrement in a transaction). *2026-11-15*: locks products (`FOR UPDATE`, stable order), rejects inactive or short-stock items with a `cart` error and no side effects, snapshots prices, decrements stock, saves the first address, empties or deletes the cart, and records marketing consent. `OrderController@store` is now a thin wrapper.
 - [ ] 3.7 Move product import out of `MassAddController` (467 lines) into an Action or a queued job.
 
 ### 3c. Endpoints (each has a Resource, a Form Request, a Policy and Pest tests)

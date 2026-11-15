@@ -2,17 +2,16 @@
 
 namespace App\Http\Controllers;
 
+use App\Actions\Orders\PlaceOrder;
 use App\Http\Requests\PlaceOrderRequest;
-use App\Models\Contact;
 use App\Models\Country;
-use App\Models\DeliveryZone;
 use App\Models\Order;
 use App\Models\Ref;
 use App\Services\CartService;
 use Illuminate\Http\Request;
 use Illuminate\Routing\Controllers\Middleware;
 use Illuminate\Support\Facades\Auth;
-use Illuminate\Support\Facades\DB;
+use Illuminate\Validation\ValidationException;
 
 class OrderController extends Controller
 {
@@ -57,80 +56,17 @@ class OrderController extends Controller
     /**
      * Store a newly created resource in storage.
      */
-    public function store(PlaceOrderRequest $request)
+    public function store(PlaceOrderRequest $request, CartService $carts, PlaceOrder $placeOrder)
     {
-        $data = $request->validated();
-        $user = $request->user();
-        $cart = app(CartService::class)->current($request);
-        $cartItems = $cart->cartItems->load('product');
+        try {
+            $placeOrder($carts->current($request), $request->validated(), $request->user());
+        } catch (ValidationException $e) {
+            flash()->error(collect($e->errors())->flatten()->first());
 
-        if ($cartItems->isEmpty()) {
-            flash()->error('Cart is empty');
-
-            return redirect()->back();
+            return back()->withErrors($e->errors())->withInput();
         }
-
-        // Delivery is priced per zone (see spec decision log).
-        $zone = DeliveryZone::findOrFail($data['delivery_zone_id']);
-        $shippingFee = $zone->delivery_fees;
-
-        $order = DB::transaction(function () use ($data, $user, $cart, $cartItems, $zone, $shippingFee) {
-            $order = Order::create([
-                'user_id' => $user?->id,
-                'total' => $cartItems->sum(fn ($item) => $item->product->price * $item->quantity),
-                'shipping_fee' => $shippingFee,
-                'status' => 'new',
-                'payment_method' => 'cash_on_delivery',
-                'payment_status' => 'pending',
-                'fname' => $data['fname'],
-                'lname' => $data['lname'],
-                'phone' => $data['phone'],
-                'alt_phone' => $data['alt_phone'] ?? null,
-                'email' => $data['email'] ?? null,
-                'address' => $data['address'],
-                'city' => $data['city'],
-                'delivery_zone' => $zone->id,
-                'message' => $data['message'] ?? null,
-                'ref_id' => $data['ref_id'] ?? null,
-                'order_items' => $cartItems->map(fn ($item) => [
-                    'product_id' => $item->product_id,
-                    'name' => $item->product->name,
-                    'price' => $item->product->price,
-                    'quantity' => $item->quantity,
-                    'discount' => 0,
-                    'description' => 'No description',
-                ])->values()->all(),
-            ]);
-
-            // Sign-up doesn't ask for an address, so remember the first one used at checkout.
-            if ($user && blank($user->address)) {
-                $user->update([
-                    'address' => $data['address'],
-                    'city' => $data['city'],
-                    'delivery_zone_id' => $zone->id,
-                ]);
-            }
-
-            $cart->cartItems()->delete();
-            if (! $user) {
-                $cart->delete(); // guest carts are single-use
-            }
-
-            return $order;
-        });
 
         $request->session()->forget(CartService::SESSION_KEY);
-
-        if ($request->boolean('consented')) {
-            Contact::create([
-                'email' => $data['email'] ?? null,
-                'name' => "{$data['fname']} {$data['lname']}",
-                'phone' => $data['phone'],
-                'consented' => true,
-                'source' => 'Purchase',
-            ]);
-        }
-
         flash()->success('Order has been placed successfully');
 
         return redirect()->route('shop')->with('success', 'Order has been placed successfully');
