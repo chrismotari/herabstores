@@ -4,7 +4,7 @@ Legend: `[ ]` todo · `[~]` in progress · `[x]` done (with date) · `[-]` dropp
 
 ## Current focus
 
-**Phase 5 → task 5.3**: port the theme layout (header, nav, footer) to Next.js.
+**Phase 5 → task 5.4**: SEO groundwork (metadata defaults, sitemap, robots, Organization JSON-LD).
 
 ## Goal
 
@@ -107,7 +107,7 @@ sharing one generated TypeScript client (`packages/shared`). Payments: **pay on 
 
 - [x] 5.1 Monorepo: pnpm workspaces at the root, `apps/web` (Next.js latest stable, TypeScript, App Router), `packages/shared`. *2026-11-15*: pnpm 12 (via corepack), Next.js 16.4.6 + React 19.3, `cacheComponents` on. **No Tailwind**: the owner chose to keep the current theme, so its CSS is reused. CI: `.github/workflows/web.yml` (types up to date, typecheck, lint, build).
 - [x] 5.2 `packages/shared`: generate a typed API client from `openapi.json` (e.g. `openapi-typescript` + `openapi-fetch`). *2026-11-15*: `createApiClient({ baseUrl, getAuthToken, getCartToken, credentials, fetch })` plus resource type aliases (`Product`, `Cart`, `Order`, ...). `pnpm api:types` regenerates the types.
-- [ ] 5.3 Layout: header, nav, footer and the design system ported from the current theme. Use our own components and don't copy the theme's licensed JS. Owner (2026-11-15): **keep the current design, with a little tidying.**
+- [x] 5.3 Layout: header, nav, footer and the design system ported from the current theme. Use our own components and don't copy the theme's licensed JS. Owner (2026-11-15): **keep the current design, with a little tidying.** *2026-11-15*: [x] theme CSS, fonts and the 65 referenced images served from `apps/web/public/theme` (4.8 MB, down from 11+ MB; legacy .eot/.svg fonts dropped). Header (top bar, search as a plain GET form to `/shop`, phone), sticky navbar with **real categories** from the API (replacing the theme's hard-coded demo mega-menu), mobile menu, back-to-top, footer with a working newsletter form (`POST /contacts`). jQuery behaviours rewritten as small client components; preloader removed. Fixed the theme's Google Fonts URL (`&amp;` meant Nunito/Poppins never loaded). Cart/account header widgets are placeholders until 5.7/5.8. **Not yet visually reviewed in a browser.**
 - [ ] 5.4 SEO groundwork: `generateMetadata` defaults, `sitemap.ts`, `robots.ts`, Organization JSON-LD, canonical URLs.
 - [ ] 5.5 Pages (server-rendered, ISR): home (`index.blade.php`), shop (`shop.blade.php`), category, product detail (Product + Breadcrumb JSON-LD).
 - [ ] 5.6 Content pages: about-us, contact-us (+form), terms-and-conditions, faq (currently reuses contact-us; give it real content).
