@@ -136,4 +136,9 @@ class Order extends Model
         return $products;
 
     }
+
+    public function deliveryZone()
+    {
+        return $this->belongsTo(DeliveryZone::class, 'delivery_zone');
+    }
 }

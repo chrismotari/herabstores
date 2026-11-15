@@ -746,6 +746,93 @@
                 "security": []
             }
         },
+        "/delivery-zones": {
+            "get": {
+                "operationId": "v1.delivery-zones.index",
+                "summary": "Delivery zones customers can choose at checkout, with their fee",
+                "tags": [
+                    "Checkout"
+                ],
+                "responses": {
+                    "200": {
+                        "description": "Array of `DeliveryZoneResource`",
+                        "content": {
+                            "application/json": {
+                                "schema": {
+                                    "type": "object",
+                                    "properties": {
+                                        "data": {
+                                            "type": "array",
+                                            "items": {
+                                                "$ref": "#/components/schemas/DeliveryZoneResource"
+                                            }
+                                        }
+                                    },
+                                    "required": [
+                                        "data"
+                                    ]
+                                }
+                            }
+                        }
+                    }
+                },
+                "security": []
+            }
+        },
+        "/orders": {
+            "post": {
+                "operationId": "v1.orders.store",
+                "description": "Guests send their X-Cart-Token. Stock is checked and reserved; problems\ncome back as a 422 with errors under `cart`.",
+                "summary": "Place a pay-on-delivery order from the current cart",
+                "tags": [
+                    "Checkout"
+                ],
+                "requestBody": {
+                    "required": true,
+                    "content": {
+                        "application/json": {
+                            "schema": {
+                                "$ref": "#/components/schemas/PlaceOrderRequest"
+                            }
+                        }
+                    }
+                },
+                "responses": {
+                    "201": {
+                        "description": "`OrderResource`",
+                        "content": {
+                            "application/json": {
+                                "schema": {
+                                    "type": "object",
+                                    "properties": {
+                                        "data": {
+                                            "allOf": [
+                                                {
+                                                    "$ref": "#/components/schemas/OrderResource"
+                                                },
+                                                {
+                                                    "type": "object",
+                                                    "required": [
+                                                        "delivery"
+                                                    ]
+                                                }
+                                            ]
+                                        }
+                                    },
+                                    "required": [
+                                        "data"
+                                    ]
+                                }
+                            }
+                        }
+                    },
+                    "422": {
+                        "$ref": "#/components/responses/ValidationException"
+                    }
+                },
+                "security": []
+            }
+        },
         "/products": {
             "get": {
                 "operationId": "v1.products.index",
@@ -1226,6 +1313,33 @@
                 ],
                 "title": "CategoryResource"
             },
+            "DeliveryZoneResource": {
+                "type": "object",
+                "properties": {
+                    "id": {
+                        "type": "string"
+                    },
+                    "name": {
+                        "type": "string"
+                    },
+                    "description": {
+                        "type": [
+                            "string",
+                            "null"
+                        ]
+                    },
+                    "delivery_fee": {
+                        "type": "number"
+                    }
+                },
+                "required": [
+                    "id",
+                    "name",
+                    "description",
+                    "delivery_fee"
+                ],
+                "title": "DeliveryZoneResource"
+            },
             "LoginRequest": {
                 "type": "object",
                 "properties": {
@@ -1250,6 +1364,253 @@
                     "password"
                 ],
                 "title": "LoginRequest"
+            },
+            "OrderResource": {
+                "type": "object",
+                "properties": {
+                    "id": {
+                        "type": "string"
+                    },
+                    "order_number": {
+                        "type": "string"
+                    },
+                    "status": {
+                        "type": [
+                            "string",
+                            "null"
+                        ],
+                        "description": "new, processing, in transit, completed, canceled, ..."
+                    },
+                    "payment_method": {
+                        "type": [
+                            "string",
+                            "null"
+                        ]
+                    },
+                    "payment_status": {
+                        "type": [
+                            "string",
+                            "null"
+                        ]
+                    },
+                    "items": {
+                        "type": "array",
+                        "items": {
+                            "type": "object",
+                            "properties": {
+                                "product_id": {
+                                    "type": "string"
+                                },
+                                "name": {
+                                    "type": "string"
+                                },
+                                "price": {
+                                    "type": "number"
+                                },
+                                "quantity": {
+                                    "type": "integer"
+                                },
+                                "line_total": {
+                                    "type": "number"
+                                }
+                            },
+                            "required": [
+                                "product_id",
+                                "name",
+                                "price",
+                                "quantity",
+                                "line_total"
+                            ]
+                        }
+                    },
+                    "subtotal": {
+                        "type": "number"
+                    },
+                    "delivery_fee": {
+                        "type": "number"
+                    },
+                    "total": {
+                        "type": "number"
+                    },
+                    "delivery": {
+                        "type": "object",
+                        "properties": {
+                            "fname": {
+                                "type": [
+                                    "string",
+                                    "null"
+                                ]
+                            },
+                            "lname": {
+                                "type": [
+                                    "string",
+                                    "null"
+                                ]
+                            },
+                            "phone": {
+                                "type": [
+                                    "string",
+                                    "null"
+                                ]
+                            },
+                            "alt_phone": {
+                                "type": [
+                                    "string",
+                                    "null"
+                                ]
+                            },
+                            "email": {
+                                "type": [
+                                    "string",
+                                    "null"
+                                ]
+                            },
+                            "address": {
+                                "type": [
+                                    "string",
+                                    "null"
+                                ]
+                            },
+                            "city": {
+                                "type": [
+                                    "string",
+                                    "null"
+                                ]
+                            },
+                            "zone": {
+                                "$ref": "#/components/schemas/DeliveryZoneResource"
+                            },
+                            "message": {
+                                "type": [
+                                    "string",
+                                    "null"
+                                ]
+                            }
+                        },
+                        "required": [
+                            "fname",
+                            "lname",
+                            "phone",
+                            "alt_phone",
+                            "email",
+                            "address",
+                            "city",
+                            "message"
+                        ]
+                    },
+                    "created_at": {
+                        "type": [
+                            "string",
+                            "null"
+                        ]
+                    },
+                    "shipped_at": {
+                        "type": "null"
+                    },
+                    "delivered_at": {
+                        "type": "null"
+                    }
+                },
+                "required": [
+                    "id",
+                    "order_number",
+                    "status",
+                    "payment_method",
+                    "payment_status",
+                    "items",
+                    "subtotal",
+                    "delivery_fee",
+                    "total",
+                    "delivery",
+                    "created_at",
+                    "shipped_at",
+                    "delivered_at"
+                ],
+                "title": "OrderResource"
+            },
+            "PlaceOrderRequest": {
+                "type": "object",
+                "description": "Checkout (pay on delivery). Guests and logged-in customers both use this.",
+                "properties": {
+                    "fname": {
+                        "type": "string",
+                        "maxLength": 255
+                    },
+                    "lname": {
+                        "type": "string",
+                        "maxLength": 255
+                    },
+                    "phone": {
+                        "type": "string",
+                        "maxLength": 20
+                    },
+                    "alt_phone": {
+                        "type": [
+                            "string",
+                            "null"
+                        ],
+                        "maxLength": 20
+                    },
+                    "email": {
+                        "type": [
+                            "string",
+                            "null"
+                        ],
+                        "format": "email",
+                        "maxLength": 255
+                    },
+                    "address": {
+                        "type": "string",
+                        "maxLength": 255
+                    },
+                    "city": {
+                        "type": "string",
+                        "maxLength": 255
+                    },
+                    "delivery_zone_id": {
+                        "type": "string",
+                        "format": "uuid"
+                    },
+                    "ref_id": {
+                        "type": [
+                            "string",
+                            "null"
+                        ],
+                        "format": "uuid"
+                    },
+                    "message": {
+                        "type": [
+                            "string",
+                            "null"
+                        ],
+                        "maxLength": 255
+                    },
+                    "consented": {
+                        "type": [
+                            "string",
+                            "null"
+                        ]
+                    },
+                    "accept_terms": {
+                        "enum": [
+                            "yes",
+                            "on",
+                            "1",
+                            1,
+                            "true",
+                            true
+                        ]
+                    }
+                },
+                "required": [
+                    "fname",
+                    "lname",
+                    "phone",
+                    "address",
+                    "city",
+                    "delivery_zone_id"
+                ],
+                "title": "PlaceOrderRequest"
             },
             "ProductResource": {
                 "type": "object",
