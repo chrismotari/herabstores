@@ -4,7 +4,7 @@ Legend: `[ ]` todo · `[~]` in progress · `[x]` done (with date) · `[-]` dropp
 
 ## Current focus
 
-**Phase 4 → task 4.5**: dashboard widgets.
+**Phase 4 → task 4.6**: retire the Blade admin.
 
 ## Goal
 
@@ -99,7 +99,7 @@ sharing one generated TypeScript client (`packages/shared`). Payments: **pay on 
 - [x] 4.3 Resources: Orders (status workflow, dispatch to courier, tracking), Couriers, Customers. *2026-11-15*: `OrderStatus` enum (new → dispatched → delivered; new/dispatched → canceled) with guarded transitions. Actions `DispatchOrder` (courier, store, `shipped_at`), `MarkOrderDelivered` (also marks the COD payment paid), `CancelOrder` (locks, restocks products and baskets). Filament: Orders (list with status/zone/date filters + a new-order badge, view page with workflow buttons; no create), Couriers, Customers (non-admins; edit contact, address, active). Fixed: the Blade dispatch never worked (it posted a disabled field to a route with no order); `Courier` had the wrong fillable fields and no UUID trait.
 - [x] 4.0 Upgrade spatie/laravel-permission 6 → 8 (read both upgrade guides; custom UUID `Role`/`Permission` models) before using it in Filament. *2026-11-15*: 8.5.0. No breaking changes affect us (no custom contracts, events, commands or middleware). Added the new config keys (`models.team`, `models.default_model`, `team_resolver`, `events_enabled`). Schema unchanged (ours uses UUIDs). Tests cover UUID roles and permissions. Also fixed: admin user creation always failed on Postgres (`dob` stored `strtotime()` output in a date column).
 - [x] 4.4 Resources: Delivery zones, Counties, Estates, Refs, Users, Roles/Permissions (spatie plugin), Contacts inbox. *2026-11-15*: plus Stores. Groups: Catalogue / Sales / Delivery / Access. Staff = admin users (hashed password, roles, can't deactivate or delete yourself); Customers stay separate. Roles get permissions via a checkbox list (plain resources, no plugin). Contacts inbox is view + delete only. Fixed: `Estate` had no fillable fields; `DeliveryZone`, `County` and `Store` fillables/relations were wrong; `DeliveryZone::orders()` used the wrong key; `Contact` `referree_code` typo; `Ref` ids were UUID objects. Dropped `estates.delivery_fees` (pricing is per zone).
-- [ ] 4.5 Dashboard widgets: orders today, revenue, low stock.
+- [x] 4.5 Dashboard widgets: orders today, revenue, low stock. *2026-11-15*: `ShopStats` (orders today, sales today + 7 days excluding canceled, waiting to dispatch, low stock; cards link to filtered lists; refreshes every 60s), `LatestOrders`, `LowStockProducts` (stock editable inline).
 - [ ] 4.6 Remove the Blade admin (`layouts/backend`, admin views/routes, `public/backend` if unused).
   - Accept: everything the old admin did is possible in Filament. Checked against the old routes list.
 
