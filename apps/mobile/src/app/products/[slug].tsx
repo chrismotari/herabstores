@@ -3,6 +3,7 @@ import { useQuery } from '@tanstack/react-query';
 import { Link, Stack, useLocalSearchParams } from 'expo-router';
 import { ScrollView, StyleSheet, useWindowDimensions, View } from 'react-native';
 
+import { AddToCart } from '@/components/cart/add-to-cart';
 import { DetailScroll } from '@/components/catalog/detail-scroll';
 import { ProductImage } from '@/components/catalog/product-image';
 import { StockBadge } from '@/components/catalog/stock-badge';
@@ -52,7 +53,7 @@ export default function ProductScreen() {
         <StockBadge status={p.stock_status} />
       </View>
 
-      {/* Add to cart: task 6.4 */}
+      <AddToCart productId={p.id} maxQuantity={p.available_quantity} />
 
       {!!p.description && <ThemedText themeColor="textSecondary">{p.description}</ThemedText>}
 

@@ -16,3 +16,6 @@ export const API_URL = (process.env.EXPO_PUBLIC_API_URL || (__DEV__ ? devApiUrl(
   /\/$/,
   '',
 );
+
+/** The website, for pages the app links out to (terms, FAQ). */
+export const SITE_URL = (process.env.EXPO_PUBLIC_SITE_URL || 'http://localhost:3000').replace(/\/$/, '');

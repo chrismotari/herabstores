@@ -3,6 +3,7 @@ import { useQuery } from '@tanstack/react-query';
 import { Link, Stack, useLocalSearchParams } from 'expo-router';
 import { Pressable, StyleSheet, View } from 'react-native';
 
+import { AddToCart } from '@/components/cart/add-to-cart';
 import { DetailScroll } from '@/components/catalog/detail-scroll';
 import { ProductImage } from '@/components/catalog/product-image';
 import { ScreenState } from '@/components/screen-state';
@@ -45,7 +46,7 @@ export default function BasketScreen() {
         </ThemedText>
       </View>
 
-      {/* Add to cart: task 6.4 */}
+      <AddToCart basketId={b.id} maxQuantity={b.available_quantity} />
 
       {!!b.description && <ThemedText themeColor="textSecondary">{b.description}</ThemedText>}
 

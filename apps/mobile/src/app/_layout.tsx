@@ -27,6 +27,11 @@ export default function RootLayout() {
             <Stack.Screen name="products/[slug]" options={{ title: '' }} />
             <Stack.Screen name="categories/[slug]" options={{ title: '' }} />
             <Stack.Screen name="baskets/[slug]" options={{ title: 'Basket' }} />
+            <Stack.Screen name="checkout/index" options={{ title: 'Checkout' }} />
+            <Stack.Screen
+              name="checkout/confirmation"
+              options={{ title: 'Order placed', headerBackVisible: false, gestureEnabled: false }}
+            />
           </Stack>
           <StatusBar style="auto" />
         </ThemeProvider>
