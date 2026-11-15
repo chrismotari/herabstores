@@ -909,12 +909,11 @@ a:focus,
 a:hover,
 .portfolio-cat a:hover,
 .footer -menu li a:hover {
-	color: #2B96CC;
+	color: #1e421f /* was #2B96CC: brand green, darker on hover */;
 	text-decoration: none;
 }
-a,
-button {
-	color: #1696e7;
+a {
+	color: var(--color-primary); /* was #1696e7 (blue) for links and buttons */
 	outline: medium none;
 }
 button:focus,input:focus,input:focus,textarea,textarea:focus{outline: 0}

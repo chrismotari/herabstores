@@ -17,7 +17,7 @@ export function AccountNav() {
   const { logout } = useSession();
 
   return (
-    <aside className="shop-sidebar">
+    <aside className="shop-sidebar account-nav">
       <div className="widget shop-widget">
         <div className="shop-cat-list">
           <ul>
@@ -27,7 +27,7 @@ export function AccountNav() {
               </li>
             ))}
             <li>
-              <button type="button" className="btn-link border-0 bg-transparent p-0" onClick={async () => { await logout(); router.push("/"); }}>
+              <button type="button" className="account-logout" onClick={async () => { await logout(); router.push("/"); }}>
                 Log out
               </button>
             </li>

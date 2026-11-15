@@ -40,17 +40,17 @@ export default function OrderPage() {
         </ol>
       )}
 
-      <div className="shop-cart-total">
-        <ul>
+      <div className="shop-cart-total order-detail-summary">
+        <ul className="summary-list">
           {order.items.map((item) => (
-            <li key={`${item.type}-${item.product_id ?? item.basket_id}`} className="d-flex justify-content-between">
+            <li key={`${item.type}-${item.product_id ?? item.basket_id}`} className="summary-item">
               <span>{item.quantity} x {item.name}</span><span>{formatPrice(item.line_total)}</span>
             </li>
           ))}
-          <li className="sub-total"><span>Subtotal</span> {formatPrice(order.subtotal)}</li>
-          {order.discount > 0 && <li><span>Discount ({order.discount_code})</span> -{formatPrice(order.discount)}</li>}
-              <li><span>Delivery</span> {formatPrice(order.delivery_fee)}</li>
-          <li className="cart-total-amount"><span>Total ({order.payment_status === "paid" ? "paid" : "pay on delivery"})</span> <span className="amount">{formatPrice(order.total)}</span></li>
+          <li className="sub-total"><span>Subtotal</span><span>{formatPrice(order.subtotal)}</span></li>
+          {order.discount > 0 && <li><span>Discount ({order.discount_code})</span><span>-{formatPrice(order.discount)}</span></li>}
+          <li><span>Delivery</span><span>{formatPrice(order.delivery_fee)}</span></li>
+          <li className="cart-total-amount"><span>Total ({order.payment_status === "paid" ? "paid" : "pay on delivery"})</span> <span>{formatPrice(order.total)}</span></li>
         </ul>
       </div>
 

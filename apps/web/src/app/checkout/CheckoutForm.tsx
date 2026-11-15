@@ -138,19 +138,19 @@ export function CheckoutForm({ zones }: { zones: DeliveryZone[] }) {
         <div className="col-lg-5">
           <div className="shop-cart-total order-summary-wrap">
             <h2 className="title h3">Your order</h2>
-            <ul>
+            <ul className="summary-list">
               {items.map((item) => (
-                <li key={item.id} className="d-flex justify-content-between">
+                <li key={item.id} className="summary-item">
                   <span>{item.quantity} x {lineName(item)}</span>
                   <span>{formatPrice(item.line_total)}</span>
                 </li>
               ))}
-              <li className="sub-total"><span>Subtotal</span> {formatPrice(subtotal)}</li>
-              {discount > 0 && <li><span>Discount ({cart?.discount?.code})</span> -{formatPrice(discount)}</li>}
-              <li><span>Delivery</span> {zone ? formatPrice(zone.delivery_fee) : "Choose a zone"}</li>
+              <li className="sub-total"><span>Subtotal</span><span>{formatPrice(subtotal)}</span></li>
+              {discount > 0 && <li><span>Discount ({cart?.discount?.code})</span><span>-{formatPrice(discount)}</span></li>}
+              <li><span>Delivery</span><span>{zone ? formatPrice(zone.delivery_fee) : "Choose a zone"}</span></li>
               <li className="cart-total-amount">
                 <span>Total (pay on delivery)</span>
-                <span className="amount">{formatPrice(subtotal - discount + (zone?.delivery_fee ?? 0))}</span>
+                <span>{formatPrice(subtotal - discount + (zone?.delivery_fee ?? 0))}</span>
               </li>
             </ul>
             <div className="mb-10"><label><input type="checkbox" name="consented" /> Send me news and offers</label></div>
@@ -166,7 +166,7 @@ export function CheckoutForm({ zones }: { zones: DeliveryZone[] }) {
                 {[...(errors.cart ?? []), ...(errors.discount_code ?? []), ...(errors.form ?? [])].map((m) => <div key={m}>{m}</div>)}
               </div>
             )}
-            <button type="submit" className="btn" disabled={submitting || !zoneId}>
+            <button type="submit" className="btn w-100" disabled={submitting || !zoneId}>
               {submitting ? "Placing order..." : "Place order"}
             </button>
           </div>

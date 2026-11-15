@@ -17,6 +17,7 @@ export function SortSelect({ current }: { current: string }) {
   return (
     <select
       name="sort"
+      className="sort-select"
       aria-label="Sort products"
       value={current}
       onChange={(e) => {

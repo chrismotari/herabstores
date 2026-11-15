@@ -27,7 +27,7 @@ export default function OrdersPage() {
       {orders.length === 0 ? (
         <p>No orders yet. <Link href="/shop">Start shopping</Link>.</p>
       ) : (
-        <div className="cart-wrapper">
+        <div className="cart-wrapper account-orders">
           <div className="table-responsive">
             <table className="table mb-0">
               <thead>

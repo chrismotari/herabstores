@@ -40,9 +40,9 @@ export default function FaqPage() {
   return (
     <ContentPage title="Delivery, payment & FAQ" path="/faq">
       {FAQS.map((item) => (
-        <details key={item.q} className="mb-20">
-          <summary className="h5" style={{ cursor: "pointer" }}>{item.q}</summary>
-          <p className="mt-10">{item.a}</p>
+        <details key={item.q} className="faq-item">
+          <summary className="h5">{item.q}</summary>
+          <p className="faq-answer">{item.a}</p>
         </details>
       ))}
     </ContentPage>

@@ -36,7 +36,14 @@ export function ProductCard({ product, eager = false, highPriority = false }: { 
 }
 
 export function ProductGrid({ products }: { products: Product[] }) {
-  if (products.length === 0) return <p>No products found.</p>;
+  if (products.length === 0) {
+    return (
+      <div className="empty-results">
+        <p>No products found.</p>
+        <Link href="/shop" className="btn rounded-btn">See all products</Link>
+      </div>
+    );
+  }
 
   return (
     <div className="row justify-content-center">

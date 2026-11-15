@@ -15,7 +15,7 @@ export function FavouriteButton({ productId, slug }: { productId: string; slug: 
   }, [user, productId]);
 
   if (!user) {
-    return <Link href={`/login?next=/products/${slug}`} className="btn btn-secondary bg-light text-primary"><i className="far fa-heart" /> Save to favourites</Link>;
+    return <Link href={`/login?next=/products/${slug}`} className="fav-btn"><i className="far fa-heart" /> Save to favourites</Link>;
   }
 
   async function toggle() {
@@ -28,8 +28,8 @@ export function FavouriteButton({ productId, slug }: { productId: string; slug: 
   }
 
   return (
-    <button type="button" className="btn btn-secondary bg-light text-primary" aria-pressed={Boolean(saved)} onClick={toggle} disabled={saved === null}>
-      <i className={saved ? "fas fa-heart text-danger" : "far fa-heart"} /> {saved ? "Saved to favourites" : "Save to favourites"}
+    <button type="button" className="fav-btn" aria-pressed={Boolean(saved)} onClick={toggle} disabled={saved === null}>
+      <i className={saved ? "fas fa-heart" : "far fa-heart"} /> {saved ? "Saved to favourites" : "Save to favourites"}
     </button>
   );
 }
