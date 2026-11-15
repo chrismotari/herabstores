@@ -4,7 +4,7 @@ Legend: `[ ]` todo · `[~]` in progress · `[x]` done (with date) · `[-]` dropp
 
 ## Current focus
 
-**Phase 2 → task 2.4**: pick the production database. Needs an owner decision.
+**Phase 3 → task 3.1**: enable `routes/api.php` with `/api/v1`.
 
 ## Goal
 
@@ -21,8 +21,8 @@ sharing one generated TypeScript client (`packages/shared`). Payments: **pay on 
 |---|---|
 | 0. Prep repo for Claude | done |
 | 1. Safety net and security fixes | done |
-| 2. Upgrade to Laravel 13 | in progress |
-| 3. REST API v1 | todo |
+| 2. Upgrade to Laravel 13 | done |
+| 3. REST API v1 | in progress |
 | 4. Filament admin | todo |
 | 5. Next.js storefront | todo |
 | 6. React Native app | todo |
@@ -64,7 +64,7 @@ sharing one generated TypeScript client (`packages/shared`). Payments: **pay on 
   - Accept: tests green, `php artisan about` shows 13.x. *2026-11-15*: v13.42.0, `php: ^8.3`. Pest 3 → 4 (PHPUnit 12), Tinker 2 → 3, Guzzle 7 → 8 (pulled in by the framework). spatie/laravel-permission **kept on 6.25** (it supports 13; the major bump is deferred to Phase 4). No code changes, no deprecations. Route and config caching work, and the HTTP smoke test matches 12.
 - [x] 2.3 Remove unused packages: `inertiajs/inertia-laravel`, `tightenco/ziggy`, `laravel/breeze`, `HandleInertiaRequests`, `resources/js/**/*.vue`, and the Vue npm deps.
   - Accept: `npm run build` and tests pass, no Inertia references remain. *2026-11-15*: also removed `views/app.blade.php`, `views/welcome.blade.php` and `jsconfig.json`. Kept Vite + Alpine + Tailwind, because the Blade auth pages (`layouts/guest`) use them. They go in 7.3.
-- [ ] 2.4 Decide on the production DB (SQLite → MySQL/Postgres?) and record the choice in the Decision log.
+- [x] 2.4 Decide on the production DB (SQLite → MySQL/Postgres?) and record the choice in the Decision log. *2026-11-15*: **PostgreSQL** (local 18; dev DB `herabs`, test DB `herabs_test`, CI uses a `postgres:18` service). Postgres exposed real bugs: corrupted country seed rows (a stray `' iso3'` key and an old "id"→"iso2" find-and-replace), a categories self-FK created before its PK, `orders.order_number` typed as uuid while the codes are 5-char hex (every order would fail), and non-UUID ids causing 500s (now 404 / validation errors).
 
 ## Phase 3: REST API v1
 
@@ -145,4 +145,5 @@ sharing one generated TypeScript client (`packages/shared`). Payments: **pay on 
 | 2026-11-15 | Sanctum: SPA cookies for web, tokens for mobile | First-party clients, no OAuth needed |
 | 2026-11-15 | Guest cart via `X-Cart-Token` instead of session | The API must be stateless for mobile |
 | 2026-11-15 | Work directly on `main` and commit at every stage | Owner's preference after Phase 1 |
+| 2026-11-15 | **PostgreSQL** for dev, test, CI and production. Tests run on Postgres, not SQLite | Strict types and better text search for products. Tests must match prod; SQLite hid real bugs |
 | 2026-11-15 | Upgrade Laravel 11 → 12 → 13 one major at a time, after tests exist | Lower risk, and failures are easy to attribute |

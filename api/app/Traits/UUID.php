@@ -22,6 +22,19 @@ trait UUID
         });
     }
 
+    /**
+     * A non-UUID route key can't match a uuid column, and Postgres errors on the
+     * comparison, so treat it as "not found" (404) instead of a 500.
+     */
+    public function resolveRouteBinding($value, $field = null)
+    {
+        if (($field ?? $this->getRouteKeyName()) === $this->getKeyName() && ! Str::isUuid($value)) {
+            return null;
+        }
+
+        return parent::resolveRouteBinding($value, $field);
+    }
+
     // Tells the database not to auto-increment this field
     public function getIncrementing()
     {

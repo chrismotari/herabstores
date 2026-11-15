@@ -36,6 +36,7 @@ class FavouriteController extends Controller
                     'required',
                     'string',
                     'max:50',
+                    'uuid',
                     'exists:products,id',
                     Rule::unique('favourites')->where(function ($query) {
                         return $query->where('user_id', auth()->id());

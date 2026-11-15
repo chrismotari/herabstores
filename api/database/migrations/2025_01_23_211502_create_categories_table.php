@@ -18,8 +18,13 @@ return new class extends Migration
             $table->string('slug')->unique();
             $table->string('image_url')->nullable();
             $table->boolean('is_active')->default(true);
-            $table->foreignUuid('parent_id')->nullable()->constrained('categories');
+            $table->uuid('parent_id')->nullable();
             $table->timestamps();
+        });
+
+        // Self-reference added after create: Postgres needs the primary key to exist first.
+        Schema::table('categories', function (Blueprint $table) {
+            $table->foreign('parent_id')->references('id')->on('categories');
         });
     }
 

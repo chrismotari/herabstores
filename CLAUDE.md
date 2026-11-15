@@ -29,9 +29,9 @@ We are migrating from a Laravel + Blade monolith to:
 ```bash
 composer install && npm install
 cp .env.example .env && php artisan key:generate
-php artisan migrate --seed          # SQLite at database/database.sqlite
+php artisan migrate --seed          # Postgres DB `herabs` (user app / password, see .env.example)
 composer dev                        # serve + queue + pail + vite
-./vendor/bin/pest                   # tests (in-memory SQLite, see phpunit.xml)
+./vendor/bin/pest                   # tests run on Postgres DB `herabs_test` (forced in phpunit.xml)
 ./vendor/bin/pest --filter=Name     # single test
 ./vendor/bin/pint                   # format PHP (run before committing)
 php artisan route:list --path=api   # inspect API routes
@@ -66,8 +66,9 @@ Seeded logins: `admin@mail.com` / `password` (admin), `user@mail.com` / `passwor
 - Use `next/image` and keep sitemap/robots generated from the API.
 
 ## Guardrails
-- **Never** run tests against `database/database.sqlite`. `phpunit.xml` forces `:memory:`, so keep it that way. Tests use `RefreshDatabase` and will wipe the dev DB.
-- Don't commit `.env`, `vendor/`, `node_modules/`, or `database/database.sqlite`.
+- **Never** run tests against the dev DB. `phpunit.xml` forces `DB_DATABASE=herabs_test` (`force="true"`), so keep it that way. Tests use `RefreshDatabase` and will wipe whatever DB they hit.
+- Database is **PostgreSQL** (dev, test, CI, production). Primary keys are UUIDs, so validate ids with `uuid` before `exists:` (Postgres errors on non-UUID input). Route binding already 404s on non-UUID keys (`App\Traits\UUID`).
+- Don't commit `.env`, `vendor/` or `node_modules/`.
 - Don't edit files under `public/ganic-live`, `public/backend` or `vendor/`. They're third-party theme and library assets.
 - Don't delete Blade views or web routes until the matching `spec.md` cut-over task says so. The site must keep working during migration.
 - Work directly on `main` (no feature branches or PRs unless asked). Commit at every stage: one commit per spec task (or per step within a large task), with tests and Pint passing first.
