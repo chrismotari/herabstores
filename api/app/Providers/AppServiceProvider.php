@@ -5,12 +5,10 @@ namespace App\Providers;
 use App\Models\Basket;
 use App\Models\Category;
 use App\Models\Country;
-use App\Models\Courier;
 use App\Models\DeliveryZone;
 use App\Models\Estate;
 use App\Models\Product;
 use App\Models\Role;
-use App\Models\Store;
 use App\Models\User;
 use App\Observers\StorefrontCacheObserver;
 use App\Services\CartService;
@@ -71,17 +69,6 @@ class AppServiceProvider extends ServiceProvider
                 'cart' => $cart,
                 'favourites' => Auth::user()?->favourites,
                 'categories' => Category::all(),
-            ]);
-        });
-        View::composer('products.form', function ($view) {
-            $view->with([
-                'categories' => Category::all(),
-            ]);
-        });
-        View::composer('orders.dispatch', function ($view) {
-            $view->with([
-                'couriers' => Courier::all(),
-                'stores' => Store::all(),
             ]);
         });
         View::composer('orders.create', function ($view) {

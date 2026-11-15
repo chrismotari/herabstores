@@ -1,20 +1,12 @@
 <?php
 
-use App\Http\Controllers\BasketController;
 use App\Http\Controllers\CartController;
 use App\Http\Controllers\CartItemController;
-use App\Http\Controllers\CategoryController;
 use App\Http\Controllers\ContactController;
-use App\Http\Controllers\CountyController;
-use App\Http\Controllers\DeliveryZoneController;
-use App\Http\Controllers\EstateController;
 use App\Http\Controllers\FavouriteController;
 use App\Http\Controllers\OrderController;
-use App\Http\Controllers\PermissionController;
 use App\Http\Controllers\ProductController;
 use App\Http\Controllers\ProfileController;
-use App\Http\Controllers\RefController;
-use App\Http\Controllers\RoleController;
 use App\Http\Controllers\UserController;
 use App\Models\Product;
 use Illuminate\Support\Facades\Route;
@@ -26,31 +18,8 @@ use Illuminate\Support\Facades\Route;
 |   admin:    everything under the backend layout
 */
 
-// Admin only
-Route::middleware(['auth', 'admin'])->group(function () {
-    Route::get('dashboard', function () {
-        return view('dashboard');
-    })->name('dashboard');
-
-    Route::get('/users/customers', [UserController::class, 'customers'])->name('users.customers');
-
-    Route::post('orders/dispatch', [OrderController::class, 'dispatch'])->name('orders.dispatch.save');
-    Route::get('orders/dispatch/{order}', [OrderController::class, 'dispatch'])->name('orders.dispatch');
-    Route::resource('orders', OrderController::class)->only(['index', 'edit', 'update', 'destroy']);
-
-    Route::resource('users', UserController::class)->except(['show', 'update']);
-    Route::resource('roles', RoleController::class);
-    Route::resource('permissions', PermissionController::class);
-    Route::resource('products', ProductController::class)->except(['show']);
-    Route::resource('categories', CategoryController::class);
-    Route::resource('baskets', BasketController::class);
-    Route::resource('estates', EstateController::class);
-    Route::resource('delivery_zones', DeliveryZoneController::class);
-    Route::resource('counties', CountyController::class);
-    Route::resource('refs', RefController::class);
-    Route::resource('carts', CartController::class)->except(['show']);
-    Route::resource('contacts', ContactController::class)->except(['store']);
-});
+// The admin lives in Filament at /admin. Keep the old name for existing links.
+Route::redirect('dashboard', '/admin')->name('dashboard');
 
 // Public: cart and guest checkout (before the auth group so orders/create isn't read as orders/{order})
 Route::get('orders/create', [OrderController::class, 'create'])->name('orders.create');

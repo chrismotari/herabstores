@@ -4,7 +4,7 @@ Legend: `[ ]` todo · `[~]` in progress · `[x]` done (with date) · `[-]` dropp
 
 ## Current focus
 
-**Phase 4 → task 4.6**: retire the Blade admin.
+**Phase 5 → task 5.1**: monorepo + Next.js app (`apps/web`).
 
 ## Goal
 
@@ -23,7 +23,7 @@ sharing one generated TypeScript client (`packages/shared`). Payments: **pay on 
 | 1. Safety net and security fixes | done |
 | 2. Upgrade to Laravel 13 | done |
 | 3. REST API v1 | done |
-| 4. Filament admin | in progress |
+| 4. Filament admin | done |
 | 5. Next.js storefront | todo |
 | 6. React Native app | todo |
 | 7. Cut-over and cleanup | todo |
@@ -100,8 +100,8 @@ sharing one generated TypeScript client (`packages/shared`). Payments: **pay on 
 - [x] 4.0 Upgrade spatie/laravel-permission 6 → 8 (read both upgrade guides; custom UUID `Role`/`Permission` models) before using it in Filament. *2026-11-15*: 8.5.0. No breaking changes affect us (no custom contracts, events, commands or middleware). Added the new config keys (`models.team`, `models.default_model`, `team_resolver`, `events_enabled`). Schema unchanged (ours uses UUIDs). Tests cover UUID roles and permissions. Also fixed: admin user creation always failed on Postgres (`dob` stored `strtotime()` output in a date column).
 - [x] 4.4 Resources: Delivery zones, Counties, Estates, Refs, Users, Roles/Permissions (spatie plugin), Contacts inbox. *2026-11-15*: plus Stores. Groups: Catalogue / Sales / Delivery / Access. Staff = admin users (hashed password, roles, can't deactivate or delete yourself); Customers stay separate. Roles get permissions via a checkbox list (plain resources, no plugin). Contacts inbox is view + delete only. Fixed: `Estate` had no fillable fields; `DeliveryZone`, `County` and `Store` fillables/relations were wrong; `DeliveryZone::orders()` used the wrong key; `Contact` `referree_code` typo; `Ref` ids were UUID objects. Dropped `estates.delivery_fees` (pricing is per zone).
 - [x] 4.5 Dashboard widgets: orders today, revenue, low stock. *2026-11-15*: `ShopStats` (orders today, sales today + 7 days excluding canceled, waiting to dispatch, low stock; cards link to filtered lists; refreshes every 60s), `LatestOrders`, `LowStockProducts` (stock editable inline).
-- [ ] 4.6 Remove the Blade admin (`layouts/backend`, admin views/routes, `public/backend` if unused).
-  - Accept: everything the old admin did is possible in Filament. Checked against the old routes list.
+- [x] 4.6 Remove the Blade admin (`layouts/backend`, admin views/routes, `public/backend` if unused).
+  - Accept: everything the old admin did is possible in Filament. Checked against the old routes list. *2026-11-15*: removed the admin route group, 14 controllers, ~30 admin views, `layouts/backend` + sidebar, `AdminMiddleware`, unused form requests and the old custom `FormRequest`. `/dashboard` now redirects to `/admin`. Admin links on the storefront (shop, order page) point to Filament. The "all carts" page was dropped (no value). **`public/backend` stays**: the Blade sign-up/login pages use its assets; it goes with the storefront in 7.3. Fixed along the way: the customer profile save and order tracking were both `dd()` stubs.
 
 ## Phase 5: Next.js storefront (`apps/web`)
 

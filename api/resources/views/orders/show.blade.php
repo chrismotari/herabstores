@@ -182,10 +182,13 @@
                                     </li>
                                     <li class="cart-total-amount"><span>Total Price</span> <span class="amount">KSH {{ $selected_order->total + $selected_order->shipping_fee }}</span></li>
                                 </ul>
-                                @if ($selected_order->status === \App\Enums\OrderStatus::New)
-                                    <a class="btn btn-primary" href="{{route('orders.dispatch', $selected_order)}}" >Dispatch order</a>
+                                @if (auth()->user()?->is_admin)
+                                    <a class="btn btn-primary" href="{{ \App\Filament\Resources\Orders\OrderResource::getUrl('view', ['record' => $selected_order]) }}">Manage in admin</a>
                                 @else
-                                    <a class="btn btn-primary" href="{{route("orders.track", $selected_order)}}" class="btn">Track order</a>
+                                    <p class="mb-0">Status: <strong>{{ $selected_order->status?->getLabel() }}</strong>
+                                        @if ($selected_order->shipped_at) · dispatched {{ $selected_order->shipped_at->diffForHumans() }} @endif
+                                        @if ($selected_order->delivered_at) · delivered {{ $selected_order->delivered_at->diffForHumans() }} @endif
+                                    </p>
                                 @endif
                             </div>
                         </div>

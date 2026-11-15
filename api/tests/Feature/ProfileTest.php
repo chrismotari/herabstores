@@ -97,3 +97,21 @@ test('deleting an account with orders keeps the orders (web)', function () {
     expect(User::find($user->id))->toBeNull()
         ->and($order->fresh()->user_id)->toBeNull();
 });
+
+test('customers can update their details from the profile page', function () {
+    $user = User::factory()->create();
+
+    $this->actingAs($user)
+        ->patch(route('users.update', $user), ['fname' => 'Amina', 'lname' => 'Odhiambo', 'phone' => $user->phone, 'email' => $user->email, 'city' => 'Kisumu'])
+        ->assertRedirect()
+        ->assertSessionHasNoErrors();
+
+    expect($user->fresh()->fname)->toBe('Amina')->and($user->fresh()->city)->toBe('Kisumu');
+});
+
+test('order tracking shows the order page', function () {
+    $user = User::factory()->create();
+    $order = Order::factory()->for($user)->create();
+
+    $this->actingAs($user)->get(route('orders.track', $order))->assertOk()->assertSee('Status:');
+});

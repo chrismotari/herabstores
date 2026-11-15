@@ -45,7 +45,7 @@ Seeded logins: `admin@mail.com` / `password` (admin), `user@mail.com` / `passwor
 
 - **Models**: `app/Models`. Most use UUID primary keys via `App\Traits\UUID`. Core: Product, Category, Basket (+BasketProduct), Cart (+CartItem), Order, Favourite, Offer/OfferType, Courier, DeliveryZone, County, Estate, Country, Ref, Store, User.
 - **Roles**: `spatie/laravel-permission`, plus a legacy `users.is_admin` flag used by `AdminMiddleware`.
-- **Current web layer (legacy, being replaced)**: `routes/web.php`, Blade views in `resources/views`, controllers in `app/Http/Controllers`. Leftover Breeze/Inertia/Vue files in `resources/js` are unused.
+- **Current web layer (legacy storefront, replaced by Next.js in Phase 5)**: `routes/web.php`, Blade views in `resources/views`, controllers in `app/Http/Controllers`. The admin is Filament only.
 - **Guest cart** currently lives in the session (`app/Services/CartService.php`). The API replaces this with a cart token.
 
 ### Target conventions for new API code
@@ -58,7 +58,7 @@ Seeded logins: `admin@mail.com` / `password` (admin), `user@mail.com` / `passwor
 - Error format: Laravel's default JSON (`message`, `errors`). Don't invent a custom envelope.
 
 ### Admin
-- Admin is moving to **Filament** (`app/Filament`). Don't build new admin Blade pages, and don't build admin screens in Next.js.
+- Admin is **Filament** (`app/Filament`). The Blade admin has been removed. Don't build admin screens in Blade or Next.js.
 - Panel: `/admin` (`App\Providers\Filament\AdminPanelProvider`), Filament 5. Generate resources with `php artisan make:filament-resource`. Requires PHP `intl` and `zip`.
 
 ## SEO rules (apps/web)

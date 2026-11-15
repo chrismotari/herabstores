@@ -200,7 +200,7 @@
                                                     <div class="add-to-cart mt-3">
                                                         <button type="submit" class="bg-orange rounded btn-secondary">Add to cart</button>
                                                         @if (Auth::user() && Auth::user()->is_admin)
-                                                            <a href="{{ route('products.edit', $product) }}" class="rounded btn-sm"><i class="fas fa-cog"></i> </a>
+                                                            <a href="{{ \App\Filament\Resources\Products\ProductResource::getUrl('edit', ['record' => $product]) }}" class="rounded btn-sm"><i class="fas fa-cog"></i> </a>
                                                         @endif
                                                     </div>
                                                 </div>

@@ -128,14 +128,3 @@ test('admins cannot be listed or edited as customers', function () {
 
     $this->get("/admin/customers/{$admin->id}/edit")->assertNotFound();
 });
-
-test('the web dispatch form works', function () {
-    $this->actingAs(User::factory()->create(['is_admin' => true]));
-    $order = orderFor(Product::factory()->create());
-    $courier = Courier::factory()->create();
-
-    $this->post(route('orders.dispatch.save'), ['order_number' => $order->order_number, 'courier_id' => $courier->id])
-        ->assertRedirect(route('orders.show', $order));
-
-    expect($order->fresh()->status)->toBe(OrderStatus::Dispatched);
-});

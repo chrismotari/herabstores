@@ -1,7 +1,5 @@
 <?php
 
-use App\Models\Category;
-use App\Models\Contact;
 use App\Models\Order;
 use App\Models\Product;
 use App\Models\User;
@@ -17,61 +15,38 @@ function admin(): User
 }
 
 dataset('admin pages', [
-    'dashboard' => '/dashboard',
-    'customers' => '/users/customers',
-    'users' => '/users',
-    'create user' => '/users/create',
-    'roles' => '/roles',
-    'permissions' => '/permissions',
-    'products' => '/products',
-    'create product' => '/products/create',
-    'categories' => '/categories',
-    'baskets' => '/baskets',
-    'estates' => '/estates',
-    'delivery zones' => '/delivery_zones',
-    'counties' => '/counties',
-    'refs' => '/refs',
-    'all orders' => '/orders',
-    'all carts' => '/carts',
-    'contacts' => '/contacts',
+    'dashboard' => '/admin',
+    'products' => '/admin/products',
+    'create product' => '/admin/products/create',
+    'categories' => '/admin/categories',
+    'baskets' => '/admin/baskets',
+    'orders' => '/admin/orders',
+    'customers' => '/admin/customers',
+    'staff' => '/admin/staff',
+    'roles' => '/admin/roles',
+    'delivery zones' => '/admin/delivery-zones',
+    'contacts' => '/admin/contacts',
 ]);
 
-test('guests are sent to login from admin pages', function (string $url) {
-    $this->get($url)->assertRedirect(route('login'));
+test('guests are sent to the admin login', function (string $url) {
+    $this->get($url)->assertRedirect('/admin/login');
 })->with('admin pages');
 
 test('customers are forbidden from admin pages', function (string $url) {
     $this->actingAs(customer())->get($url)->assertForbidden();
 })->with('admin pages');
 
-test('admins can reach admin list pages', function (string $url) {
-    $response = $this->actingAs(admin())->get($url);
+test('admins can reach admin pages', function (string $url) {
+    $this->actingAs(admin())->get($url)->assertOk();
+})->with('admin pages');
 
-    expect($response->status())->not->toBeIn([401, 403]);
-})->with([
-    '/dashboard', '/users', '/products', '/categories', '/baskets', '/orders', '/contacts',
-]);
+test('the old Blade admin is gone', function (string $url) {
+    // 405 where only a storefront POST remains at that URL (orders, contacts)
+    expect($this->actingAs(admin())->get($url)->status())->toBeIn([404, 405]);
+})->with(['/users', '/users/create', '/roles', '/permissions', '/products/create', '/categories', '/baskets', '/estates', '/delivery_zones', '/counties', '/refs', '/orders', '/carts', '/contacts', '/masscreate']);
 
-test('customers cannot create, edit or delete catalog records', function () {
-    $product = Product::factory()->create();
-    $category = Category::factory()->create();
-
-    $this->actingAs(customer());
-    $this->post('/products', ['name' => 'x'])->assertForbidden();
-    $this->get("/products/{$product->id}/edit")->assertForbidden();
-    $this->delete("/products/{$product->id}")->assertForbidden();
-    $this->delete("/categories/{$category->id}")->assertForbidden();
-    $this->post('/roles', ['name' => 'admin'])->assertForbidden();
-
-    expect(Product::find($product->id))->not->toBeNull();
-});
-
-test('customers cannot read or edit contact submissions', function () {
-    $contact = Contact::create(['name' => 'X', 'email' => 'x@example.com', 'phone' => '0700', 'source' => 'test']);
-
-    $this->actingAs(customer());
-    $this->get("/contacts/{$contact->id}")->assertForbidden();
-    $this->delete("/contacts/{$contact->id}")->assertForbidden();
+test('/dashboard now redirects to the Filament admin', function () {
+    $this->actingAs(admin())->get('/dashboard')->assertRedirect('/admin');
 });
 
 test('anyone can submit the contact form', function () {
@@ -101,12 +76,6 @@ test('admins can view any order', function () {
     $order = Order::factory()->create();
 
     $this->actingAs(admin())->get(route('orders.show', $order))->assertOk();
-});
-
-test('customers cannot dispatch orders', function () {
-    $order = Order::factory()->create();
-
-    $this->actingAs(customer())->get(route('orders.dispatch', $order))->assertForbidden();
 });
 
 test('customers can view only their own profile', function () {
