@@ -1,5 +1,6 @@
 <?php
 
+use App\Models\Basket;
 use App\Models\Cart;
 use App\Models\CartItem;
 use App\Models\Product;
@@ -46,8 +47,11 @@ test('cannot add inactive products', function () {
 test('guest can remove a product from the cart', function () {
     $product = Product::factory()->create();
 
-    $this->withSession(guestSessionWith($product))
-        ->delete(route('cart_items.destroy', $product))
+    $session = guestSessionWith($product);
+    $item = CartItem::sole();
+
+    $this->withSession($session)
+        ->delete(route('cart_items.remove', $item))
         ->assertRedirect();
 
     expect(CartItem::count())->toBe(0);
@@ -86,7 +90,7 @@ test('logged-in user can view and remove from their cart', function () {
 
     $this->get(route('carts.show'))->assertOk()->assertSee($product->name);
 
-    $this->delete(route('cart_items.destroy', $product))->assertRedirect();
+    $this->delete(route('cart_items.remove', $user->fresh()->cart->cartItems->sole()))->assertRedirect();
 
     expect($user->fresh()->cart->cartItems)->toBeEmpty();
 });
@@ -139,3 +143,25 @@ test('an unknown or malformed token gives an empty, unsaved cart', function (str
     expect($cart->exists)->toBeFalse()
         ->and($cart->cartItems)->toBeEmpty();
 })->with(['not-a-uuid', fn () => (string) Str::uuid()]);
+
+test('a guest cannot remove items from another cart', function () {
+    $product = Product::factory()->create();
+    guestSessionWith($product);
+    $item = CartItem::sole();
+
+    $this->withSession(guestSessionWith(Product::factory()->create()))
+        ->delete(route('cart_items.remove', $item));
+
+    expect(CartItem::find($item->id))->not->toBeNull();
+});
+
+test('the web cart shows basket lines', function () {
+    $basket = Basket::factory()->create(['name' => 'Weekly Veg Box', 'price' => 1500]);
+    $cart = Cart::create(['token' => (string) Str::uuid()]);
+    $cart->cartItems()->create(['basket_id' => $basket->id, 'quantity' => 1]);
+
+    $this->withSession([CartService::SESSION_KEY => $cart->token])
+        ->get(route('carts.show'))
+        ->assertOk()
+        ->assertSee('Weekly Veg Box');
+});

@@ -1075,18 +1075,22 @@
         "/cart/items": {
             "post": {
                 "operationId": "v1.cart.items.store",
-                "summary": "Add a product (adding one already in the cart increases its quantity)",
+                "summary": "Add a product or basket (adding one already in the cart increases its quantity)",
                 "tags": [
                     "Cart"
                 ],
                 "requestBody": {
-                    "required": true,
                     "content": {
                         "application/json": {
                             "schema": {
                                 "type": "object",
                                 "properties": {
                                     "product_id": {
+                                        "type": "string",
+                                        "format": "uuid",
+                                        "description": "Send product_id or basket_id."
+                                    },
+                                    "basket_id": {
                                         "type": "string",
                                         "format": "uuid"
                                     },
@@ -1095,10 +1099,7 @@
                                         "minimum": 1,
                                         "maximum": 999
                                     }
-                                },
-                                "required": [
-                                    "product_id"
-                                ]
+                                }
                             }
                         }
                     }
@@ -1923,21 +1924,52 @@
                                 "id": {
                                     "type": "string"
                                 },
+                                "type": {
+                                    "type": "string",
+                                    "description": "\"product\" or \"basket\"; the matching key below is set.",
+                                    "enum": [
+                                        "basket",
+                                        "product"
+                                    ]
+                                },
                                 "quantity": {
                                     "type": "integer"
+                                },
+                                "unit_price": {
+                                    "type": "number"
                                 },
                                 "line_total": {
                                     "type": "number"
                                 },
                                 "product": {
-                                    "$ref": "#/components/schemas/ProductResource"
+                                    "anyOf": [
+                                        {
+                                            "$ref": "#/components/schemas/ProductResource"
+                                        },
+                                        {
+                                            "type": "null"
+                                        }
+                                    ]
+                                },
+                                "basket": {
+                                    "anyOf": [
+                                        {
+                                            "$ref": "#/components/schemas/BasketResource"
+                                        },
+                                        {
+                                            "type": "null"
+                                        }
+                                    ]
                                 }
                             },
                             "required": [
                                 "id",
+                                "type",
                                 "quantity",
+                                "unit_price",
                                 "line_total",
-                                "product"
+                                "product",
+                                "basket"
                             ]
                         }
                     },
@@ -2139,8 +2171,30 @@
                         "items": {
                             "type": "object",
                             "properties": {
+                                "type": {
+                                    "anyOf": [
+                                        {
+                                            "type": "string"
+                                        },
+                                        {
+                                            "type": "string",
+                                            "enum": [
+                                                "product"
+                                            ]
+                                        }
+                                    ]
+                                },
                                 "product_id": {
-                                    "type": "string"
+                                    "type": [
+                                        "string",
+                                        "null"
+                                    ]
+                                },
+                                "basket_id": {
+                                    "type": [
+                                        "string",
+                                        "null"
+                                    ]
                                 },
                                 "name": {
                                     "type": "string"
@@ -2156,7 +2210,9 @@
                                 }
                             },
                             "required": [
+                                "type",
                                 "product_id",
+                                "basket_id",
                                 "name",
                                 "price",
                                 "quantity",

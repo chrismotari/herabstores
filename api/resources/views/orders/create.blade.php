@@ -157,10 +157,10 @@
                                 @foreach ($cart->cartItems as $cart_item)
                                     <div class="os-products-item">
                                         <div class="thumb">
-                                            <a href="shop-details.html"><img src="{{ Str::startsWith($cart_item->product->image_url, ['http://', 'https://']) ? $cart_item->product->image_url : asset('storage/' . $cart_item->product->image_url) }}" alt="no image"></a>
+                                            <a href="{{ $cart_item->url ?? '#' }}"><img src="{{ $cart_item->image_url }}" alt="no image"></a>
                                         </div>
                                         <div class="content">
-                                            <h6 class="title"><a href="shop-details.html">{{$cart_item->quantity}} x {{$cart_item->product->name}}</a></h6>
+                                            <h6 class="title"><a href="{{ $cart_item->url ?? '#' }}">{{$cart_item->quantity}} x {{ $cart_item->name }}</a></h6>
                                             <span class="price">KSHS {{$cart_item->total }}</span>
                                         </div>
                                         <div class="remove"><i class="far fa-trash-alt"></i></div>

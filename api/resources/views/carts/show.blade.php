@@ -45,11 +45,11 @@
                                     <tbody>
                                         @forelse ( $cart->cartItems as $cart_item )
                                             <tr>
-                                                <td class="product-thumbnail"><a href="{{route('products.show', $cart_item->product)}}"><img src="{{ Str::startsWith($cart_item->product->image_url, ['http://', 'https://']) ? $cart_item->product->image_url : asset('storage/' . $cart_item->product->image_url) }}" alt="no image"></a></td>
+                                                <td class="product-thumbnail"><a href="{{ $cart_item->url ?? '#' }}"><img src="{{ $cart_item->image_url }}" alt="no image"></a></td>
                                                 <td class="product-name">
-                                                    <h4><a href="{{route('products.show', $cart_item->product)}}">{{$cart_item->product->name}}</a></h4>
+                                                    <h4><a href="{{ $cart_item->url ?? '#' }}">{{ $cart_item->name }}</a></h4>
                                                 </td>
-                                                <td class="product-price">{{$cart_item->product->price}}</td>
+                                                <td class="product-price">{{ $cart_item->unit_price }}</td>
                                                 {{-- <td class="product-quantity">
                                                     <div class="cart--plus--minus">
                                                         <form action="#" class="num-block">
@@ -64,7 +64,7 @@
                                                 <td class="product-subtotal"><span>{{$cart_item->quantity}}</span></td>
                                                 <td class="product-subtotal"><span>{{$cart_item->total}}</span></td>
                                                 <td class="product-delete">
-                                                    <form id="remove_item" action="{{ route('cart_items.destroy', $cart_item->product) }}" method="POST">
+                                                    <form id="remove_item" action="{{ route('cart_items.remove', $cart_item) }}" method="POST">
                                                         @csrf
                                                         @method('DELETE')
                                                         {{-- <button type="submit"><i class="far fa-trash-alt"></i></button> --}}

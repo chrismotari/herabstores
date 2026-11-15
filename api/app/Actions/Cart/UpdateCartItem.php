@@ -17,7 +17,7 @@ class UpdateCartItem
             return null;
         }
 
-        EnsureAvailable::check($item->product, $quantity);
+        EnsureAvailable::check($item->purchasable, $quantity);
         $item->update(['quantity' => $quantity]);
 
         return $item;

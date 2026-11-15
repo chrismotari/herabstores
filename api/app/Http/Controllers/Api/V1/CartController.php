@@ -6,6 +6,7 @@ use App\Actions\Cart\AddItemToCart;
 use App\Actions\Cart\UpdateCartItem;
 use App\Http\Controllers\Controller;
 use App\Http\Resources\V1\CartResource;
+use App\Models\Basket;
 use App\Models\Cart;
 use App\Models\CartItem;
 use App\Models\Product;
@@ -45,19 +46,22 @@ class CartController extends Controller
     }
 
     /**
-     * Add a product (adding one already in the cart increases its quantity).
+     * Add a product or basket (adding one already in the cart increases its quantity).
      *
      * @unauthenticated
      */
     public function addItem(Request $request, AddItemToCart $add): JsonResponse
     {
         $data = $request->validate([
-            'product_id' => ['required', 'uuid', 'exists:products,id'],
+            /** Send product_id or basket_id. */
+            'product_id' => ['required_without:basket_id', 'prohibits:basket_id', 'uuid', 'exists:products,id'],
+            'basket_id' => ['required_without:product_id', 'uuid', 'exists:baskets,id'],
             'quantity' => ['sometimes', 'integer', 'min:1', 'max:999'],
         ]);
 
+        $item = isset($data['basket_id']) ? Basket::findOrFail($data['basket_id']) : Product::findOrFail($data['product_id']);
         $cart = $this->carts->current($request, create: true);
-        $add($cart, Product::findOrFail($data['product_id']), $data['quantity'] ?? 1);
+        $add($cart, $item, $data['quantity'] ?? 1);
 
         return $this->respond($cart);
     }
@@ -116,7 +120,7 @@ class CartController extends Controller
     private function respond(Cart $cart, int $status = 200): JsonResponse
     {
         if ($cart->exists) {
-            $cart->load('cartItems.product.category');
+            $cart->load(['cartItems.product.category', 'cartItems.basket']);
         }
 
         return (new CartResource($cart))->response()->setStatusCode($status);

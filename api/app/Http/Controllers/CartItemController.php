@@ -3,7 +3,6 @@
 namespace App\Http\Controllers;
 
 use App\Actions\Cart\AddItemToCart;
-use App\Actions\Cart\RemoveCartItem;
 use App\Models\CartItem;
 use App\Models\Product;
 use App\Services\CartService;
@@ -77,10 +76,13 @@ class CartItemController extends Controller
     /**
      * Remove the specified resource from storage.
      */
-    public function destroy(Request $request, Product $product, CartService $carts, RemoveCartItem $remove)
+    public function destroy(Request $request, string $item, CartService $carts)
     {
-        $remove($carts->current($request), $product);
-        flash()->success('Product removed from cart');
+        $cart = $carts->current($request);
+        if ($cart->exists) {
+            $cart->cartItems()->whereKey($item)->delete();
+        }
+        flash()->success('Item removed from cart');
 
         return back();
     }

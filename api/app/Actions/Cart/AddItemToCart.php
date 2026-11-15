@@ -2,26 +2,28 @@
 
 namespace App\Actions\Cart;
 
+use App\Models\Basket;
 use App\Models\Cart;
 use App\Models\CartItem;
 use App\Models\Product;
 
 /**
- * Adds a product to the cart. Adding a product that's already there
+ * Adds a product or basket to the cart. Adding one that's already there
  * increases its quantity.
  */
 class AddItemToCart
 {
-    public function __invoke(Cart $cart, Product $product, int $quantity = 1): CartItem
+    public function __invoke(Cart $cart, Product|Basket $item, int $quantity = 1): CartItem
     {
-        $item = $cart->cartItems()->firstOrNew(['product_id' => $product->id]);
-        $newQuantity = ($item->exists ? $item->quantity : 0) + $quantity;
+        $key = $item instanceof Basket ? 'basket_id' : 'product_id';
+        $line = $cart->cartItems()->firstOrNew([$key => $item->id]);
+        $newQuantity = ($line->exists ? $line->quantity : 0) + $quantity;
 
-        EnsureAvailable::check($product, $newQuantity);
+        EnsureAvailable::check($item, $newQuantity);
 
-        $item->quantity = $newQuantity;
-        $item->save();
+        $line->quantity = $newQuantity;
+        $line->save();
 
-        return $item;
+        return $line;
     }
 }

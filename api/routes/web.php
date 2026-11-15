@@ -59,7 +59,7 @@ Route::middleware(['auth', 'admin'])->group(function () {
 Route::get('orders/create', [OrderController::class, 'create'])->name('orders.create');
 Route::post('orders', [OrderController::class, 'store'])->name('orders.store');
 Route::post('cart_items', [CartItemController::class, 'store'])->name('cart_items.store');
-Route::delete('/cart-items/remove/{product}', [CartItemController::class, 'destroy'])->name('cart_items.destroy');
+Route::delete('/cart-items/{item}', [CartItemController::class, 'destroy'])->whereUuid('item')->name('cart_items.remove');
 Route::get('/carts/show/{cart?}', [CartController::class, 'show'])->name('carts.show');
 Route::post('contacts', [ContactController::class, 'store'])->name('contacts.store');
 

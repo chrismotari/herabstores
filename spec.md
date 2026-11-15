@@ -5,7 +5,6 @@ Legend: `[ ]` todo · `[~]` in progress · `[x]` done (with date) · `[-]` dropp
 ## Current focus
 
 **Phase 4 → task 4.0**: upgrade spatie/laravel-permission, then install Filament.
-Waiting on owner: **3.10a** (purchasable baskets? offers/discount codes?).
 
 ## Goal
 
@@ -85,7 +84,8 @@ sharing one generated TypeScript client (`packages/shared`). Payments: **pay on 
 - [x] 3.9 Catalog (public): `GET categories`, `GET categories/{slug}`, `GET products` (paginate, filter by category/price, sort, search), `GET products/{slug}`.
   - Accept: lookups by slug, no N+1 queries (tested), `Cache-Control` headers set. *2026-11-15*: only active products in active categories (`Product::available()`). Filters: `q` (ILIKE, wildcards escaped), `category` (slug), `min_price`/`max_price`, `in_stock`, `sort` (newest/price_asc/price_desc/name), `per_page` ≤ 60. `Cache-Control: public, max-age=60, s-maxage=300` + ETag. `throttle:search` on the listing. `App\Support\MediaUrl` turns stored paths into full URLs.
 - [x] 3.10 Baskets and offers (public read). *2026-11-15*: `GET /api/v1/baskets` and `/baskets/{slug}` (active, within the effective window, with active items). **Offers left out**: there's no working offers feature (empty `OfferController`, nothing applies discounts; the "50% OFF" banners are static theme text).
-- [ ] 3.10a **Owner decision:** should baskets be purchasable (add a basket to the cart as one line, or expand it into its products)? Should offers/discount codes be built (new feature: rules, validation at checkout, usage limits)?
+- [x] 3.10a **Owner decision:** purchasable baskets? offers/discount codes? *2026-11-15*: baskets **yes**, offers **later** (see the Backlog).
+- [x] 3.16 Purchasable baskets. *2026-11-15*: a basket is one cart line at its own price and stock (`cart_items.basket_id`; a DB check constraint means each line is exactly one product or one basket). `POST /api/v1/cart/items` takes `product_id` or `basket_id`. Checkout locks and decrements basket stock (the contents aren't deducted separately), and order lines record `type`/`basket_id`. Web cart/checkout/header render basket lines, and web removal is now by line id (`cart_items.remove`).
 - [x] 3.11 Guest cart: `POST carts` returns a `cart_token`. Cart endpoints accept the `X-Cart-Token` header. The guest cart merges into the user's cart at login. *2026-11-15*: `/api/v1/cart` (GET, POST → 201 with a guest token, DELETE clears) and `/cart/items` (POST adds, PATCH `{quantity}` with 0 removing, DELETE). Items can only be changed through the cart that owns them (404 otherwise). Works for guests (`X-Cart-Token`), bearer tokens and SPA sessions. API login merges carts (3.8).
 - [x] 3.12 Checkout: `POST orders` (pay on delivery). Delivery locations: `GET counties`, `GET counties/{id}/estates`, `GET delivery-zones` (with fee). *2026-11-15*: `POST /api/v1/orders` (PlaceOrder, 201 + `OrderResource` with subtotal/delivery_fee/total, 10/min) and `GET /api/v1/delivery-zones`. Counties and estates aren't exposed, since pricing is per zone and checkout no longer asks for them.
 - [x] 3.13 Customer account: my orders (list, show, track), favourites (add/remove/list), profile update, addresses. *2026-11-15*: `/api/v1/me`: PATCH profile + default address (email change → unverified), PUT password (revokes other tokens), DELETE account, `orders` (own only; others' are 404), `favourites` (idempotent add/remove; unavailable products hidden). New `DeleteAccount` action, also used by the web profile page, which used to crash for users with orders. Orders are kept but unlinked. Tracking = order `status` + timestamps.
@@ -136,6 +136,11 @@ sharing one generated TypeScript client (`packages/shared`). Payments: **pay on 
 
 ---
 
+## Backlog (not scheduled)
+
+- Offers / discount codes: rules (percent/fixed, product/category/cart level), code validation at checkout, usage limits (`offers` table exists, but there's no logic). Owner: "keep it for later" (2026-11-15).
+- Baskets on the web storefront (a listing page + add-to-cart). The API already supports them.
+
 ## Decision log
 
 | Date | Decision | Why |
@@ -145,6 +150,7 @@ sharing one generated TypeScript client (`packages/shared`). Payments: **pay on 
 | 2026-11-15 | **Pay on delivery** only for v1 | No payment integration exists. M-Pesa etc. can come later as a new phase |
 | 2026-11-15 | Sign-up asks only name, phone, email and password. Address is collected at checkout | Less friction at sign-up |
 | 2026-11-15 | Delivery is priced **per delivery zone**. Estates don't carry a fee | One source of truth for fees. Matches the `orders.delivery_zone` column |
+| 2026-11-15 | Baskets are sold as one line at the basket's price and stock. Offers deferred | Baskets already have their own price and stock. Offers are a new feature |
 | 2026-11-15 | Sanctum: SPA cookies for web, tokens for mobile | First-party clients, no OAuth needed |
 | 2026-11-15 | Guest cart via `X-Cart-Token` instead of session | The API must be stateless for mobile |
 | 2026-11-15 | Work directly on `main` and commit at every stage | Owner's preference after Phase 1 |

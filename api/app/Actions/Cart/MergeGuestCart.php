@@ -21,10 +21,11 @@ class MergeGuestCart
         return DB::transaction(function () use ($guest, $user) {
             $cart = $this->carts->forUser($user, create: true);
 
-            foreach ($guest->cartItems()->with('product')->get() as $item) {
-                $existing = $cart->cartItems()->firstOrNew(['product_id' => $item->product_id]);
+            foreach ($guest->cartItems()->with(['product', 'basket'])->get() as $item) {
+                $key = $item->basket_id ? ['basket_id' => $item->basket_id] : ['product_id' => $item->product_id];
+                $existing = $cart->cartItems()->firstOrNew($key);
                 $quantity = ($existing->exists ? $existing->quantity : 0) + $item->quantity;
-                $existing->quantity = max(1, min($quantity, (int) $item->product->stock));
+                $existing->quantity = max(1, min($quantity, (int) $item->purchasable->stock));
                 $existing->save();
             }
 

@@ -18,13 +18,17 @@ class CartResource extends JsonResource
             'token' => $this->user_id ? null : $this->token,
             'items' => $items->map(fn ($item) => [
                 'id' => $item->id,
+                /** "product" or "basket"; the matching key below is set. */
+                'type' => $item->type,
                 'quantity' => $item->quantity,
-                'line_total' => (float) ($item->product->price * $item->quantity),
-                'product' => new ProductResource($item->product),
+                'unit_price' => $item->unit_price,
+                'line_total' => $item->total,
+                'product' => $item->product_id ? new ProductResource($item->product) : null,
+                'basket' => $item->basket_id ? new BasketResource($item->basket) : null,
             ])->values(),
             'items_count' => (int) $items->sum('quantity'),
             /** Items total. Delivery is added at checkout (per zone). */
-            'subtotal' => (float) $items->sum(fn ($item) => $item->product->price * $item->quantity),
+            'subtotal' => (float) $items->sum(fn ($item) => $item->total),
         ];
     }
 }

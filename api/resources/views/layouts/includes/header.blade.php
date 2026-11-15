@@ -122,16 +122,16 @@
                                         @forelse ($cart?->cartItems ? $cart->cartItems : [] as $cart_item)    
                                         <li class="d-flex align-items-start">
                                             <div class="cart-img">
-                                                <a href="{{route('products.show', $cart_item->product)}}"><img src="{{ Str::startsWith($cart_item->product->image_url, ['http://', 'https://']) ? $cart_item->product->image_url : asset('storage/' . $cart_item->product->image_url) }}" alt="{{ $cart_item->product->name }}"></a>
+                                                <a href="{{ $cart_item->url ?? '#' }}"><img src="{{ $cart_item->image_url }}" alt="{{ $cart_item->name }}"></a>
                                             </div>
                                             <div class="cart-content">
-                                                <h4><a href="{{route('products.show', $cart_item->product)}}"> {{ $cart_item->quantity }}  x {{$cart_item->product->name}}</a></h4>
+                                                <h4><a href="{{ $cart_item->url ?? '#' }}"> {{ $cart_item->quantity }}  x {{ $cart_item->name }}</a></h4>
                                                 <div class="cart-price">
-                                                    <span class="new">KShs {{$cart_item->product->price}}</span>
+                                                    <span class="new">KShs {{ $cart_item->unit_price }}</span>
                                                 </div>
                                             </div>
                                             <div class="del-icon">
-                                                <form id="remove_item" action="{{ route('cart_items.destroy', $cart_item->product) }}" method="POST">
+                                                <form id="remove_item" action="{{ route('cart_items.remove', $cart_item) }}" method="POST">
                                                     @csrf
                                                     @method('DELETE')
                                                     {{-- <button type="submit"><i class="far fa-trash-alt"></i></button> --}}

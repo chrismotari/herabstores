@@ -2,6 +2,8 @@
 
 namespace App\Actions\Orders;
 
+use App\Actions\Cart\EnsureAvailable;
+use App\Models\Basket;
 use App\Models\Cart;
 use App\Models\Contact;
 use App\Models\DeliveryZone;
@@ -31,18 +33,21 @@ class PlaceOrder
         $order = DB::transaction(function () use ($cart, $data, $user) {
             $items = $cart->cartItems()->get();
             // Lock in a stable order so concurrent checkouts can't deadlock or oversell.
-            $products = Product::whereKey($items->pluck('product_id'))
+            $products = Product::whereKey($items->pluck('product_id')->filter())
                 ->orderBy('id')->lockForUpdate()->get()->keyBy('id');
+            $baskets = Basket::whereKey($items->pluck('basket_id')->filter())
+                ->orderBy('id')->lockForUpdate()->get()->keyBy('id');
+            $lineItem = fn ($item) => $item->basket_id ? $baskets[$item->basket_id] : $products[$item->product_id];
 
             $problems = [];
             foreach ($items as $item) {
-                $product = $products[$item->product_id];
-                if (! $product->is_active) {
-                    $problems[] = "{$product->name} is no longer available.";
-                } elseif ($item->quantity > $product->stock) {
-                    $problems[] = $product->stock < 1
-                        ? "{$product->name} is out of stock."
-                        : "Only {$product->stock} of {$product->name} left.";
+                $thing = $lineItem($item);
+                if (! EnsureAvailable::isAvailable($thing)) {
+                    $problems[] = "{$thing->name} is no longer available.";
+                } elseif ($item->quantity > $thing->stock) {
+                    $problems[] = $thing->stock < 1
+                        ? "{$thing->name} is out of stock."
+                        : "Only {$thing->stock} of {$thing->name} left.";
                 }
             }
             if ($problems) {
@@ -54,7 +59,7 @@ class PlaceOrder
 
             $order = Order::create([
                 'user_id' => $user?->id,
-                'total' => $items->sum(fn ($item) => $products[$item->product_id]->price * $item->quantity),
+                'total' => $items->sum(fn ($item) => $lineItem($item)->price * $item->quantity),
                 'shipping_fee' => $zone->delivery_fees,
                 'status' => 'new',
                 'payment_method' => 'cash_on_delivery',
@@ -70,17 +75,20 @@ class PlaceOrder
                 'message' => $data['message'] ?? null,
                 'ref_id' => $data['ref_id'] ?? null,
                 'order_items' => $items->map(fn ($item) => [
+                    'type' => $item->basket_id ? 'basket' : 'product',
                     'product_id' => $item->product_id,
-                    'name' => $products[$item->product_id]->name,
-                    'price' => $products[$item->product_id]->price,
+                    'basket_id' => $item->basket_id,
+                    'name' => $lineItem($item)->name,
+                    'price' => $lineItem($item)->price,
                     'quantity' => $item->quantity,
                     'discount' => 0,
                     'description' => 'No description',
                 ])->values()->all(),
             ]);
 
+            // Baskets have their own stock; their contents aren't deducted separately.
             foreach ($items as $item) {
-                $products[$item->product_id]->decrement('stock', $item->quantity);
+                $lineItem($item)->decrement('stock', $item->quantity);
             }
 
             // Sign-up doesn't ask for an address, so remember the first one used at checkout.

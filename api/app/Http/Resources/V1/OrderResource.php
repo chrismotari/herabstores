@@ -22,7 +22,9 @@ class OrderResource extends JsonResource
             'payment_method' => $this->payment_method,
             'payment_status' => $this->payment_status,
             'items' => collect($this->order_items)->map(fn ($item) => [
-                'product_id' => $item['product_id'],
+                'type' => $item['type'] ?? 'product',
+                'product_id' => $item['product_id'] ?? null,
+                'basket_id' => $item['basket_id'] ?? null,
                 'name' => $item['name'],
                 'price' => (float) $item['price'],
                 'quantity' => (int) $item['quantity'],
