@@ -4,7 +4,7 @@ Legend: `[ ]` todo · `[~]` in progress · `[x]` done (with date) · `[-]` dropp
 
 ## Current focus
 
-**Phase 3 → task 3.1**: enable `routes/api.php` with `/api/v1`.
+**Phase 3 → task 3.2**: Sanctum SPA and token auth, CORS.
 
 ## Goal
 
@@ -69,7 +69,7 @@ sharing one generated TypeScript client (`packages/shared`). Payments: **pay on 
 ## Phase 3: REST API v1
 
 ### 3a. Foundation
-- [ ] 3.1 Enable `routes/api.php` (`php artisan install:api`), add the `/api/v1` prefix and `App\Http\Controllers\Api\V1` namespace.
+- [x] 3.1 Enable `routes/api.php` (`php artisan install:api`), add the `/api/v1` prefix and `App\Http\Controllers\Api\V1` namespace. *2026-11-15*: `routes/api.php` (v1 prefix, `api.v1.*` names). `api/*` always renders JSON errors. User has `HasApiTokens`. The token table was recreated with `uuidMorphs`: the integer morphs meant UUID users could never get a token.
 - [ ] 3.2 Configure Sanctum for the SPA (stateful domains for `apps/web`, CORS) and token auth for mobile.
 - [ ] 3.3 Add Scramble (OpenAPI) at `/docs/api`, and export `openapi.json` in CI.
 - [ ] 3.4 Rate limiting (auth, search, cart) and an API exception rendering check (JSON for `api/*`).

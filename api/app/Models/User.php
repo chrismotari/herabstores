@@ -9,11 +9,12 @@ use Illuminate\Foundation\Auth\User as Authenticatable;
 // use Spatie\Permission\Models\Role;
 // use Spatie\Permission\Models\Permission;
 use Illuminate\Notifications\Notifiable;
+use Laravel\Sanctum\HasApiTokens;
 use Spatie\Permission\Traits\HasRoles;
 
 class User extends Authenticatable
 {
-    use HasFactory, HasRoles, Notifiable, UUID;
+    use HasApiTokens, HasFactory, HasRoles, Notifiable, UUID;
 
     /**
      * The attributes that are mass assignable.
