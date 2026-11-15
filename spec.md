@@ -4,7 +4,7 @@ Legend: `[ ]` todo · `[~]` in progress · `[x]` done (with date) · `[-]` dropp
 
 ## Current focus
 
-**Phase 3 → task 3.8**: auth endpoints.
+**Phase 3 → task 3.9**: public catalog endpoints (categories, products by slug).
 
 ## Goal
 
@@ -80,7 +80,7 @@ sharing one generated TypeScript client (`packages/shared`). Payments: **pay on 
 - [x] 3.7 Move product import out of `MassAddController` (467 lines) into an Action or a queued job. *2026-11-15*: it wasn't an importer but a hard-coded list of 71 starter products run via `GET /masscreate` (and it crashed on a second run). Now `Database\Seeders\CatalogSeeder`: idempotent by slug, never overwrites admin changes, called from `DatabaseSeeder`. Routes and controller removed. Real CSV import → Filament import action (4.2).
 
 ### 3c. Endpoints (each has a Resource, a Form Request, a Policy and Pest tests)
-- [ ] 3.8 Auth: register, login (token + SPA), logout, me, forgot/reset password, verify email.
+- [x] 3.8 Auth: register, login (token + SPA), logout, me, forgot/reset password, verify email. *2026-11-15*: `Api\V1\AuthController` under `/api/v1/auth/*` + `GET /me` (`UserResource`, no admin flag). `device_name` → bearer token; omitted → SPA session. Login/register merge the `X-Cart-Token` guest cart. `throttle:auth` on public endpoints. Logout revokes only the current token. Password reset signs out all devices. Forgot-password doesn't reveal whether an email exists. Inactive users can't log in. The reset/verify email links still point to the Blade pages (see 5.8).
 - [ ] 3.9 Catalog (public): `GET categories`, `GET categories/{slug}`, `GET products` (paginate, filter by category/price, sort, search), `GET products/{slug}`.
   - Accept: lookups by slug, no N+1 queries (tested), `Cache-Control` headers set.
 - [ ] 3.10 Baskets and offers (public read).
@@ -110,7 +110,7 @@ sharing one generated TypeScript client (`packages/shared`). Payments: **pay on 
 - [ ] 5.5 Pages (server-rendered, ISR): home (`index.blade.php`), shop (`shop.blade.php`), category, product detail (Product + Breadcrumb JSON-LD).
 - [ ] 5.6 Content pages: about-us, contact-us (+form), terms-and-conditions, faq (currently reuses contact-us; give it real content).
 - [ ] 5.7 Cart and checkout (client components, guest cart token in a cookie, county → estate → delivery fee, pay on delivery).
-- [ ] 5.8 Auth (Sanctum SPA) and account: orders, order tracking, favourites, profile.
+- [ ] 5.8 Auth (Sanctum SPA) and account: orders, order tracking, favourites, profile. Point password-reset and verify-email links at the Next.js pages (`ResetPassword::createUrlUsing`, `VerifyEmail::createUrlUsing`).
 - [ ] 5.9 `/api/revalidate` route handler (secret-protected) used by the API webhook from 3.15.
 - [ ] 5.10 404/500 pages, and a `redirects()` map from old URLs (`/products/{uuid}` → `/products/{slug}`, `/index` → `/`, `/carts/show` → `/cart`).
 - [ ] 5.11 Quality gate: Lighthouse SEO ≥ 95 and Performance ≥ 90 on home, category and product pages. Structured data passes Google's Rich Results test.
