@@ -354,6 +354,89 @@
                 }
             }
         },
+        "/baskets": {
+            "get": {
+                "operationId": "v1.baskets.index",
+                "summary": "List baskets available now",
+                "tags": [
+                    "Basket"
+                ],
+                "responses": {
+                    "200": {
+                        "description": "Array of `BasketResource`",
+                        "content": {
+                            "application/json": {
+                                "schema": {
+                                    "type": "object",
+                                    "properties": {
+                                        "data": {
+                                            "type": "array",
+                                            "items": {
+                                                "$ref": "#/components/schemas/BasketResource"
+                                            }
+                                        }
+                                    },
+                                    "required": [
+                                        "data"
+                                    ]
+                                }
+                            }
+                        }
+                    }
+                },
+                "security": []
+            }
+        },
+        "/baskets/{slug}": {
+            "get": {
+                "operationId": "v1.baskets.show",
+                "summary": "Show an available basket by slug, with its products",
+                "tags": [
+                    "Basket"
+                ],
+                "parameters": [
+                    {
+                        "name": "slug",
+                        "in": "path",
+                        "required": true,
+                        "schema": {
+                            "type": "string"
+                        }
+                    }
+                ],
+                "responses": {
+                    "200": {
+                        "description": "`BasketResource`",
+                        "content": {
+                            "application/json": {
+                                "schema": {
+                                    "type": "object",
+                                    "properties": {
+                                        "data": {
+                                            "allOf": [
+                                                {
+                                                    "$ref": "#/components/schemas/BasketResource"
+                                                },
+                                                {
+                                                    "type": "object",
+                                                    "required": [
+                                                        "items"
+                                                    ]
+                                                }
+                                            ]
+                                        }
+                                    },
+                                    "required": [
+                                        "data"
+                                    ]
+                                }
+                            }
+                        }
+                    }
+                },
+                "security": []
+            }
+        },
         "/categories": {
             "get": {
                 "operationId": "v1.categories.index",
@@ -739,6 +822,74 @@
             }
         },
         "schemas": {
+            "BasketResource": {
+                "type": "object",
+                "properties": {
+                    "id": {
+                        "type": "string"
+                    },
+                    "name": {
+                        "type": "string"
+                    },
+                    "slug": {
+                        "type": [
+                            "string",
+                            "null"
+                        ]
+                    },
+                    "description": {
+                        "type": "string"
+                    },
+                    "price": {
+                        "type": "number"
+                    },
+                    "in_stock": {
+                        "type": "boolean"
+                    },
+                    "image_url": {
+                        "type": [
+                            "string",
+                            "null"
+                        ]
+                    },
+                    "available_from": {
+                        "type": "string"
+                    },
+                    "available_until": {
+                        "type": "string"
+                    },
+                    "items": {
+                        "type": "array",
+                        "items": {
+                            "type": "object",
+                            "properties": {
+                                "quantity": {
+                                    "type": "integer"
+                                },
+                                "product": {
+                                    "$ref": "#/components/schemas/ProductResource"
+                                }
+                            },
+                            "required": [
+                                "quantity",
+                                "product"
+                            ]
+                        }
+                    }
+                },
+                "required": [
+                    "id",
+                    "name",
+                    "slug",
+                    "description",
+                    "price",
+                    "in_stock",
+                    "image_url",
+                    "available_from",
+                    "available_until"
+                ],
+                "title": "BasketResource"
+            },
             "CategoryResource": {
                 "type": "object",
                 "properties": {

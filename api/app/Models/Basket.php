@@ -3,6 +3,7 @@
 namespace App\Models;
 
 use App\Traits\UUID;
+use Illuminate\Database\Eloquent\Builder;
 use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Database\Eloquent\Model;
 
@@ -35,5 +36,15 @@ class Basket extends Model
     public function getEffectiveDateAttribute()
     {
         return $this->effective_from->format('Y-m-d').' to '.$this->effective_to->format('Y-m-d');
+    }
+
+    /**
+     * Active baskets whose effective window includes now.
+     */
+    public function scopeAvailable(Builder $query): Builder
+    {
+        return $query->where('is_active', true)
+            ->where('effective_from', '<=', now())
+            ->where('effective_to', '>=', now());
     }
 }

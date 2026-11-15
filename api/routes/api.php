@@ -1,6 +1,7 @@
 <?php
 
 use App\Http\Controllers\Api\V1\AuthController;
+use App\Http\Controllers\Api\V1\BasketController;
 use App\Http\Controllers\Api\V1\CategoryController;
 use App\Http\Controllers\Api\V1\ProductController;
 use Illuminate\Support\Facades\Route;
@@ -21,6 +22,8 @@ Route::prefix('v1')->name('api.v1.')->group(function () {
         Route::get('categories/{slug}', [CategoryController::class, 'show'])->name('categories.show');
         Route::get('products', [ProductController::class, 'index'])->middleware('throttle:search')->name('products.index');
         Route::get('products/{slug}', [ProductController::class, 'show'])->name('products.show');
+        Route::get('baskets', [BasketController::class, 'index'])->name('baskets.index');
+        Route::get('baskets/{slug}', [BasketController::class, 'show'])->name('baskets.show');
     });
 
     // Auth
