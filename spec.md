@@ -4,7 +4,7 @@ Legend: `[ ]` todo · `[~]` in progress · `[x]` done (with date) · `[-]` dropp
 
 ## Current focus
 
-**Phase 4 → task 4.2**: Filament resources for Products (images, CSV import), Categories, Baskets.
+**Phase 4 → task 4.3**: Orders (status workflow, dispatch, tracking), Couriers, Customers.
 
 ## Goal
 
@@ -95,7 +95,7 @@ sharing one generated TypeScript client (`packages/shared`). Payments: **pay on 
 ## Phase 4: Filament admin
 
 - [x] 4.1 Install the latest Filament compatible with Laravel 13 at `/admin`. Access only for the admin role (`canAccessPanel`). *2026-11-15*: Filament 5.11.3 (needs PHP `intl` + `zip`, added to CI). `User` implements `FilamentUser`/`HasName`; access = `is_admin && is_active` (moves to spatie roles once role management is in Filament, 4.4). The old `/admin` → `/dashboard` redirect is removed; the Blade admin stays at `/dashboard` until 4.6. Same session as the site, so admins logged in on the storefront go straight in.
-- [ ] 4.2 Resources: Products (multi-image upload, fixes the README TODO; CSV import action), Categories, Baskets, Offers/OfferTypes.
+- [x] 4.2 Resources: Products (multi-image upload, fixes the README TODO; CSV import action), Categories, Baskets. *2026-11-15*: Filament resources under `app/Filament/Resources` ("Catalogue" group). Products: auto-slug, category picker, KES prices, main image + reorderable gallery (dropped the `product_images` unique sort index, which broke reordering), stock badges, filters, bulk show/hide instead of bulk delete. Deleting a product cleans up images, cart lines, favourites and basket entries. Categories: parent picker, product counts; can't delete while it has products. Baskets: availability window + contents repeater. `ProductImporter` CSV import (matches on slug; blank stock/visible keeps current values; category by slug or name) with in-panel completion notices. Fixed Filament/Laravel stubs for UUID users (`imports`/`exports.user_id`, `notifications` `uuidMorphs`) and `notifications.data` → `jsonb` (Filament queries it as JSON). Offers/OfferTypes are left out (Backlog).
 - [ ] 4.3 Resources: Orders (status workflow, dispatch to courier, tracking), Couriers, Customers.
 - [x] 4.0 Upgrade spatie/laravel-permission 6 → 8 (read both upgrade guides; custom UUID `Role`/`Permission` models) before using it in Filament. *2026-11-15*: 8.5.0. No breaking changes affect us (no custom contracts, events, commands or middleware). Added the new config keys (`models.team`, `models.default_model`, `team_resolver`, `events_enabled`). Schema unchanged (ours uses UUIDs). Tests cover UUID roles and permissions. Also fixed: admin user creation always failed on Postgres (`dob` stored `strtotime()` output in a date column).
 - [ ] 4.4 Resources: Delivery zones, Counties, Estates, Refs, Users, Roles/Permissions (spatie plugin), Contacts inbox.

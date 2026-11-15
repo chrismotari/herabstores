@@ -37,4 +37,14 @@ class Category extends Model
     {
         return $this->hasMany(Category::class, 'parent_id');
     }
+
+    protected static function booted(): void
+    {
+        static::deleting(function (Category $category) {
+            if ($category->products()->exists()) {
+                throw new \RuntimeException('Cannot delete a category that still has products.');
+            }
+            $category->children()->update(['parent_id' => null]);
+        });
+    }
 }

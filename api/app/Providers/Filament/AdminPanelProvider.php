@@ -28,6 +28,7 @@ class AdminPanelProvider extends PanelProvider
             ->path('admin')
             ->login()
             ->brandName(config('app.name').' Admin')
+            ->databaseNotifications() // import/export completion notices
             ->colors([
                 'primary' => Color::Green,
             ])

@@ -47,4 +47,12 @@ class Basket extends Model
             ->where('effective_from', '<=', now())
             ->where('effective_to', '>=', now());
     }
+
+    protected static function booted(): void
+    {
+        static::deleting(function (Basket $basket) {
+            $basket->basket_products()->delete();
+            CartItem::where('basket_id', $basket->id)->delete();
+        });
+    }
 }

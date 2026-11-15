@@ -75,4 +75,15 @@ class Product extends Model
         return $query->where('products.is_active', true)
             ->whereHas('category', fn (Builder $q) => $q->where('is_active', true));
     }
+
+    protected static function booted(): void
+    {
+        // Orders keep their own snapshot, so only live references need removing.
+        static::deleting(function (Product $product) {
+            $product->images()->delete();
+            CartItem::where('product_id', $product->id)->delete();
+            $product->favourites()->delete();
+            BasketProduct::where('product_id', $product->id)->delete();
+        });
+    }
 }
