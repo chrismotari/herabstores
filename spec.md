@@ -4,7 +4,7 @@ Legend: `[ ]` todo · `[~]` in progress · `[x]` done (with date) · `[-]` dropp
 
 ## Current focus
 
-**Phase 2 → task 2.1**: upgrade Laravel 11 → 12. Then 2.3 (drop Inertia/Breeze), then 2.2 (→ 13).
+**Phase 2 → task 2.3**: drop Inertia/Ziggy/Breeze/Vue. Then 2.2 (→ 13).
 
 ## Goal
 
@@ -58,8 +58,8 @@ sharing one generated TypeScript client (`packages/shared`). Payments: **pay on 
 
 ## Phase 2: Upgrade to Laravel 13
 
-- [ ] 2.1 Upgrade 11 → 12 (follow the official upgrade guide). Bump Pest, Sanctum, spatie/permission, Tinker and Collision.
-  - Accept: tests green, the site works manually (home, shop, product, cart, checkout, admin).
+- [x] 2.1 Upgrade 11 → 12 (follow the official upgrade guide). Bump Pest, Sanctum, spatie/permission, Tinker and Collision.
+  - Accept: tests green, the site works manually (home, shop, product, cart, checkout, admin). *2026-11-15*: v12.72.0. No dependency conflicts, no code changes needed (no `HasUuids`, Carbon 3 already in). 136/136 tests pass, and an HTTP smoke test as guest/customer/admin passes. Note: in 12 the `image` rule rejects SVG, so the SVG listed in `UserRequest` mimes is now refused (safer).
 - [ ] 2.2 Upgrade 12 → 13. Set `"php": "^8.3"` or higher in composer.json.
   - Accept: tests green, `php artisan about` shows 13.x.
 - [ ] 2.3 Remove unused packages: `inertiajs/inertia-laravel`, `tightenco/ziggy`, `laravel/breeze`, `HandleInertiaRequests`, `resources/js/**/*.vue`, and the Vue npm deps.
