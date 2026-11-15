@@ -12,7 +12,7 @@ return new class extends Migration
     public function up(): void
     {
         Schema::create('users', function (Blueprint $table) {
-            $table->uuid("id")->primary();
+            $table->uuid('id')->primary();
             $table->string('fname');
             $table->string('mname')->nullable();
             $table->string('lname');
@@ -24,7 +24,7 @@ return new class extends Migration
             $table->string('city');
             $table->foreignUuid('delivery_zone_id')->nullable()->constrained();
             $table->string('street')->nullable();
-            $table->foreignUuid("country_id")->nullable()->restrictOnDelete()->constrained('countries');
+            $table->foreignUuid('country_id')->nullable()->restrictOnDelete()->constrained('countries');
             $table->string('photo_url')->nullable();
             $table->date('dob')->nullable();
             $table->boolean('is_active')->default(1);

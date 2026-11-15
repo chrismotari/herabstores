@@ -13,7 +13,7 @@ return new class extends Migration
     public function up(): void
     {
         Schema::create('countries', function (Blueprint $table) {
-            $table->uuid("id")->primary();
+            $table->uuid('id')->primary();
             $table->string('name')->unique();
             $table->string('iso2')->unique();
             $table->string('iso3')->nullable();
@@ -21,7 +21,6 @@ return new class extends Migration
             $table->string('phone_code');
             $table->timestamps();
         });
-
 
         Country::upsert(
             [
@@ -32,7 +31,7 @@ return new class extends Migration
                 ['id' => Str::uuid(), 'iso2' => 'AD', 'iso3' => 'AND', 'num_code' => '20', 'phone_code' => '376', 'name' => 'Andorra'],
                 ['id' => Str::uuid(), 'iso2' => 'AO', 'iso3' => 'AGO', 'num_code' => '24', 'phone_code' => '244', 'name' => 'Angola'],
                 ['id' => Str::uuid(), 'iso2' => 'AI', 'iso3' => 'AIA', 'num_code' => '660', 'phone_code' => '1264', 'name' => 'Anguilla'],
-                ['id' => Str::uuid(), 'iso2' => 'AQ', 'iso3' =>  NULL, 'num_code' => NULL, 'phone_code' => '0', 'name' => 'Antarctica'],
+                ['id' => Str::uuid(), 'iso2' => 'AQ', 'iso3' => null, 'num_code' => null, 'phone_code' => '0', 'name' => 'Antarctica'],
                 ['id' => Str::uuid(), 'iso2' => 'AG', 'iso3' => 'ATG', 'num_code' => '28', 'phone_code' => '1268', 'name' => 'Antigua and Barbuda'],
                 ['id' => Str::uuid(), 'iso2' => 'AR', 'iso3' => 'ARG', 'num_code' => '32', 'phone_code' => '54', 'name' => 'Argentina'],
                 ['id' => Str::uuid(), 'iso2' => 'AM', 'iso3' => 'ARM', 'num_code' => '51', 'phone_code' => '374', 'name' => 'Armenia'],
@@ -53,9 +52,9 @@ return new class extends Migration
                 ['id' => Str::uuid(), 'iso2' => 'BO', 'iso3' => 'BOL', 'num_code' => '68', 'phone_code' => '591', 'name' => 'Bolivia'],
                 ['id' => Str::uuid(), 'iso2' => 'BA', 'iso3' => 'BIH', 'num_code' => '70', 'phone_code' => '387', 'name' => 'Bosnia and Herzegovina'],
                 ['id' => Str::uuid(), 'iso2' => 'BW', 'iso3' => 'BWA', 'num_code' => '72', 'phone_code' => '267', 'name' => 'Botswana'],
-                ['id' => Str::uuid(), 'iso2' => 'BV', 'iso3' =>  NULL, 'num_code' => NULL, 'phone_code' => '0', 'name' => 'Bouvet Island'],
+                ['id' => Str::uuid(), 'iso2' => 'BV', 'iso3' => null, 'num_code' => null, 'phone_code' => '0', 'name' => 'Bouvet Island'],
                 ['id' => Str::uuid(), 'iso2' => 'BR', 'iso3' => 'BRA', 'num_code' => '76', 'phone_code' => '55', 'name' => 'Brazil'],
-                ['id' => Str::uuid(), 'iso2' => 'IO', 'iso3' =>  NULL, 'num_code' => NULL, 'phone_code' => '246', 'name' => 'British Indian Ocean Territory'],
+                ['id' => Str::uuid(), 'iso2' => 'IO', 'iso3' => null, 'num_code' => null, 'phone_code' => '246', 'name' => 'British Indian Ocean Territory'],
                 ['id' => Str::uuid(), 'iso2' => 'BN', 'iso3' => 'BRN', 'num_code' => '96', 'phone_code' => '673', 'name' => 'Brunei Darussalam'],
                 ['id' => Str::uuid(), 'iso2' => 'BG', 'iso3' => 'BGR', 'num_code' => '100', 'phone_code' => '359', 'name' => 'Bulgaria'],
                 ['id' => Str::uuid(), 'iso2' => 'BF', 'iso3' => 'BFA', 'num_code' => '854', 'phone_code' => '226', 'name' => 'Burkina Faso'],
@@ -69,8 +68,8 @@ return new class extends Migration
                 ['id' => Str::uuid(), 'iso2' => 'TD', 'iso3' => 'TCD', 'num_code' => '148', 'phone_code' => '235', 'name' => 'Chad'],
                 ['id' => Str::uuid(), 'iso2' => 'CL', 'iso3' => 'CHL', 'num_code' => '152', 'phone_code' => '56', 'name' => 'Chile'],
                 ['id' => Str::uuid(), 'iso2' => 'CN', 'iso3' => 'CHN', 'num_code' => '156', 'phone_code' => '86', 'name' => 'China'],
-                ['id' => Str::uuid(), 'iso2' => 'CX', 'iso3' =>  NULL, 'num_code' => NULL, 'phone_code' => '61', 'name' => 'Christmas Island'],
-                ['id' => Str::uuid(), 'iso2' => 'CC', 'iso3' =>  NULL, 'num_code' => NULL, 'phone_code' => '672', 'name' => 'Cocos (Keeling) Islands'],
+                ['id' => Str::uuid(), 'iso2' => 'CX', 'iso3' => null, 'num_code' => null, 'phone_code' => '61', 'name' => 'Christmas Island'],
+                ['id' => Str::uuid(), 'iso2' => 'CC', 'iso3' => null, 'num_code' => null, 'phone_code' => '672', 'name' => 'Cocos (Keeling) Islands'],
                 ['id' => Str::uuid(), 'iso2' => 'CO', 'iso3' => 'COL', 'num_code' => '170', 'phone_code' => '57', 'name' => 'Colombia'],
                 ['id' => Str::uuid(), 'iso2' => 'KM', 'iso3' => 'COM', 'num_code' => '174', 'phone_code' => '269', 'name' => 'Comoros'],
                 ['id' => Str::uuid(), 'iso2' => 'CG', 'iso3' => 'COG', 'num_code' => '178', 'phone_code' => '242', 'name' => 'Congo'],
@@ -100,7 +99,7 @@ return new class extends Migration
                 ['id' => Str::uuid(), 'iso2' => 'FR', 'iso3' => 'FRA', 'num_code' => '250', 'phone_code' => '33', 'name' => 'France'],
                 ['id' => Str::uuid(), 'iso2' => 'GF', 'iso3' => 'GUF', 'num_code' => '254', 'phone_code' => '594', 'name' => 'French Guiana'],
                 ['id' => Str::uuid(), 'iso2' => 'PF', 'iso3' => 'PYF', 'num_code' => '258', 'phone_code' => '689', 'name' => 'French Polynesia'],
-                ['id' => Str::uuid(), 'iso2' => 'TF', 'iso3' =>  NULL, 'num_code' => NULL, 'phone_code' => '0', 'name' => 'French Southern Territories'],
+                ['id' => Str::uuid(), 'iso2' => 'TF', 'iso3' => null, 'num_code' => null, 'phone_code' => '0', 'name' => 'French Southern Territories'],
                 ['id' => Str::uuid(), 'iso2' => 'GA', 'iso3' => 'GAB', 'num_code' => '266', 'phone_code' => '241', 'name' => 'Gabon'],
                 ['id' => Str::uuid(), 'iso2' => 'GM', 'iso3' => 'GMB', 'num_code' => '270', 'phone_code' => '220', 'name' => 'Gambia'],
                 ['id' => Str::uuid(), 'iso2' => 'GE', 'iso3' => 'GEO', 'num_code' => '268', 'phone_code' => '995', 'name' => 'Georgia'],
@@ -117,7 +116,7 @@ return new class extends Migration
                 ['id' => Str::uuid(), 'iso2' => 'GW', 'iso3' => 'GNB', 'num_code' => '624', 'phone_code' => '245', 'name' => 'Guinea-Bissau'],
                 ['id' => Str::uuid(), 'iso2' => 'GY', 'iso3' => 'GUY', 'num_code' => '328', 'phone_code' => '592', 'name' => 'Guyana'],
                 ['id' => Str::uuid(), 'iso2' => 'HT', 'iso3' => 'HTI', 'num_code' => '332', 'phone_code' => '509', 'name' => 'Haiti'],
-                ['id' => Str::uuid(), 'iso2' => 'HM', 'iso3' =>  NULL, 'num_code' => NULL, 'phone_code' => '0', 'name' => 'Heard Island and Mcdonald Islands'],
+                ['id' => Str::uuid(), 'iso2' => 'HM', 'iso3' => null, 'num_code' => null, 'phone_code' => '0', 'name' => 'Heard Island and Mcdonald Islands'],
                 ['id' => Str::uuid(), 'iso2' => 'VA', 'iso3' => 'VAT', 'num_code' => '336', 'phone_code' => '39', 'name' => 'Holy See (Vatican City State)'],
                 ['id' => Str::uuid(), 'iso2' => 'HN', 'iso3' => 'HND', 'num_code' => '340', 'phone_code' => '504', 'name' => 'Honduras'],
                 ['id' => Str::uuid(), 'iso2' => 'HK', 'iso3' => 'HKG', 'num_code' => '344', 'phone_code' => '852', 'name' => 'Hong Kong'],
@@ -161,7 +160,7 @@ return new class extends Migration
                 ['id' => Str::uuid(), 'iso2' => 'MQ', 'iso3' => 'MTQ', 'num_code' => '474', 'phone_code' => '596', 'name' => 'Martinique'],
                 ['id' => Str::uuid(), 'iso2' => 'MR', 'iso3' => 'MRT', 'num_code' => '478', 'phone_code' => '222', 'name' => 'Mauritania'],
                 ['id' => Str::uuid(), 'iso2' => 'MU', 'iso3' => 'MUS', 'num_code' => '480', 'phone_code' => '230', 'name' => 'Mauritius'],
-                ['id' => Str::uuid(), 'iso2' => 'YT', 'iso3' =>  NULL, 'num_code' => NULL,  'phone_code' => '269', 'name' => 'Mayotte'],
+                ['id' => Str::uuid(), 'iso2' => 'YT', 'iso3' => null, 'num_code' => null,  'phone_code' => '269', 'name' => 'Mayotte'],
                 ['id' => Str::uuid(), 'iso2' => 'MX', 'iso3' => 'MEX', 'num_code' => '484', 'phone_code' => '52', 'name' => 'Mexico'],
                 ['id' => Str::uuid(), 'iso2' => 'FM', 'iso3' => 'FSM', 'num_code' => '583', 'phone_code' => '691', 'name' => 'Micronesia, Federated States of'],
                 ['id' => Str::uuid(), 'iso2' => 'MD', 'iso3' => 'MDA', 'num_code' => '498', 'phone_code' => '373', 'name' => 'Moldova, Republic of'],
@@ -188,7 +187,7 @@ return new class extends Migration
                 ['id' => Str::uuid(), 'iso2' => 'OM', 'iso3' => 'OMN', 'num_code' => '512', 'phone_code' => '968', 'name' => 'Oman'],
                 ['id' => Str::uuid(), 'iso2' => 'PK', 'iso3' => 'PAK', 'num_code' => '586', 'phone_code' => '92', 'name' => 'Pakistan'],
                 ['id' => Str::uuid(), 'iso2' => 'PW', 'iso3' => 'PLW', 'num_code' => '585', 'phone_code' => '680', 'name' => 'Palau'],
-                ['id' => Str::uuid(), 'iso2' => 'PS', 'iso3' =>  NULL, 'num_code' => NULL, 'phone_code' => '970', 'name' => 'Palestinian Territory, Occupied'],
+                ['id' => Str::uuid(), 'iso2' => 'PS', 'iso3' => null, 'num_code' => null, 'phone_code' => '970', 'name' => 'Palestinian Territory, Occupied'],
                 ['id' => Str::uuid(), 'iso2' => 'PA', 'iso3' => 'PAN', 'num_code' => '591', 'phone_code' => '507', 'name' => 'Panama'],
                 ['id' => Str::uuid(), 'iso2' => 'PG', 'iso3' => 'PNG', 'num_code' => '598', 'phone_code' => '675', 'name' => 'Papua New Guinea'],
                 ['id' => Str::uuid(), 'iso2' => 'PY', 'iso3' => 'PRY', 'num_code' => '600', 'phone_code' => '595', 'name' => 'Paraguay'],
@@ -213,7 +212,7 @@ return new class extends Migration
                 ['id' => Str::uuid(), 'iso2' => 'ST', 'iso3' => 'STP', 'num_code' => '678', 'phone_code' => '239', 'name' => 'Sao Tome and Principe'],
                 ['id' => Str::uuid(), 'iso2' => 'SA', 'iso3' => 'SAU', 'num_code' => '682', 'phone_code' => '966', 'name' => 'Saudi Arabia'],
                 ['id' => Str::uuid(), 'iso2' => 'SN', 'iso3' => 'SEN', 'num_code' => '686', 'phone_code' => '221', 'name' => 'Senegal'],
-                ['id' => Str::uuid(), 'iso2' => 'CS', 'iso3' =>  NULL, 'num_code' => NULL, 'phone_code' => '381', 'name' => 'Serbia and Montenegro'],
+                ['id' => Str::uuid(), 'iso2' => 'CS', 'iso3' => null, 'num_code' => null, 'phone_code' => '381', 'name' => 'Serbia and Montenegro'],
                 ['id' => Str::uuid(), 'iso2' => 'SC', 'iso3' => 'SYC', 'num_code' => '690', 'phone_code' => '248', 'name' => 'Seychelles'],
                 ['id' => Str::uuid(), 'iso2' => 'SL', 'iso3' => 'SLE', 'num_code' => '694', 'phone_code' => '232', 'name' => 'Sierra Leone'],
                 ['id' => Str::uuid(), 'iso2' => 'SG', 'iso3' => 'SGP', 'num_code' => '702', 'phone_code' => '65', 'name' => 'Singapore'],
@@ -222,7 +221,7 @@ return new class extends Migration
                 ['id' => Str::uuid(), 'iso2' => 'SB', 'iso3' => 'SLB', 'num_code' => '90', 'phone_code' => '677', 'name' => 'Solomon Islands'],
                 ['id' => Str::uuid(), 'iso2' => 'SO', 'iso3' => 'SOM', 'num_code' => '706', 'phone_code' => '252', 'name' => 'Somalia'],
                 ['id' => Str::uuid(), 'iso2' => 'ZA', 'iso3' => 'ZAF', 'num_code' => '710', 'phone_code' => '27', 'name' => 'South Africa'],
-                ['id' => Str::uuid(), 'iso2' => 'GS', 'iso3' =>  NULL, 'num_code' => NULL, 'phone_code' => '0', 'name' => 'South Georgia and the South Sandwich Islands'],
+                ['id' => Str::uuid(), 'iso2' => 'GS', 'iso3' => null, 'num_code' => null, 'phone_code' => '0', 'name' => 'South Georgia and the South Sandwich Islands'],
                 ['id' => Str::uuid(), 'iso2' => 'ES', 'iso3' => 'ESP', 'num_code' => '724', 'phone_code' => '34', 'name' => 'Spain'],
                 ['id' => Str::uuid(), 'iso2' => 'LK', 'iso3' => 'LKA', 'num_code' => '144', 'phone_code' => '94', 'name' => 'Sri Lanka'],
                 ['id' => Str::uuid(), 'iso2' => 'SD', 'iso3' => 'SDN', 'num_code' => '736', 'phone_code' => '249', 'name' => 'Sudan'],
@@ -236,7 +235,7 @@ return new class extends Migration
                 ['id' => Str::uuid(), 'iso2' => 'TJ', 'iso3' => 'TJK', 'num_code' => '762', 'phone_code' => '992', 'name' => 'Tajikistan'],
                 ['id' => Str::uuid(), 'iso2' => 'TZ', 'iso3' => 'TZA', 'num_code' => '834', 'phone_code' => '255', 'name' => 'United Republic of Tanzania, '],
                 ['id' => Str::uuid(), 'iso2' => 'TH', 'iso3' => 'THA', 'num_code' => '764', 'phone_code' => '66', 'name' => 'Thailand'],
-                ['id' => Str::uuid(), 'iso2' => 'TL', 'iso3' =>  NULL, 'num_code' => NULL, 'phone_code' => '670', 'name' => 'Timor-Leste'],
+                ['id' => Str::uuid(), 'iso2' => 'TL', 'iso3' => null, 'num_code' => null, 'phone_code' => '670', 'name' => 'Timor-Leste'],
                 ['id' => Str::uuid(), 'iso2' => 'TG', 'iso3' => 'TGO', 'num_code' => '768', 'phone_code' => '228', 'name' => 'Togo'],
                 ['id' => Str::uuid(), 'iso2' => 'TK', 'iso3' => 'TKL', 'num_code' => '772', 'phone_code' => '690', 'name' => 'Tokelau'],
                 ['id' => Str::uuid(), 'iso2' => 'TO', 'iso3' => 'TON', 'num_code' => '776', 'phone_code' => '676', 'name' => 'Tonga'],
@@ -251,7 +250,7 @@ return new class extends Migration
                 ['id' => Str::uuid(), 'iso2' => 'AE', 'iso3' => 'ARE', 'num_code' => '784', 'phone_code' => '971', 'name' => 'United Arab Emirates'],
                 ['id' => Str::uuid(), 'iso2' => 'GB', 'iso3' => 'GBR', 'num_code' => '826', 'phone_code' => '44', 'name' => 'United Kingdom'],
                 ['id' => Str::uuid(), 'iso2' => 'US', 'iso3' => 'USA', 'num_code' => '840', 'phone_code' => '1', 'name' => 'United States'],
-                ['id' => Str::uuid(), 'iso2' => 'UM',' iso3' =>  NULL, 'num_code' =>  NULL, 'phone_code' => '1', 'name' => 'United States Minor Outlying Islands'],
+                ['id' => Str::uuid(), 'iso2' => 'UM', ' iso3' => null, 'num_code' => null, 'phone_code' => '1', 'name' => 'United States Minor Outlying Islands'],
                 ['id' => Str::uuid(), 'iso2' => 'UY', 'iso3' => 'URY', 'num_code' => '858', 'phone_code' => '598', 'name' => 'Uruguay'],
                 ['id' => Str::uuid(), 'iso2' => 'UZ', 'iso3' => 'UZB', 'num_code' => '860', 'phone_code' => '998', 'name' => 'Uzbekistan'],
                 ['id' => Str::uuid(), 'iso2' => 'VU', 'iso3' => 'VUT', 'num_code' => '548', 'phone_code' => '678', 'name' => 'Vanuatu'],
@@ -263,10 +262,10 @@ return new class extends Migration
                 ['id' => Str::uuid(), 'iso2' => 'EH', 'iso3' => 'ESH', 'num_code' => '732', 'phone_code' => '212', 'name' => 'Western Sahara'],
                 ['id' => Str::uuid(), 'iso2' => 'YE', 'iso3' => 'YEM', 'num_code' => '887', 'phone_code' => '967', 'name' => 'Yemen'],
                 ['id' => Str::uuid(), 'iso2' => 'ZM', 'iso3' => 'ZMB', 'num_code' => '894', 'phone_code' => '260', 'name' => 'Zambia'],
-                ['id' => Str::uuid(), 'iso2' => 'ZW', 'iso3' => 'ZWE', 'num_code' => '716', 'phone_code' => '263', 'name' => 'Zimbabwe']
-            
+                ['id' => Str::uuid(), 'iso2' => 'ZW', 'iso3' => 'ZWE', 'num_code' => '716', 'phone_code' => '263', 'name' => 'Zimbabwe'],
+
             ], ['id'], ['iso2', 'name', 'iso3', 'phone_code', 'num_code']);
-            
+
     }
 
     /**

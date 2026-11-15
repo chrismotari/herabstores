@@ -12,12 +12,12 @@ return new class extends Migration
     public function up(): void
     {
         Schema::create('categories', function (Blueprint $table) {
-            $table->uuid("id")->primary();
-            $table->string("name");
-            $table->text("description");
+            $table->uuid('id')->primary();
+            $table->string('name');
+            $table->text('description');
             $table->string('slug')->unique();
-            $table->string("image_url")->nullable();
-            $table->boolean("is_active")->default(true);
+            $table->string('image_url')->nullable();
+            $table->boolean('is_active')->default(true);
             $table->foreignUuid('parent_id')->nullable()->constrained('categories');
             $table->timestamps();
         });

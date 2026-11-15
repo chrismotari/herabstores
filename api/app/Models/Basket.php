@@ -2,8 +2,8 @@
 
 namespace App\Models;
 
-use Illuminate\Database\Eloquent\Model;
 use App\Traits\UUID;
+use Illuminate\Database\Eloquent\Model;
 
 class Basket extends Model
 {
@@ -18,7 +18,7 @@ class Basket extends Model
         'price',
         'image',
         'effective_from',
-        'effective_to'
+        'effective_to',
     ];
 
     protected $casts = [
@@ -33,6 +33,6 @@ class Basket extends Model
 
     public function getEffectiveDateAttribute()
     {
-        {{return $this->effective_from->format('Y-m-d') . ' to ' . $this->effective_to->format('Y-m-d');}};
+        return $this->effective_from->format('Y-m-d').' to '.$this->effective_to->format('Y-m-d');
     }
 }

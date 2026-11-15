@@ -12,15 +12,15 @@ return new class extends Migration
     public function up(): void
     {
         Schema::create('offers', function (Blueprint $table) {
-            $table->uuid("id")->primary();
-            $table->string("name");
-            $table->text("description");
-            $table->string("image");
-            $table->foreignUuid("category_id")->nullable()->constrained("categories");
-            $table->foreignUuid("product_id")->nullable()->constrained("products");
-            $table->foreignUuid("offer_type_id")->nullable()->constrained("offer_types");
-            $table->dateTime("start_at")->default(now());
-            $table->dateTime("end_at");
+            $table->uuid('id')->primary();
+            $table->string('name');
+            $table->text('description');
+            $table->string('image');
+            $table->foreignUuid('category_id')->nullable()->constrained('categories');
+            $table->foreignUuid('product_id')->nullable()->constrained('products');
+            $table->foreignUuid('offer_type_id')->nullable()->constrained('offer_types');
+            $table->dateTime('start_at')->default(now());
+            $table->dateTime('end_at');
             $table->boolean('is_active')->default(false);
             $table->decimal('value', 10, 2)->nullable(); // Discount value (e.g., 10 for 10%)
             $table->decimal('min_order_value', 10, 2)->nullable(); // Minimum order value for cart-level offers

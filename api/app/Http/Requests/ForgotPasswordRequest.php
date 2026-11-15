@@ -3,8 +3,8 @@
 namespace App\Http\Requests;
 
 use App\Models\User;
+use Illuminate\Contracts\Validation\ValidationRule;
 use Illuminate\Foundation\Http\FormRequest as LaravelFormRequest;
-use App\Http\Requests\FormRequest;
 
 class ForgotPasswordRequest extends LaravelFormRequest
 {
@@ -13,22 +13,22 @@ class ForgotPasswordRequest extends LaravelFormRequest
      */
     public function authorize(): bool
     {
-        return !($user = auth()->user()) ||
-            !($user instanceof User);
+        return ! ($user = auth()->user()) ||
+            ! ($user instanceof User);
     }
 
     /**
      * Get the validation rules that apply to the request.
      *
-     * @return array<string, \Illuminate\Contracts\Validation\ValidationRule|array<mixed>|string>
+     * @return array<string, ValidationRule|array<mixed>|string>
      */
     public function rules(): array
     {
         return [
             'email' => [
                 'required',
-                'email'
-            ]
+                'email',
+            ],
         ];
     }
 }

@@ -14,7 +14,7 @@ class DeliveryZoneController extends Controller
     public function index()
     {
         return view('delivery_zones.index', [
-            'delivery_zones' => DeliveryZone::all()
+            'delivery_zones' => DeliveryZone::all(),
         ]);
     }
 
@@ -40,9 +40,11 @@ class DeliveryZoneController extends Controller
         ]);
         if ($delivery_zone) {
             flash()->success('Delivery zone created successfully');
+
             return redirect()->route('delivery_zones.index');
-        }else{
+        } else {
             flash()->success('Error! Delivery zone not created');
+
             return redirect()->back();
         }
         //
@@ -54,7 +56,7 @@ class DeliveryZoneController extends Controller
     public function show(DeliveryZone $delivery_zone)
     {
         return view('delivery_zones.show', [
-            'selected_delivery_zone' => $delivery_zone
+            'selected_delivery_zone' => $delivery_zone,
         ]);
     }
 
@@ -81,8 +83,8 @@ class DeliveryZoneController extends Controller
     {
         if ($delivery_zone->delete()) {
             flash('Delivery zone deleted successfully')->success();
+
             return redirect()->route('delivery_zones.index');
         }
     }
 }
-

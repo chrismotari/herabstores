@@ -2,8 +2,8 @@
 
 namespace App\Http\Controllers;
 
-use Illuminate\Http\Request;
 use App\Models\Permission;
+use Illuminate\Http\Request;
 
 class PermissionController extends Controller
 {
@@ -13,7 +13,7 @@ class PermissionController extends Controller
     public function index()
     {
         return view('permissions.index', [
-            'permissions' => Permission::all()
+            'permissions' => Permission::all(),
         ]);
     }
 
@@ -31,9 +31,10 @@ class PermissionController extends Controller
     public function store(Request $request)
     {
         $permission = Permission::create([
-            'name' => $request->name
+            'name' => $request->name,
         ]);
         flash()->success('Permission created successfully');
+
         return redirect()->back();
     }
 

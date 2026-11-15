@@ -2,11 +2,13 @@
 
 namespace App\Models;
 
-use Illuminate\Database\Eloquent\Model;
 use App\Traits\UUID;
+use Illuminate\Database\Eloquent\Model;
+
 class County extends Model
 {
-    use UUID;  
+    use UUID;
+
     protected $fillable = [
         'id',
         'name',

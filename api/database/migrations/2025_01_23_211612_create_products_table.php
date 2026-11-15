@@ -12,17 +12,17 @@ return new class extends Migration
     public function up(): void
     {
         Schema::create('products', function (Blueprint $table) {
-            $table->uuid("id")->primary();
-            $table->string("name");
-            $table->text("description");
+            $table->uuid('id')->primary();
+            $table->string('name');
+            $table->text('description');
             $table->string('slug')->unique();
-            $table->decimal("price", 10, 2);
-            $table->integer("stock")->default(0);
-            $table->integer("total_stock")->default(0);
-            $table->string("image_url")->nullable();
-            $table->boolean("is_active")->default(true);
-            $table->foreignUuid("category_id")->constrained("categories");
-            $table->foreignUuid("user_id")->nullable()->constrained("users");//created by
+            $table->decimal('price', 10, 2);
+            $table->integer('stock')->default(0);
+            $table->integer('total_stock')->default(0);
+            $table->string('image_url')->nullable();
+            $table->boolean('is_active')->default(true);
+            $table->foreignUuid('category_id')->constrained('categories');
+            $table->foreignUuid('user_id')->nullable()->constrained('users'); // created by
             $table->timestamps();
         });
     }

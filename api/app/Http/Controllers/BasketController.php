@@ -4,7 +4,6 @@ namespace App\Http\Controllers;
 
 use App\Http\Requests\BasketRequest;
 use App\Models\Basket;
-use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Storage;
 
 class BasketController extends Controller
@@ -15,7 +14,8 @@ class BasketController extends Controller
     public function index()
     {
         $baskets = Basket::all();
-        return view('baskets.index', ['baskets'=>$baskets]);
+
+        return view('baskets.index', ['baskets' => $baskets]);
     }
 
     /**
@@ -34,11 +34,11 @@ class BasketController extends Controller
         // dd($request->all());
 
         $filename = null;
-            $file_path = null;
+        $file_path = null;
 
         if ($request->hasFile('image')) {
-            $filename = time(). '-' . $request->slug. '.' . $request->image->extension();
-            $file_path = $request->image->storeAs('images/basket_images',  $filename, 'public');
+            $filename = time().'-'.$request->slug.'.'.$request->image->extension();
+            $file_path = $request->image->storeAs('images/basket_images', $filename, 'public');
         }
 
         $basket = Basket::create([
@@ -49,7 +49,7 @@ class BasketController extends Controller
             'stock' => $request->stock,
             'is_active' => $request->is_active,
             'effective_from' => $request->effective_from,
-            'effective_to' => $request->effective_to
+            'effective_to' => $request->effective_to,
         ]);
 
         $basket->image = $file_path;
@@ -63,16 +63,13 @@ class BasketController extends Controller
      */
     public function show(Basket $basket)
     {
-        return view('baskets.show', ['selected_basket'=>$basket]);
+        return view('baskets.show', ['selected_basket' => $basket]);
     }
 
     /**
      * Show the form for editing the specified resource.
      */
-    public function edit(Basket $basket)
-    {
-        
-    }
+    public function edit(Basket $basket) {}
 
     /**
      * Update the specified resource in storage.
@@ -83,8 +80,8 @@ class BasketController extends Controller
         $file_path = null;
 
         if ($request->hasFile('image')) {
-            $filename = time(). '-' . $request->slug. '.' . $request->image->extension();
-            $file_path = $request->image->storeAs('images/basket_images',  $filename, 'public');
+            $filename = time().'-'.$request->slug.'.'.$request->image->extension();
+            $file_path = $request->image->storeAs('images/basket_images', $filename, 'public');
         }
 
         $basket->update([
@@ -115,6 +112,7 @@ class BasketController extends Controller
             Storage::disk('public')->delete($basket->image);
         }
         $basket->delete();
+
         return redirect()->route('baskets.index')->with('success', 'Basket deleted successfully.');
     }
 }

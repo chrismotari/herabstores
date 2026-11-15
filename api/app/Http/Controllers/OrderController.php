@@ -2,9 +2,9 @@
 
 namespace App\Http\Controllers;
 
+use App\Models\Contact;
 use App\Models\Country;
 use App\Models\Estate;
-use App\Models\Contact;
 use App\Models\Order;
 use App\Models\Ref;
 use App\Services\CartService;
@@ -20,6 +20,7 @@ class OrderController extends Controller
             new Middleware('admin', except: ['store', 'update', 'track']),
         ];
     }
+
     /**
      * Display a listing of the resource.
      */
@@ -28,7 +29,7 @@ class OrderController extends Controller
         $query = Order::query();
 
         if ($request->query('status') === 'new') {
-            $query->where('status', 'new'); 
+            $query->where('status', 'new');
         }
 
         $orders = $query->get();
@@ -43,10 +44,11 @@ class OrderController extends Controller
      */
     public function create()
     {
-        $cartService = new CartService();
+        $cartService = new CartService;
+
         return view('orders.create', [
             'selected_user' => Auth::user(),
-            'cart' =>  auth()->check() ? auth()->user()->cart : $cartService->getGuestCart(),
+            'cart' => auth()->check() ? auth()->user()->cart : $cartService->getGuestCart(),
             'estates' => Estate::all(),
             'refs' => Ref::all(),
         ]);
@@ -56,25 +58,26 @@ class OrderController extends Controller
      * Store a newly created resource in storage.
      */
     public function store(Request $request)
-    {        
+    {
         // dd($request);
         $estate = Estate::find($request->estate_id);
-        $cartService = new CartService();
+        $cartService = new CartService;
         $cart = auth()->check() ? auth()->user()->cart : $cartService->getGuestCart();
         $cart_items = $cart->cartItems;
 
-        if ($cart_items->count() < 1 ) {
+        if ($cart_items->count() < 1) {
             flash()->error('Cart is empty');
+
             return redirect()->back();
-        }else{
+        } else {
 
             $totalPrice = $cart->total;
-            //delivery fees here
-    
+            // delivery fees here
+
             $order = Order::create([
                 'user_id' => auth()->id(),
                 'total' => $totalPrice,
-                'status' => "new",
+                'status' => 'new',
                 'payment_status' => $request->payment_status,
                 'payment_method' => $request->payment_method,
                 'shipping_method' => $request->shipping_method,
@@ -101,7 +104,7 @@ class OrderController extends Controller
                         'price' => $item->price,
                         'quantity' => $item->quantity,
                         'discount' => 0,
-                        'description' => "No description",
+                        'description' => 'No description',
                     ];
                 })->toArray(),
             ]);
@@ -111,17 +114,18 @@ class OrderController extends Controller
                     'email' => $request->email,
                     'name' => "{$request->fname} {$request->lname}",
                     'phone' => $request->phone,
-                    'consented' => true ,
-                    'source' => "Purchase",
+                    'consented' => true,
+                    'source' => 'Purchase',
                 ]);
             }
-    
+
             // Clear the cart
             if ($order) {
                 $cart->cartItems()->delete();
                 session()->forget('cart');
+
                 return redirect()->route('shop')->with('success', 'Order has been placed successfully');
-            }else{
+            } else {
                 return back()->with('error', 'An Error occured while placing your order');
             }
         }
@@ -134,7 +138,7 @@ class OrderController extends Controller
     public function show(Order $order)
     {
         // dd($order->products->first()->name);
-        
+
         return view('orders.show', [
             'selected_order' => $order,
             'countries' => Country::all(),
@@ -152,28 +156,26 @@ class OrderController extends Controller
     /**
      * Update the specified resource in storage.
      */
-    public function update(Request $request, Order $order)
-    {
-        
-
-    }
+    public function update(Request $request, Order $order) {}
 
     public function track(Order $order)
     {
         dd('Not available at the moment');
 
     }
-    public function dispatch(Request $request, Order $order = new Order())
-    {   
+
+    public function dispatch(Request $request, Order $order = new Order)
+    {
         if ($request->isMethod('get')) {
-            return view('orders.dispatch', ['selected_order'=>$order]);
-        }elseif ($request->isMethod('post')) {
+            return view('orders.dispatch', ['selected_order' => $order]);
+        } elseif ($request->isMethod('post')) {
             $order->update([
                 'status' => 'dispatched',
                 'courier_id' => $request->courier_id,
                 'store_id' => $request->store_id,
                 // 'dispatched_at' => now(),
             ]);
+
             return redirect()->route('orders.show', $order)->with('success', 'Order has been dispatched successfully');
         }
 
@@ -185,6 +187,7 @@ class OrderController extends Controller
     public function destroy(Order $order)
     {
         $order->delete();
+
         return back()->with('success', 'Order has been deleted successfully');
     }
 }

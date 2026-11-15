@@ -1,5 +1,7 @@
 <?php
 
+use App\Models\Country;
+
 test('registration screen can be rendered', function () {
     $response = $this->get('/register');
 
@@ -17,7 +19,7 @@ test('new users can register', function () {
         'address' => '72 Fox Street',
         'city' => 'Nairobi',
         'estate' => 'Kilimani',
-        'country_id' => \App\Models\Country::where('name', 'Kenya')->value('id'),
+        'country_id' => Country::where('name', 'Kenya')->value('id'),
     ]);
 
     $response->assertSessionHasNoErrors();

@@ -4,6 +4,7 @@ namespace App\Http\Controllers;
 
 use App\Models\Contact;
 use Illuminate\Http\Request;
+use Illuminate\Validation\ValidationException;
 
 class ContactController extends Controller
 {
@@ -30,9 +31,9 @@ class ContactController extends Controller
     {
         try {
             $request->validate([
-                'email' => ['required', 'email', ],
+                'email' => ['required', 'email'],
             ]);
-        } catch (\Illuminate\Validation\ValidationException $e) {
+        } catch (ValidationException $e) {
             return redirect()->back()->with('error', 'Invalid inputs.');
         }
         Contact::create([
@@ -42,8 +43,9 @@ class ContactController extends Controller
             'consented' => $request->consented ? true : false,
             'subject' => $request->subject,
             'message' => $request->message,
-            'source' => "Website",
+            'source' => 'Website',
         ]);
+
         return redirect()->back()->with('success', "Your request was successful! You'll hear from us soon.");
     }
 

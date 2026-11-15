@@ -2,12 +2,13 @@
 
 namespace App\Models;
 
-use Illuminate\Database\Eloquent\Model;
 use App\Traits\UUID;
+use Illuminate\Database\Eloquent\Model;
 
 class Product extends Model
 {
     use UUID;
+
     protected $fillable = [
         'name',
         'description',
@@ -39,12 +40,13 @@ class Product extends Model
     {
         return $this->hasMany(ProductImage::class);
     }
+
     public function getIsInStockAttribute()
     {
         // skip function for now
         return 'In Stock';
 
-        if (!$this->stock  || !$this->total_stock ) {
+        if (! $this->stock || ! $this->total_stock) {
             return 'Out of Stock';
         }
 

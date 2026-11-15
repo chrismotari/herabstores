@@ -14,16 +14,16 @@ return new class extends Migration
     public function up(): void
     {
         Schema::create('baskets', function (Blueprint $table) {
-            $table->uuid("id")->primary();
-            $table->string("name");
-            $table->string("slug")->unique()->nullable();
-            $table->text("description");
-            $table->decimal("price", 10, 2);
-            $table->integer("stock");
-            $table->string("image")->nullable();
-            $table->boolean("is_active")->default(true);
-            $table->dateTime("effective_from")->default(now());
-            $table->dateTime("effective_to");
+            $table->uuid('id')->primary();
+            $table->string('name');
+            $table->string('slug')->unique()->nullable();
+            $table->text('description');
+            $table->decimal('price', 10, 2);
+            $table->integer('stock');
+            $table->string('image')->nullable();
+            $table->boolean('is_active')->default(true);
+            $table->dateTime('effective_from')->default(now());
+            $table->dateTime('effective_to');
             // $table->json("items"); // need to make basket_itmes table instead
 
             $table->timestamps();

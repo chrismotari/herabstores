@@ -2,12 +2,13 @@
 
 namespace App\Models;
 
-use Illuminate\Database\Eloquent\Model;
 use App\Traits\UUID;
+use Illuminate\Database\Eloquent\Model;
 
 class ProductImage extends Model
 {
     use UUID;
+
     protected $fillable = [
         'product_id',
         'image_url',

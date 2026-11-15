@@ -2,14 +2,14 @@
 
 namespace App\Models;
 
-use Illuminate\Database\Eloquent\Model;
 use App\Traits\UUID;
+use Illuminate\Database\Eloquent\Model;
 use Illuminate\Support\Facades\DB;
 
 class Cart extends Model
 {
     use UUID;
-    
+
     protected $fillable = [
         'user_id',
         'status',
@@ -19,7 +19,8 @@ class Cart extends Model
     {
         return $this->hasMany(CartItem::class);
     }
-    public function  getItemsAttribute()
+
+    public function getItemsAttribute()
     {
         return $this->hasMany(CartItem::class);
     }
@@ -31,12 +32,13 @@ class Cart extends Model
 
     public function getTotalAttribute()
     {
-        $grand_total  = 0;
+        $grand_total = 0;
         foreach ($this->cartItems as $cartItem) {
             $grand_total += $cartItem->total;
         }
+
         // $grand_total = $this->cartItems()->sum(DB::raw('price * quantity'));
-        return $grand_total; 
+        return $grand_total;
     }
 
     public function getItemsCountAttribute()

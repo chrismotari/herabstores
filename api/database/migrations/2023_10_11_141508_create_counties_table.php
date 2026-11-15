@@ -14,12 +14,12 @@ return new class extends Migration
     public function up(): void
     {
         Schema::create('counties', function (Blueprint $table) {
-            $table->uuid("id")->primary();
-            $table->string("name")->unique();
-            $table->integer("code")->unique();
-            $table->text("description")->nullable();
+            $table->uuid('id')->primary();
+            $table->string('name')->unique();
+            $table->integer('code')->unique();
+            $table->text('description')->nullable();
             // $table->decimal("delivery_fees", 10, 2)->default(0);
-            $table->boolean("is_active")->default(1);
+            $table->boolean('is_active')->default(1);
             $table->timestamps();
         });
         $counties = [
@@ -71,12 +71,12 @@ return new class extends Migration
             ['name' => 'Nyamira', 'code' => 46],
             ['name' => 'Nairobi', 'code' => 47],
         ];
-        
+
         foreach ($counties as $county) {
             County::updateOrCreate(
-                ['code' => $county['code']], 
+                ['code' => $county['code']],
                 [
-                    'id' => Str::uuid(), 
+                    'id' => Str::uuid(),
                     'name' => $county['name'],
                 ]
             );

@@ -4,13 +4,12 @@ namespace App\Services;
 
 use App\Models\Cart;
 use App\Models\CartItem;
-use Illuminate\Support\Collection;
 
 class CartService
 {
     public function getGuestCart(): Cart
     {
-        $cart = new Cart();
+        $cart = new Cart;
         $cartItems = session()->get('cart', []);
         $cartCollection = collect($cartItems)->map(function ($item, $productId) {
             return new CartItem([

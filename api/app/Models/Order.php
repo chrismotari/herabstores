@@ -10,13 +10,14 @@ use Illuminate\Support\Str;
 class Order extends Model
 {
     use UUID;
+
     protected static function boot()
     {
         parent::boot();
 
         static::creating(function ($order) {
-            if (!$order->id) {
-                $order->id = Str::uuid(); 
+            if (! $order->id) {
+                $order->id = Str::uuid();
             }
             $order->order_number = self::generateNHexa();
         });
@@ -37,7 +38,7 @@ class Order extends Model
         'user_id',
         'total',
         'order_items',
-        'status', //New,pending,processing,completed,failed,refunded,canceled,expired, in transit
+        'status', // New,pending,processing,completed,failed,refunded,canceled,expired, in transit
         'payment_status',
         'payment_method',
         'shipping_method',
@@ -82,14 +83,15 @@ class Order extends Model
     public function country()
     {
         return $this->belongsTo(Country::class);
-    }   
+    }
 
     public function getFullNameAttribute()
     {
         $fname = $this->fname ?? $this->user->fname ?? '';
         $lname = $this->lname ?? $this->user->lname ?? '';
+
         return "{$fname} {$lname}";
-    }   
+    }
 
     public function getFullAddressAttribute()
     {
@@ -99,8 +101,8 @@ class Order extends Model
     public function getFormattedTotalAttribute()
     {
         return number_format($this->total, 2);
-    }       
-    
+    }
+
     public function getItemsAttribute()
     {
         return collect($this->order_items);
@@ -114,7 +116,7 @@ class Order extends Model
             $product = Product::find($item['product_id'] ?? null);
 
             // If it doesn't exist, create an instance (not saved in DB)
-            if (!$product) {
+            if (! $product) {
                 $product = new Product([
                     'id' => null,  // Explicitly null to indicate it’s not in DB
                     'name' => $item['name'] ?? null,

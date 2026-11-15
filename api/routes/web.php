@@ -1,6 +1,6 @@
 <?php
 
-use App\Http\Controllers\Auth\AuthenticatedSessionController;
+use App\Http\Controllers\BasketController;
 use App\Http\Controllers\CartController;
 use App\Http\Controllers\CartItemController;
 use App\Http\Controllers\CategoryController;
@@ -10,19 +10,18 @@ use App\Http\Controllers\DeliveryZoneController;
 use App\Http\Controllers\EstateController;
 use App\Http\Controllers\FavouriteController;
 use App\Http\Controllers\MassAddController;
-use App\Http\Controllers\ProfileController;
-use App\Http\Controllers\UserController;
 use App\Http\Controllers\OrderController;
 use App\Http\Controllers\PermissionController;
 use App\Http\Controllers\ProductController;
+use App\Http\Controllers\ProfileController;
 use App\Http\Controllers\RefController;
 use App\Http\Controllers\RoleController;
-use App\Http\Controllers\BasketController;
+use App\Http\Controllers\UserController;
 use App\Models\Product;
 use Illuminate\Support\Facades\Route;
 
 Route::middleware('auth')->group(function () {
-    Route::get('dashboard', function (){
+    Route::get('dashboard', function () {
         return view('dashboard');
     })->name('dashboard')->middleware('admin');
 
@@ -57,8 +56,7 @@ Route::middleware('auth')->group(function () {
     Route::resource('delivery_zones', DeliveryZoneController::class);
     Route::resource('counties', CountyController::class);
     Route::resource('refs', RefController::class);
-    
-    
+
     Route::get('/home', function () {
         return redirect('/');
     })->name('home');
@@ -86,7 +84,6 @@ Route::get('/index', function () {
 Route::POST('products/search', [ProductController::class, 'search'])->name('products.search');
 Route::get('products/search', [ProductController::class, 'search']);
 
-
 Route::get('/', function () {
     return view('index')->with('products', Product::all());
 });
@@ -106,6 +103,5 @@ Route::get('/contact-us', function () {
 Route::get('/faq', function () {
     return view('contact-us');
 })->name('faq');
-
 
 require __DIR__.'/auth.php';

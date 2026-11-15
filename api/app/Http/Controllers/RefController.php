@@ -6,8 +6,6 @@ use App\Models\Ref;
 use App\Models\User;
 use Carbon\Carbon;
 use Illuminate\Http\Request;
-use Stringable;
-use Illuminate\Support\Str;
 
 class RefController extends Controller
 {
@@ -44,9 +42,11 @@ class RefController extends Controller
         ]);
         if ($ref) {
             flash()->success('Ref created successfully');
+
             return redirect()->route('refs.index');
-        }else{          
+        } else {
             flash()->success('Error! Ref not created');
+
             return redirect()->back();
         }
     }
@@ -56,7 +56,7 @@ class RefController extends Controller
      */
     public function show(Ref $ref)
     {
-        return view('refs.show', ['selected_ref'=>$ref]);
+        return view('refs.show', ['selected_ref' => $ref]);
     }
 
     /**
@@ -80,7 +80,7 @@ class RefController extends Controller
      */
     public function destroy(Ref $ref)
     {
-        if($ref->delete()){
+        if ($ref->delete()) {
             return back()->with('success', 'Ref has been deleted successfully');
         }
     }

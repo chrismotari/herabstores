@@ -2,8 +2,8 @@
 
 namespace App\Models;
 
-use Illuminate\Database\Eloquent\Model;
 use App\Traits\UUID;
+use Illuminate\Database\Eloquent\Model;
 
 class Favourite extends Model
 {
@@ -13,6 +13,7 @@ class Favourite extends Model
         'user_id',
         'product_id',
     ];
+
     public function user()
     {
         return $this->belongsTo(User::class);

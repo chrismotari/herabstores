@@ -3,17 +3,17 @@
 namespace App\Models;
 
 // use Illuminate\Contracts\Auth\MustVerifyEmail;
+use App\Traits\UUID;
 use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Foundation\Auth\User as Authenticatable;
-use Illuminate\Notifications\Notifiable;
 // use Spatie\Permission\Models\Role;
 // use Spatie\Permission\Models\Permission;
-use App\Traits\UUID;
+use Illuminate\Notifications\Notifiable;
 use Spatie\Permission\Traits\HasRoles;
 
 class User extends Authenticatable
 {
-    use  HasFactory, Notifiable, UUID, HasRoles;
+    use HasFactory, HasRoles, Notifiable, UUID;
 
     /**
      * The attributes that are mass assignable.
@@ -32,7 +32,7 @@ class User extends Authenticatable
         'address',
         'city',
         'estate_id',
-        "country_id",
+        'country_id',
         'photo_url',
         'dob',
         'status',
@@ -67,7 +67,7 @@ class User extends Authenticatable
     {
         return ucwords("{$this->fname} {$this->mname} {$this->lname}");
     }
-    
+
     public function country()
     {
         return $this->belongsTo(Country::class);
@@ -77,6 +77,7 @@ class User extends Authenticatable
     {
         return $this->hasMany(Favourite::class);
     }
+
     public function carts()
     {
         return $this->hasMany(Cart::class);
@@ -96,6 +97,4 @@ class User extends Authenticatable
     {
         return $this->roles->first();
     }
-
-   
 }
