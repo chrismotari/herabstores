@@ -53,6 +53,16 @@ export function AddToCart({ productId, basketId, maxQuantity, variant = "card" }
 
   const feedback = state.status === "error" && <p className="text-danger small mt-2" role="alert">{state.message}</p>;
 
+  if (variant === "card") {
+    // Grid cards: one button (adds 1). Quantity is chosen on the product page or in the cart.
+    return (
+      <div className="add-to-cart mt-2">
+        {button}
+        {feedback}
+      </div>
+    );
+  }
+
   if (variant === "detail") {
     return (
       <div className="shop-perched-info">

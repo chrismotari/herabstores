@@ -31,8 +31,13 @@ export async function ProductListing({ basePath, category, params }: { basePath:
     return qs ? `${basePath}?${qs}` : basePath;
   };
 
+  // Search/sort/filter variants shouldn't compete with /shop and category pages in search results.
+  // React hoists this <meta> into <head>.
+  const isVariant = Boolean(query.q || query.sort || query.in_stock || (!category && query.category) || query.page! > 1);
+
   return (
     <>
+      {isVariant && <meta name="robots" content="noindex, follow" />}
       <div className="shop-top-meta mb-30">
         <div className="row">
           <div className="col-md-6 col-sm-7">

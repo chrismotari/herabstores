@@ -1,9 +1,10 @@
 "use client";
 
-import { formatPrice, type DeliveryZone, type Order, type User } from "@herabs/shared";
+import { formatPrice, type DeliveryZone, type Order } from "@herabs/shared";
 import Link from "next/link";
 import { useRouter } from "next/navigation";
-import { useEffect, useState, type FormEvent } from "react";
+import { useState, type FormEvent } from "react";
+import { useSession } from "@/components/auth/SessionProvider";
 import { useCart } from "@/components/cart/CartProvider";
 import { lineName } from "@/components/cart/CartLineImage";
 import { browserApi } from "@/lib/browser-api";
@@ -15,19 +16,13 @@ type Errors = Record<string, string[]>;
 export function CheckoutForm({ zones }: { zones: DeliveryZone[] }) {
   const router = useRouter();
   const { cart, loading, refresh } = useCart();
-  const [user, setUser] = useState<User | null>(null);
-  const [zoneId, setZoneId] = useState("");
+  const { user } = useSession();
+  const [zoneChoice, setZoneId] = useState("");
   const [errors, setErrors] = useState<Errors>({});
   const [submitting, setSubmitting] = useState(false);
 
-  // Prefill for logged-in customers (guests get a 401, which is fine)
-  useEffect(() => {
-    void browserApi.GET("/me").then(({ data }) => {
-      if (!data) return;
-      setUser(data.data);
-      if (data.data.delivery_zone_id) setZoneId(data.data.delivery_zone_id);
-    });
-  }, []);
+  // Logged-in customers start with their saved zone
+  const zoneId = zoneChoice || user?.delivery_zone_id || "";
 
   const items = cart?.items ?? [];
   const zone = zones.find((z) => z.id === zoneId);

@@ -1,4 +1,5 @@
 import type { Metadata } from "next";
+import { Architects_Daughter, Nunito, Poppins } from "next/font/google";
 import { Suspense } from "react";
 import { JsonLd } from "@/components/JsonLd";
 import { SessionProvider } from "@/components/auth/SessionProvider";
@@ -10,6 +11,8 @@ import { Navbar } from "@/components/layout/Navbar";
 import { ScrollTop } from "@/components/layout/NavbarClient";
 import { SITE_NAME, SITE_URL } from "@/lib/config";
 import { organizationJsonLd } from "@/lib/seo";
+// The theme CSS (one combined file) first, then our tweaks. Order matters.
+import "../../public/theme/css/theme.css";
 import "./globals.css";
 
 export const metadata: Metadata = {
@@ -20,16 +23,15 @@ export const metadata: Metadata = {
   icons: { icon: "/theme/img/favicon.png" },
 };
 
-// The theme's stylesheets, in their original order (served from /public/theme).
-const THEME_CSS = ["bootstrap.min", "fontawesome-all.min", "flaticon", "default", "style", "responsive"];
+// Self-hosted theme fonts (were a render-blocking Google Fonts @import in the theme CSS).
+const body = Poppins({ subsets: ["latin"], weight: ["400", "500", "600", "700"], variable: "--font-poppins", display: "swap" });
+const heading = Nunito({ subsets: ["latin"], weight: ["400", "600", "700", "800", "900"], variable: "--font-nunito", display: "swap" });
+const script = Architects_Daughter({ subsets: ["latin"], weight: "400", variable: "--font-architects", display: "swap" });
 
 export default function RootLayout({ children }: Readonly<{ children: React.ReactNode }>) {
   return (
-    <html lang="en">
+    <html lang="en" className={`${body.variable} ${heading.variable} ${script.variable}`}>
       <body>
-        {THEME_CSS.map((name) => (
-          <link key={name} rel="stylesheet" href={`/theme/css/${name}.css`} precedence="theme" />
-        ))}
         <JsonLd data={organizationJsonLd()} />
         <CartProvider>
         <SessionProvider>

@@ -58,6 +58,8 @@ Route::prefix('v1')->name('api.v1.')->group(function () {
             Route::post('reset-password', 'resetPassword')->name('reset-password');
         });
 
+        Route::get('session', 'session')->name('session');
+
         Route::middleware('auth:sanctum')->group(function () {
             Route::post('logout', 'logout')->name('logout');
             Route::post('email/verification-notification', 'sendVerificationEmail')

@@ -14,7 +14,7 @@ export async function HeaderSearch() {
           <div className="col-xl-2 col-lg-3 d-none d-lg-block">
             <div className="logo">
               <Link href="/">
-                <Image src="/theme/img/logo/logo.png" alt="Herab Groceries" width={177} height={45} priority={false} loading="eager" />
+                <Image src="/theme/img/logo/logo.png" alt="Herab Groceries" width={187} height={96} loading="eager" />
               </Link>
             </div>
           </div>

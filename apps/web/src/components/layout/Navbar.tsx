@@ -23,7 +23,7 @@ export async function Navbar() {
             <div className="menu-wrap">
               <nav className="menu-nav" aria-label="Main">
                 <div className="logo d-block d-lg-none">
-                  <Link href="/"><Image src="/theme/img/logo/logo.png" alt="Herab Groceries" width={177} height={45} /></Link>
+                  <Link href="/"><Image src="/theme/img/logo/logo.png" alt="Herab Groceries" width={187} height={96} /></Link>
                 </div>
                 <div className="header-category d-none d-lg-block">
                   <CategoryMenu>

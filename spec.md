@@ -4,7 +4,7 @@ Legend: `[ ]` todo · `[~]` in progress · `[x]` done (with date) · `[-]` dropp
 
 ## Current focus
 
-**Phase 5 → task 5.11**: quality gate (Lighthouse, Rich Results). Needs a browser; owner to run or approve installing headless Chromium.
+**Phase 6 → task 6.1**: Expo app. Open from 5.11: Performance ≥ 90 on catalog pages (owner decision: slim the theme CSS?).
 
 ## Goal
 
@@ -120,7 +120,21 @@ sharing one generated TypeScript client (`packages/shared`). Payments: **pay on 
 - [x] 5.8 Auth (Sanctum SPA) and account: orders, order tracking, favourites, profile. Point password-reset and verify-email links at the Next.js pages (`ResetPassword::createUrlUsing`, `VerifyEmail::createUrlUsing`). *2026-11-15*: `SessionProvider` (Sanctum SPA cookies; login/register send the guest cart token, so the API merges it, then the local token is cleared). Pages: `/login`, `/register`, `/forgot-password`, `/reset-password`, `/account` (overview, orders + order status timeline, favourites, profile/password/delete account), all noindex; account pages are guarded client-side (the API enforces access). Header account dropdown; favourite button on product pages. API: reset-password emails link to `{FRONTEND_URL}/reset-password` when configured. Verified the SPA flow (CSRF → login → /me → logout → 401) across ports. **Still open:** email *verification* links point to the Blade route (needs a Next page + signed-URL handling); do it at cut-over (7.x).
 - [x] 5.9 `/api/revalidate` route handler (secret-protected) used by the API webhook from 3.15. Tag every `fetch` with the same tags (see the 3.15 contract) and call `revalidateTag` for each one received. *2026-11-15*: `POST /api/revalidate`, bearer `REVALIDATE_SECRET` (constant-time compare; must equal the API's `STOREFRONT_REVALIDATE_SECRET`), whitelisted tag formats, `revalidateTag(tag, 'max')`. Verified end to end: a DB price change stayed cached until the webhook, then showed.
 - [x] 5.10 404/500 pages, and a `redirects()` map from old URLs (`/products/{uuid}` → `/products/{slug}`, `/index` → `/`, `/carts/show` → `/cart`). *2026-11-15*: `not-found.tsx` (with search), `error.tsx`, `global-error.tsx`. 308 redirects: `/index`, `/home`, `/carts/show/*`, `/orders/create` → `/checkout`, `/orders/{id}` and `/orders/track/{id}` → `/account/orders/{id}`, `/users/*` → `/account`, `/profile`, `/products/search?search=` → `/shop?q=`, `/dashboard` → API `/admin`. `/products/{uuid}` permanently redirects to the slug (the API now also accepts an id on `GET /products/{slug}`).
-- [ ] 5.11 Quality gate: Lighthouse SEO ≥ 95 and Performance ≥ 90 on home, category and product pages. Structured data passes Google's Rich Results test.
+- [~] 5.11 Quality gate: Lighthouse SEO ≥ 95 and Performance ≥ 90 on home, category and product pages. Structured data passes Google's Rich Results test.
+  - *2026-11-15*, Lighthouse 13 (mobile, simulated throttling), local production build, median of 3 runs:
+
+    | Page | Perf (before → after) | SEO | A11y | Best pr. |
+    |---|---|---|---|---|
+    | `/` | 56 → **81** | 100 | 96 | 96 |
+    | `/shop` | 70 → **71–74** | 92 → 100 | 95 | 96 |
+    | `/categories/{slug}` | 60 → **73** | 100 | 95 | 96 |
+    | `/products/{slug}` | 86 → **85** | 100 | 96 | 96 |
+    | `/faq` | 89 → **89** | 100 | 96 | 96 |
+    | `/about-us` | **99** | 100 | 96 | 96 |
+  - **SEO ≥ 95: met everywhere.** Performance ≥ 90: **not met** (best 99 on content pages, 71–85 on catalog pages).
+  - Fixes made: the 6 theme stylesheets combined into one bundled CSS file (`public/theme/css/theme.css`, imported in the root layout; content-hashed by Next); Google Fonts `@import` chain replaced by self-hosted `next/font` (mapped onto the theme's `--font-family-*` variables); correct logo dimensions (was squashed 187×96 → 177×45); heading order; `/shop` meta description (static metadata; the search-variant noindex is a hoisted `<meta>` in the listing); guest start-up uses new `GET /auth/session` (200 + null) instead of a 401 from `/me` (console errors); single add-to-cart button on grid cards (stepper on the product page); first-row product images eager + `fetchpriority=high`; hero preloaded and converted to WebP (155 KB → 11 KB, 372 KB → 104 KB).
+  - **Remaining bottleneck:** the theme's 370 KB render-blocking CSS (Bootstrap 4 + Font Awesome + theme; ~50 KB unused per page) and hydration on listing pages. Next step if the target matters: PurgeCSS the theme CSS (needs care with classes toggled at runtime) and/or replace Font Awesome with inline SVG icons. **Owner decision.**
+  - Rich Results test is Google's online tool: run it on the production URL after deploy (7.2). Locally verified that Product, Offer, BreadcrumbList and GroceryStore JSON-LD render on the right pages.
 
 ## Phase 6: React Native app (`apps/mobile`)
 

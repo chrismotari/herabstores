@@ -1,6 +1,7 @@
 import type { Metadata } from "next";
 import Image from "next/image";
 import Link from "next/link";
+import { preload } from "react-dom";
 import { ProductGrid } from "@/components/product/ProductCard";
 import { getCategories, getProducts } from "@/lib/api";
 
@@ -21,15 +22,18 @@ const PROMOS = [
 ];
 
 export default async function Home() {
+  // The hero is a CSS background, which browsers discover late; fetch it up front (LCP).
+  preload("/theme/img/bg/slider_area_bg.webp", { as: "image", fetchPriority: "high" });
+  preload("/theme/img/slider/slider_bg01.webp", { as: "image" });
   const [categories, latest] = await Promise.all([getCategories(), getProducts({ per_page: 8 })]);
 
   return (
     <>
-      <section className="slider-area" style={{ backgroundImage: "url(/theme/img/bg/slider_area_bg.jpg)" }}>
+      <section className="slider-area" style={{ backgroundImage: "url(/theme/img/bg/slider_area_bg.webp)" }}>
         <div className="container custom-container">
           <div className="row">
             <div className="col-lg-7">
-              <div className="single-slider slider-bg" style={{ backgroundImage: "url(/theme/img/slider/slider_bg01.jpg)" }}>
+              <div className="single-slider slider-bg" style={{ backgroundImage: "url(/theme/img/slider/slider_bg01.webp)" }}>
                 <div className="slider-content">
                   <h5 className="sub-title">fresh &amp; local</h5>
                   <h1 className="title">Groceries delivered</h1>

@@ -845,6 +845,44 @@
                 "security": []
             }
         },
+        "/auth/session": {
+            "get": {
+                "operationId": "v1.auth.session",
+                "description": "For storefront start-up: browsers log every 401 as a console error.",
+                "summary": "The current user, or null for guests (never 401)",
+                "tags": [
+                    "Auth"
+                ],
+                "responses": {
+                    "200": {
+                        "description": "",
+                        "content": {
+                            "application/json": {
+                                "schema": {
+                                    "type": "object",
+                                    "properties": {
+                                        "data": {
+                                            "anyOf": [
+                                                {
+                                                    "$ref": "#/components/schemas/UserResource"
+                                                },
+                                                {
+                                                    "type": "null"
+                                                }
+                                            ]
+                                        }
+                                    },
+                                    "required": [
+                                        "data"
+                                    ]
+                                }
+                            }
+                        }
+                    }
+                },
+                "security": []
+            }
+        },
         "/auth/logout": {
             "post": {
                 "operationId": "v1.auth.logout",

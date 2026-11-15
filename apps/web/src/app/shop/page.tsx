@@ -3,18 +3,11 @@ import { Breadcrumb } from "@/components/Breadcrumb";
 import { ProductListing } from "@/components/shop/ProductListing";
 import { ShopLayout } from "@/components/shop/ShopLayout";
 
-export async function generateMetadata(props: PageProps<"/shop">): Promise<Metadata> {
-  const params = await props.searchParams;
-  // Search results and filtered/sorted variants shouldn't compete with /shop and category pages.
-  const isVariant = ["q", "sort", "in_stock", "category"].some((key) => params[key] !== undefined);
-
-  return {
-    title: "Shop all groceries",
-    description: "Browse fresh fruit, vegetables and groceries. Delivered across Nairobi; pay on delivery.",
-    alternates: { canonical: "/shop" },
-    robots: isVariant ? { index: false, follow: true } : undefined,
-  };
-}
+export const metadata: Metadata = {
+  title: "Shop all groceries",
+  description: "Browse fresh fruit, vegetables and groceries. Delivered across Nairobi; pay on delivery.",
+  alternates: { canonical: "/shop" },
+};
 
 export default function ShopPage(props: PageProps<"/shop">) {
   return (

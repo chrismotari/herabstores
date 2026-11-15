@@ -13,14 +13,14 @@ export function Footer() {
             <div className="col-xl-3 col-lg-4 col-md-6">
               <div className="footer-widget mb-50">
                 <div className="footer-logo mb-25">
-                  <Link href="/"><Image src="/theme/img/logo/logo.png" alt="Herab Groceries" width={177} height={45} /></Link>
+                  <Link href="/"><Image src="/theme/img/logo/logo.png" alt="Herab Groceries" width={187} height={96} /></Link>
                 </div>
                 <div className="footer-contact-list">
                   <ul>
                     <li><div className="icon"><i className="flaticon-place" /></div><p>{CONTACT.address}</p></li>
                     <li>
                       <div className="icon"><i className="flaticon-telephone-1" /></div>
-                      <h5 className="number"><a href={CONTACT.phoneHref}>{CONTACT.phone}</a></h5>
+                      <p className="number h5"><a href={CONTACT.phoneHref}>{CONTACT.phone}</a></p>
                     </li>
                     <li><div className="icon"><i className="flaticon-mail" /></div><p><a href={`mailto:${CONTACT.email}`}>{CONTACT.email}</a></p></li>
                     <li><div className="icon"><i className="flaticon-wall-clock" /></div><p>{CONTACT.hours}</p></li>
@@ -30,7 +30,7 @@ export function Footer() {
             </div>
             <div className="col-xl-2 col-lg-3 col-md-4 col-sm-6">
               <div className="footer-widget mb-50">
-                <div className="fw-title"><h5 className="title">Customer Service</h5></div>
+                <div className="fw-title"><h2 className="title h5">Customer Service</h2></div>
                 <div className="fw-link">
                   <ul>
                     <li><Link href="/cart">Cart</Link></li>
@@ -43,7 +43,7 @@ export function Footer() {
             </div>
             <div className="col-xl-2 col-lg-3 col-md-4 col-sm-6">
               <div className="footer-widget mb-50">
-                <div className="fw-title"><h5 className="title">Useful Links</h5></div>
+                <div className="fw-title"><h2 className="title h5">Useful Links</h2></div>
                 <div className="fw-link">
                   <ul>
                     <li><Link href="/about-us">About us</Link></li>
@@ -57,7 +57,7 @@ export function Footer() {
             <div className="col-xl-4 col-lg-4 col-md-6">
               <div className="footer-widget footer-box-widget mb-50">
                 <div className="f-newsletter">
-                  <div className="fw-title"><h5 className="title">Newsletter</h5></div>
+                  <div className="fw-title"><h2 className="title h5">Newsletter</h2></div>
                   <NewsletterForm />
                   <p>Be notified when we have new deals</p>
                 </div>

@@ -1,4 +1,11 @@
-/* Storefront tweaks on top of the theme CSS (public/theme/css). Keep this small. */
+/* Storefront tweaks on top of the theme CSS (public/theme/css/theme.css). Keep this small. */
+
+/* Theme font variables → self-hosted next/font families */
+:root {
+  --font-family-body: var(--font-poppins), sans-serif;
+  --font-family-heading: var(--font-nunito), sans-serif;
+  --font-family-architects: var(--font-architects), cursive;
+}
 
 /* Buttons replacing the theme's <a> toggles keep the theme look */
 .cat-toggle,

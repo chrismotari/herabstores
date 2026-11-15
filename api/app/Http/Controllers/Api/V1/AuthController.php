@@ -88,6 +88,20 @@ class AuthController extends Controller
     }
 
     /**
+     * The current user, or null for guests (never 401).
+     *
+     * For storefront start-up: browsers log every 401 as a console error.
+     *
+     * @unauthenticated
+     */
+    public function session(Request $request): JsonResponse
+    {
+        $user = $request->user('sanctum');
+
+        return response()->json(['data' => $user ? new UserResource($user) : null]);
+    }
+
+    /**
      * The current user.
      */
     public function me(Request $request): UserResource

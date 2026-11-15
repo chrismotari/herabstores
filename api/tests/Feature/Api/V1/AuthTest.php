@@ -205,3 +205,10 @@ test('reset links point to the storefront when configured', function () {
         return str_starts_with($url, 'https://shop.example/reset-password?token=') && str_contains($url, 'email=reset%40example.com');
     });
 });
+
+test('session returns the user, or null for guests without a 401', function () {
+    $this->getJson('/api/v1/auth/session')->assertOk()->assertJsonPath('data', null);
+
+    $user = User::factory()->create();
+    $this->actingAs($user, 'sanctum')->getJson('/api/v1/auth/session')->assertOk()->assertJsonPath('data.id', $user->id);
+});

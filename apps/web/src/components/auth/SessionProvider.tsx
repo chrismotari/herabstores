@@ -41,8 +41,8 @@ export function SessionProvider({ children }: { children: ReactNode }) {
   const [loading, setLoading] = useState(true);
 
   useEffect(() => {
-    void browserApi.GET("/me").then(({ data }) => {
-      setUser(data?.data ?? null);
+    void browserApi.GET("/auth/session").then(({ data }) => {
+      setUser((data?.data as User | null | undefined) ?? null);
       setLoading(false);
     });
   }, []);
