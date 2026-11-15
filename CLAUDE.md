@@ -35,6 +35,7 @@ composer dev                        # serve + queue + pail + vite
 ./vendor/bin/pest --filter=Name     # single test
 ./vendor/bin/pint                   # format PHP (run before committing)
 php artisan route:list --path=api   # inspect API routes
+composer openapi                    # regenerate api/openapi.json after any API change (CI checks it)
 ```
 
 Seeded logins: `admin@mail.com` / `password` (admin), `user@mail.com` / `password` (customer).
@@ -52,7 +53,7 @@ Seeded logins: `admin@mail.com` / `password` (admin), `user@mail.com` / `passwor
 - Authorization goes through **Policies** backed by spatie roles/permissions, never inline `is_admin` checks.
 - Public catalog endpoints look up records by **slug**, paginate (never `::all()`), and eager-load relations to avoid N+1 queries.
 - Auth uses Sanctum: cookie-based sessions for `apps/web`, bearer tokens for `apps/mobile`.
-- Every endpoint gets a Pest feature test in `tests/Feature/Api/V1`.
+- Every endpoint gets a Pest feature test in `tests/Feature/Api/V1`, and `composer openapi` is re-run and committed. API docs: `/docs/api`.
 - Error format: Laravel's default JSON (`message`, `errors`). Don't invent a custom envelope.
 
 ### Admin

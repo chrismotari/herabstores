@@ -9,8 +9,13 @@ use App\Models\DeliveryZone;
 use App\Models\Estate;
 use App\Models\Role;
 use App\Models\Store;
+use App\Models\User;
 use App\Services\CartService;
+use Dedoc\Scramble\Scramble;
+use Dedoc\Scramble\Support\Generator\OpenApi;
+use Dedoc\Scramble\Support\Generator\SecurityScheme;
 use Illuminate\Support\Facades\Auth;
+use Illuminate\Support\Facades\Gate;
 use Illuminate\Support\Facades\View;
 use Illuminate\Support\Facades\Vite;
 use Illuminate\Support\ServiceProvider;
@@ -30,6 +35,12 @@ class AppServiceProvider extends ServiceProvider
      */
     public function boot(): void
     {
+        // API docs (/docs/api): open locally, admins only elsewhere.
+        Gate::define('viewApiDocs', fn (?User $user = null) => app()->isLocal() || (bool) $user?->is_admin);
+        Scramble::configure()->withDocumentTransformers(
+            fn (OpenApi $openApi) => $openApi->secure(SecurityScheme::http('bearer'))
+        );
+
         Vite::prefetch(concurrency: 3);
 
         View::composer('users.form', function ($view) {
