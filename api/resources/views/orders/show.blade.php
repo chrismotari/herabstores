@@ -180,7 +180,7 @@
                                             
                                         </div>
                                     </li>
-                                    <li class="cart-total-amount"><span>Total Price</span> <span class="amount">KSH {{ $selected_order->total + $selected_order->shipping_fee }}</span></li>
+                                    <li class="cart-total-amount"><span>Total Price</span> <span class="amount">KSH {{ $selected_order->amount_due }}</span></li>
                                 </ul>
                                 @if (auth()->user()?->is_admin)
                                     <a class="btn btn-primary" href="{{ \App\Filament\Resources\Orders\OrderResource::getUrl('view', ['record' => $selected_order]) }}">Manage in admin</a>

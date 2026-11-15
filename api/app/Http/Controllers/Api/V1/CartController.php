@@ -11,8 +11,10 @@ use App\Models\Cart;
 use App\Models\CartItem;
 use App\Models\Product;
 use App\Services\CartService;
+use App\Services\DiscountCalculator;
 use Illuminate\Http\JsonResponse;
 use Illuminate\Http\Request;
+use Illuminate\Validation\ValidationException;
 
 /**
  * The current cart: the logged-in user's, or a guest cart identified by the
@@ -104,6 +106,46 @@ class CartController extends Controller
         $cart = $this->carts->current($request);
         if ($cart->exists) {
             $cart->cartItems()->delete();
+        }
+
+        return $this->respond($cart);
+    }
+
+    /**
+     * Apply a discount code (one per order; replaces any previous code).
+     *
+     * @unauthenticated
+     */
+    public function applyDiscount(Request $request, DiscountCalculator $discounts): JsonResponse
+    {
+        $data = $request->validate(['code' => ['required', 'string', 'max:50']]);
+        $cart = $this->carts->current($request);
+        if (! $cart->exists || $cart->cartItems()->doesntExist()) {
+            throw ValidationException::withMessages(['code' => 'Add something to your cart first.']);
+        }
+
+        $cart->load(['cartItems.product', 'cartItems.basket']);
+        try {
+            $result = $discounts->calculate($data['code'], $cart->cartItems, $request->user('sanctum'));
+        } catch (ValidationException $e) {
+            throw ValidationException::withMessages(['code' => $e->errors()[DiscountCalculator::FIELD]]);
+        }
+
+        $cart->update(['discount_code' => $result['offer']->code]);
+
+        return $this->respond($cart);
+    }
+
+    /**
+     * Remove the discount code.
+     *
+     * @unauthenticated
+     */
+    public function removeDiscount(Request $request): JsonResponse
+    {
+        $cart = $this->carts->current($request);
+        if ($cart->exists) {
+            $cart->update(['discount_code' => null]);
         }
 
         return $this->respond($cart);

@@ -8,9 +8,11 @@ use App\Models\Basket;
 use App\Models\Cart;
 use App\Models\Contact;
 use App\Models\DeliveryZone;
+use App\Models\Offer;
 use App\Models\Order;
 use App\Models\Product;
 use App\Models\User;
+use App\Services\DiscountCalculator;
 use Illuminate\Support\Facades\DB;
 use Illuminate\Validation\ValidationException;
 
@@ -18,13 +20,15 @@ use Illuminate\Validation\ValidationException;
  * Places a pay-on-delivery order from a cart. Used by web and API checkout.
  *
  * In one transaction: locks the products, checks stock and active status,
- * decrements stock, records the order with price snapshots, saves the
+ * decrements stock, applies the cart's discount code, records the order with price snapshots, saves the
  * customer's first address, and empties the cart (guest carts are deleted).
  *
  * @param  array{fname: string, lname: string, phone: string, alt_phone?: ?string, email?: ?string, address: string, city: string, delivery_zone_id: string, ref_id?: ?string, message?: ?string, consented?: mixed}  $data
  */
 class PlaceOrder
 {
+    public function __construct(private DiscountCalculator $discounts) {}
+
     public function __invoke(Cart $cart, array $data, ?User $user = null): Order
     {
         if (! $cart->exists || $cart->cartItems()->doesntExist()) {
@@ -58,10 +62,22 @@ class PlaceOrder
             // Delivery is priced per zone (see spec decision log).
             $zone = DeliveryZone::findOrFail($data['delivery_zone_id']);
 
+            // Discount code saved on the cart: lock the offer so usage limits hold under concurrency.
+            $discount = ['offer' => null, 'amount' => 0.0];
+            if ($cart->discount_code) {
+                $offer = Offer::where('code', $cart->discount_code)->lockForUpdate()->first();
+                $items->each(fn ($item) => $item->setRelation('product', $item->product_id ? $products[$item->product_id] : null)
+                    ->setRelation('basket', $item->basket_id ? $baskets[$item->basket_id] : null));
+                $discount = $this->discounts->calculate($cart->discount_code, $items, $user, $data['phone'], $offer ?? new Offer(['is_active' => false]));
+            }
+
             $order = Order::create([
                 'user_id' => $user?->id,
                 'total' => $items->sum(fn ($item) => $lineItem($item)->price * $item->quantity),
                 'shipping_fee' => $zone->delivery_fees,
+                'offer_id' => $discount['offer']?->id,
+                'discount_code' => $discount['offer']?->code,
+                'discount' => $discount['amount'],
                 'status' => OrderStatus::New,
                 'payment_method' => 'cash_on_delivery',
                 'payment_status' => 'pending',

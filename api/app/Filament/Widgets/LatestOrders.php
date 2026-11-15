@@ -26,7 +26,7 @@ class LatestOrders extends TableWidget
                 TextColumn::make('customer')->state(fn (Order $record) => trim("{$record->fname} {$record->lname}")),
                 TextColumn::make('deliveryZone.name')->label('Zone'),
                 TextColumn::make('amount')->label('Total')
-                    ->state(fn (Order $record) => (float) $record->total + (float) $record->shipping_fee)->money('KES'),
+                    ->state(fn (Order $record) => $record->amount_due)->money('KES'),
                 TextColumn::make('status')->badge(),
             ]);
     }

@@ -344,6 +344,24 @@ export interface paths {
         patch: operations["v1.cart.items.update"];
         trace?: never;
     };
+    "/cart/discount": {
+        parameters: {
+            query?: never;
+            header?: never;
+            path?: never;
+            cookie?: never;
+        };
+        get?: never;
+        put?: never;
+        /** Apply a discount code (one per order; replaces any previous code) */
+        post: operations["v1.cart.discount.store"];
+        /** Remove the discount code */
+        delete: operations["v1.cart.discount.destroy"];
+        options?: never;
+        head?: never;
+        patch?: never;
+        trace?: never;
+    };
     "/categories": {
         parameters: {
             query?: never;
@@ -526,6 +544,15 @@ export interface components {
             items_count: number;
             /** @description Items total. Delivery is added at checkout (per zone). */
             subtotal: number;
+            /** @description The applied discount code, or null. `error` explains why it no longer applies (amount is then 0). */
+            discount: {
+                code: string;
+                name: string | null;
+                amount: number;
+                error: string | null;
+            } | null;
+            /** @description Subtotal minus discount (delivery not included). */
+            total: number;
         };
         /** CategoryResource */
         CategoryResource: {
@@ -581,7 +608,10 @@ export interface components {
                 line_total: number;
             }[];
             subtotal: number;
+            discount: number;
+            discount_code: string | null;
             delivery_fee: number;
+            /** @description Amount due on delivery: subtotal - discount + delivery fee. */
             total: number;
             delivery: {
                 fname: string | null;
@@ -1399,6 +1429,57 @@ export interface operations {
                 };
             };
             422: components["responses"]["ValidationException"];
+        };
+    };
+    "v1.cart.discount.store": {
+        parameters: {
+            query?: never;
+            header?: never;
+            path?: never;
+            cookie?: never;
+        };
+        requestBody: {
+            content: {
+                "application/json": {
+                    code: string;
+                };
+            };
+        };
+        responses: {
+            /** @description `CartResource` */
+            200: {
+                headers: {
+                    [name: string]: unknown;
+                };
+                content: {
+                    "application/json": {
+                        data: components["schemas"]["CartResource"];
+                    };
+                };
+            };
+            422: components["responses"]["ValidationException"];
+        };
+    };
+    "v1.cart.discount.destroy": {
+        parameters: {
+            query?: never;
+            header?: never;
+            path?: never;
+            cookie?: never;
+        };
+        requestBody?: never;
+        responses: {
+            /** @description `CartResource` */
+            200: {
+                headers: {
+                    [name: string]: unknown;
+                };
+                content: {
+                    "application/json": {
+                        data: components["schemas"]["CartResource"];
+                    };
+                };
+            };
         };
     };
     "v1.categories.index": {

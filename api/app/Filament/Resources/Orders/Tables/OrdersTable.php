@@ -29,7 +29,7 @@ class OrdersTable
                     ->searchable(['fname', 'lname', 'phone', 'email']),
                 TextColumn::make('deliveryZone.name')->label('Zone')->toggleable(),
                 TextColumn::make('amount')->label('Total')
-                    ->state(fn (Order $record) => (float) $record->total + (float) $record->shipping_fee)
+                    ->state(fn (Order $record) => $record->amount_due)
                     ->money('KES'),
                 TextColumn::make('status')->badge()->sortable(),
                 TextColumn::make('courier.name')->label('Courier')->placeholder('—')->toggleable(),

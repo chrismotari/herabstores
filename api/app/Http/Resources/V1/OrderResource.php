@@ -31,8 +31,11 @@ class OrderResource extends JsonResource
                 'line_total' => (float) $item['price'] * (int) $item['quantity'],
             ])->values(),
             'subtotal' => $subtotal,
+            'discount' => (float) $this->discount,
+            'discount_code' => $this->discount_code,
             'delivery_fee' => $fee,
-            'total' => $subtotal + $fee,
+            /** Amount due on delivery: subtotal - discount + delivery fee. */
+            'total' => $subtotal - (float) $this->discount + $fee,
             'delivery' => [
                 'fname' => $this->fname,
                 'lname' => $this->lname,

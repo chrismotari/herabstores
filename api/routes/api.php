@@ -40,6 +40,8 @@ Route::prefix('v1')->name('api.v1.')->group(function () {
         Route::post('items', 'addItem')->name('items.store');
         Route::patch('items/{item}', 'updateItem')->whereUuid('item')->name('items.update');
         Route::delete('items/{item}', 'removeItem')->whereUuid('item')->name('items.destroy');
+        Route::post('discount', 'applyDiscount')->middleware('throttle:10,1')->name('discount.store');
+        Route::delete('discount', 'removeDiscount')->name('discount.destroy');
     });
 
     // Checkout (pay on delivery)

@@ -21,9 +21,10 @@ class OrderInfolist
                     TextEntry::make('type')->label('Type')->badge()->default('product'),
                 ]),
                 TextEntry::make('total')->label('Subtotal')->money('KES')->inlineLabel(),
+                TextEntry::make('discount')->label(fn (Order $record) => 'Discount ('.$record->discount_code.')')->money('KES')->inlineLabel()
+                    ->visible(fn (Order $record) => (float) $record->discount > 0),
                 TextEntry::make('shipping_fee')->label('Delivery')->money('KES')->inlineLabel(),
-                TextEntry::make('grand_total')->label('Total due on delivery')->inlineLabel()
-                    ->state(fn (Order $record) => (float) $record->total + (float) $record->shipping_fee)
+                TextEntry::make('amount_due')->label('Total due on delivery')->inlineLabel()
                     ->money('KES')->weight('bold'),
             ]),
 

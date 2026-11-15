@@ -20,7 +20,7 @@ class ShopStats extends StatsOverviewWidget
     protected function getStats(): array
     {
         $notCanceled = fn () => Order::where('status', '!=', OrderStatus::Canceled);
-        $sales = fn ($query) => (float) $query->sum(DB::raw('total + shipping_fee'));
+        $sales = fn ($query) => (float) $query->sum(DB::raw('total - discount + shipping_fee'));
 
         $todayOrders = $notCanceled()->whereDate('created_at', today())->count();
         $todaySales = $sales($notCanceled()->whereDate('created_at', today()));

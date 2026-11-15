@@ -65,6 +65,9 @@ class Order extends Model
         'city',
         'shipping_fee',
         'courier_id',
+        'offer_id',
+        'discount_code',
+        'discount',
         'store_id',
         'delivery_zone',
         'ref_id',
@@ -176,5 +179,16 @@ class Order extends Model
         }
 
         $this->status = $next;
+    }
+
+    public function offer()
+    {
+        return $this->belongsTo(Offer::class);
+    }
+
+    /** What the customer pays on delivery: items - discount + delivery. */
+    public function getAmountDueAttribute(): float
+    {
+        return round((float) $this->total - (float) $this->discount + (float) $this->shipping_fee, 2);
     }
 }

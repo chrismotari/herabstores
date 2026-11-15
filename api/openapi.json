@@ -1269,6 +1269,86 @@
                 "security": []
             }
         },
+        "/cart/discount": {
+            "post": {
+                "operationId": "v1.cart.discount.store",
+                "summary": "Apply a discount code (one per order; replaces any previous code)",
+                "tags": [
+                    "Cart"
+                ],
+                "requestBody": {
+                    "required": true,
+                    "content": {
+                        "application/json": {
+                            "schema": {
+                                "type": "object",
+                                "properties": {
+                                    "code": {
+                                        "type": "string",
+                                        "maxLength": 50
+                                    }
+                                },
+                                "required": [
+                                    "code"
+                                ]
+                            }
+                        }
+                    }
+                },
+                "responses": {
+                    "200": {
+                        "description": "`CartResource`",
+                        "content": {
+                            "application/json": {
+                                "schema": {
+                                    "type": "object",
+                                    "properties": {
+                                        "data": {
+                                            "$ref": "#/components/schemas/CartResource"
+                                        }
+                                    },
+                                    "required": [
+                                        "data"
+                                    ]
+                                }
+                            }
+                        }
+                    },
+                    "422": {
+                        "$ref": "#/components/responses/ValidationException"
+                    }
+                },
+                "security": []
+            },
+            "delete": {
+                "operationId": "v1.cart.discount.destroy",
+                "summary": "Remove the discount code",
+                "tags": [
+                    "Cart"
+                ],
+                "responses": {
+                    "200": {
+                        "description": "`CartResource`",
+                        "content": {
+                            "application/json": {
+                                "schema": {
+                                    "type": "object",
+                                    "properties": {
+                                        "data": {
+                                            "$ref": "#/components/schemas/CartResource"
+                                        }
+                                    },
+                                    "required": [
+                                        "data"
+                                    ]
+                                }
+                            }
+                        }
+                    }
+                },
+                "security": []
+            }
+        },
         "/categories": {
             "get": {
                 "operationId": "v1.categories.index",
@@ -2022,13 +2102,52 @@
                     "subtotal": {
                         "type": "number",
                         "description": "Items total. Delivery is added at checkout (per zone)."
+                    },
+                    "discount": {
+                        "type": [
+                            "object",
+                            "null"
+                        ],
+                        "description": "The applied discount code, or null. `error` explains why it no longer applies (amount is then 0).",
+                        "properties": {
+                            "code": {
+                                "type": "string"
+                            },
+                            "name": {
+                                "type": [
+                                    "string",
+                                    "null"
+                                ]
+                            },
+                            "amount": {
+                                "type": "number"
+                            },
+                            "error": {
+                                "type": [
+                                    "string",
+                                    "null"
+                                ]
+                            }
+                        },
+                        "required": [
+                            "code",
+                            "name",
+                            "amount",
+                            "error"
+                        ]
+                    },
+                    "total": {
+                        "type": "number",
+                        "description": "Subtotal minus discount (delivery not included)."
                     }
                 },
                 "required": [
                     "token",
                     "items",
                     "items_count",
-                    "subtotal"
+                    "subtotal",
+                    "discount",
+                    "total"
                 ],
                 "title": "CartResource"
             },
@@ -2270,11 +2389,21 @@
                     "subtotal": {
                         "type": "number"
                     },
+                    "discount": {
+                        "type": "number"
+                    },
+                    "discount_code": {
+                        "type": [
+                            "string",
+                            "null"
+                        ]
+                    },
                     "delivery_fee": {
                         "type": "number"
                     },
                     "total": {
-                        "type": "number"
+                        "type": "number",
+                        "description": "Amount due on delivery: subtotal - discount + delivery fee."
                     },
                     "delivery": {
                         "type": "object",
@@ -2369,6 +2498,8 @@
                     "payment_status",
                     "items",
                     "subtotal",
+                    "discount",
+                    "discount_code",
                     "delivery_fee",
                     "total",
                     "delivery",
