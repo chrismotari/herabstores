@@ -4,7 +4,7 @@ Legend: `[ ]` todo · `[~]` in progress · `[x]` done (with date) · `[-]` dropp
 
 ## Current focus
 
-**Phase 2 → task 2.3**: drop Inertia/Ziggy/Breeze/Vue. Then 2.2 (→ 13).
+**Phase 2 → task 2.2**: upgrade Laravel 12 → 13.
 
 ## Goal
 
@@ -62,8 +62,8 @@ sharing one generated TypeScript client (`packages/shared`). Payments: **pay on 
   - Accept: tests green, the site works manually (home, shop, product, cart, checkout, admin). *2026-11-15*: v12.72.0. No dependency conflicts, no code changes needed (no `HasUuids`, Carbon 3 already in). 136/136 tests pass, and an HTTP smoke test as guest/customer/admin passes. Note: in 12 the `image` rule rejects SVG, so the SVG listed in `UserRequest` mimes is now refused (safer).
 - [ ] 2.2 Upgrade 12 → 13. Set `"php": "^8.3"` or higher in composer.json.
   - Accept: tests green, `php artisan about` shows 13.x.
-- [ ] 2.3 Remove unused packages: `inertiajs/inertia-laravel`, `tightenco/ziggy`, `laravel/breeze`, `HandleInertiaRequests`, `resources/js/**/*.vue`, and the Vue npm deps.
-  - Accept: `npm run build` and tests pass, no Inertia references remain.
+- [x] 2.3 Remove unused packages: `inertiajs/inertia-laravel`, `tightenco/ziggy`, `laravel/breeze`, `HandleInertiaRequests`, `resources/js/**/*.vue`, and the Vue npm deps.
+  - Accept: `npm run build` and tests pass, no Inertia references remain. *2026-11-15*: also removed `views/app.blade.php`, `views/welcome.blade.php` and `jsconfig.json`. Kept Vite + Alpine + Tailwind, because the Blade auth pages (`layouts/guest`) use them. They go in 7.3.
 - [ ] 2.4 Decide on the production DB (SQLite → MySQL/Postgres?) and record the choice in the Decision log.
 
 ## Phase 3: REST API v1
