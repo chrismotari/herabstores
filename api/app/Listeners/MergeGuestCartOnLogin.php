@@ -8,7 +8,7 @@ use Illuminate\Auth\Events\Login;
 use Illuminate\Http\Request;
 
 /**
- * Web login: merge the session's guest cart into the user's cart.
+ * SPA (session) login: merge the session's guest cart into the user's cart.
  * (API logins merge explicitly using the X-Cart-Token header.)
  */
 class MergeGuestCartOnLogin

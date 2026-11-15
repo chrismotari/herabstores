@@ -13,7 +13,7 @@ use Illuminate\Support\Str;
  *
  * - Logged-in user: their cart.
  * - Guest: a database cart identified by a token, read from the
- *   X-Cart-Token header (API) or the session (web).
+ *   X-Cart-Token header, or the Sanctum session (Next.js SPA requests).
  *
  * Without $create, a guest with no cart gets an unsaved empty Cart so
  * page views don't create rows.

@@ -1,7 +1,5 @@
 <?php
 
-use App\Models\Order;
-use App\Models\Product;
 use App\Models\User;
 
 function customer(): User
@@ -40,60 +38,27 @@ test('admins can reach admin pages', function (string $url) {
     $this->actingAs(admin())->get($url)->assertOk();
 })->with('admin pages');
 
-test('the old Blade admin is gone', function (string $url) {
-    // 405 where only a storefront POST remains at that URL (orders, contacts)
-    expect($this->actingAs(admin())->get($url)->status())->toBeIn([404, 405]);
-})->with(['/users', '/users/create', '/roles', '/permissions', '/products/create', '/categories', '/baskets', '/estates', '/delivery_zones', '/counties', '/refs', '/orders', '/carts', '/contacts', '/masscreate']);
+test('the old Blade admin and storefront are gone', function (string $url) {
+    expect($this->actingAs(admin())->get($url)->status())->toBe(404);
+})->with([
+    // Blade admin
+    '/users', '/users/create', '/roles', '/permissions', '/products/create', '/categories', '/baskets',
+    '/estates', '/delivery_zones', '/counties', '/refs', '/carts', '/contacts', '/masscreate',
+    // Blade storefront (now the Next.js app, which 301s the old URLs)
+    '/shop', '/products/apples', '/orders/create', '/carts/show', '/profile', '/login', '/register',
+    '/favourites', '/about-us', '/terms-and-conditions',
+]);
 
 test('/dashboard now redirects to the Filament admin', function () {
     $this->actingAs(admin())->get('/dashboard')->assertRedirect('/admin');
 });
 
-test('anyone can submit the contact form', function () {
-    $response = $this->post('/contacts', ['name' => 'Jane', 'email' => 'jane@example.com', 'message' => 'Hi']);
+test('the API domain root sends people to the shop', function () {
+    config(['services.storefront.url' => 'https://shop.example']);
 
-    expect($response->status())->not->toBeIn([401, 403, 404, 405]);
+    $this->get('/')->assertRedirect('https://shop.example');
 });
 
-test('customers can view only their own orders', function () {
-    $me = customer();
-    $mine = Order::factory()->for($me)->create();
-    $theirs = Order::factory()->create();
-
-    $this->actingAs($me);
-    $this->get(route('orders.show', $mine))->assertOk();
-    $this->get(route('orders.show', $theirs))->assertForbidden();
-    $this->get(route('orders.track', $theirs))->assertForbidden();
-});
-
-test('guests cannot view orders', function () {
-    $order = Order::factory()->create();
-
-    $this->get(route('orders.show', $order))->assertRedirect(route('login'));
-});
-
-test('admins can view any order', function () {
-    $order = Order::factory()->create();
-
-    $this->actingAs(admin())->get(route('orders.show', $order))->assertOk();
-});
-
-test('customers can view only their own profile', function () {
-    $me = customer();
-    $other = customer();
-
-    $this->actingAs($me);
-    $this->get(route('users.show', $me))->assertOk();
-    $this->get(route('users.show', $other))->assertForbidden();
-    $this->patch(route('users.update', $other), ['fname' => 'Hacked'])->assertForbidden();
-
-    expect($other->fresh()->fname)->not->toBe('Hacked');
-});
-
-test('guest checkout page is still public', function () {
-    $product = Product::factory()->create();
-
-    $this->withSession(guestSessionWith($product))
-        ->get(route('orders.create'))
-        ->assertOk();
+test('the API domain is not indexed', function () {
+    expect(file_get_contents(public_path('robots.txt')))->toContain('Disallow: /');
 });

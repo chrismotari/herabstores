@@ -62,12 +62,6 @@ class CartItem extends Model
         return MediaUrl::for($this->product_id ? $this->product?->image_url : $this->basket?->image);
     }
 
-    /** Storefront link (baskets have no web page yet). */
-    public function getUrlAttribute(): ?string
-    {
-        return $this->product_id && $this->product ? route('products.show', $this->product) : null;
-    }
-
     public function getTotalAttribute(): float
     {
         return $this->unit_price * $this->quantity;

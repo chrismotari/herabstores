@@ -4,14 +4,9 @@ namespace App\Providers;
 
 use App\Models\Basket;
 use App\Models\Category;
-use App\Models\Country;
-use App\Models\DeliveryZone;
-use App\Models\Estate;
 use App\Models\Product;
-use App\Models\Role;
 use App\Models\User;
 use App\Observers\StorefrontCacheObserver;
-use App\Services\CartService;
 use Dedoc\Scramble\Scramble;
 use Dedoc\Scramble\Support\Generator\OpenApi;
 use Dedoc\Scramble\Support\Generator\SecurityScheme;
@@ -19,12 +14,9 @@ use Illuminate\Auth\Notifications\ResetPassword;
 use Illuminate\Auth\Notifications\VerifyEmail;
 use Illuminate\Cache\RateLimiting\Limit;
 use Illuminate\Http\Request;
-use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Facades\Gate;
 use Illuminate\Support\Facades\RateLimiter;
 use Illuminate\Support\Facades\URL;
-use Illuminate\Support\Facades\View;
-use Illuminate\Support\Facades\Vite;
 use Illuminate\Support\ServiceProvider;
 
 class AppServiceProvider extends ServiceProvider
@@ -64,32 +56,6 @@ class AppServiceProvider extends ServiceProvider
         Scramble::configure()->withDocumentTransformers(
             fn (OpenApi $openApi) => $openApi->secure(SecurityScheme::http('bearer'))
         );
-
-        Vite::prefetch(concurrency: 3);
-
-        View::composer('users.form', function ($view) {
-            $view->with([
-                'countries' => Country::where('name', 'like', 'Kenya')->get(),
-                'roles' => Role::all(),
-                'estates' => Estate::all(),
-            ]);
-        });
-
-        View::composer('layouts.includes.header', function ($view) {
-            $cart = app(CartService::class)->current(request());
-
-            $view->with([
-                'cart' => $cart,
-                'favourites' => Auth::user()?->favourites,
-                'categories' => Category::all(),
-            ]);
-        });
-        View::composer('orders.create', function ($view) {
-            $view->with([
-                'delivery_zones' => DeliveryZone::where('is_active', true)->orderBy('name')->get(),
-            ]);
-        });
-
     }
 
     /**
