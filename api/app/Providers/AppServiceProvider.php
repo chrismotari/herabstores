@@ -14,8 +14,11 @@ use App\Services\CartService;
 use Dedoc\Scramble\Scramble;
 use Dedoc\Scramble\Support\Generator\OpenApi;
 use Dedoc\Scramble\Support\Generator\SecurityScheme;
+use Illuminate\Cache\RateLimiting\Limit;
+use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Facades\Gate;
+use Illuminate\Support\Facades\RateLimiter;
 use Illuminate\Support\Facades\View;
 use Illuminate\Support\Facades\Vite;
 use Illuminate\Support\ServiceProvider;
@@ -35,6 +38,8 @@ class AppServiceProvider extends ServiceProvider
      */
     public function boot(): void
     {
+        $this->configureRateLimiting();
+
         // API docs (/docs/api): open locally, admins only elsewhere.
         Gate::define('viewApiDocs', fn (?User $user = null) => app()->isLocal() || (bool) $user?->is_admin);
         Scramble::configure()->withDocumentTransformers(
@@ -78,5 +83,23 @@ class AppServiceProvider extends ServiceProvider
             ]);
         });
 
+    }
+
+    /**
+     * api: every /api/v1 request. auth: login/register/password endpoints
+     * (per IP + identifier, to slow credential stuffing). search: catalog search.
+     */
+    protected function configureRateLimiting(): void
+    {
+        RateLimiter::for('api', fn (Request $request) => Limit::perMinute(120)
+            ->by($request->user()?->id ?: $request->ip()));
+
+        RateLimiter::for('auth', fn (Request $request) => [
+            Limit::perMinute(5)->by(strtolower((string) ($request->input('email') ?? $request->input('phone'))).'|'.$request->ip()),
+            Limit::perMinute(20)->by($request->ip()),
+        ]);
+
+        RateLimiter::for('search', fn (Request $request) => Limit::perMinute(60)
+            ->by($request->user()?->id ?: $request->ip()));
     }
 }

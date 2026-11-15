@@ -4,7 +4,7 @@ Legend: `[ ]` todo · `[~]` in progress · `[x]` done (with date) · `[-]` dropp
 
 ## Current focus
 
-**Phase 3 → task 3.4**: rate limiting.
+**Phase 3 → task 3.5**: move cart logic into Actions shared by web and API.
 
 ## Goal
 
@@ -72,7 +72,7 @@ sharing one generated TypeScript client (`packages/shared`). Payments: **pay on 
 - [x] 3.1 Enable `routes/api.php` (`php artisan install:api`), add the `/api/v1` prefix and `App\Http\Controllers\Api\V1` namespace. *2026-11-15*: `routes/api.php` (v1 prefix, `api.v1.*` names). `api/*` always renders JSON errors. User has `HasApiTokens`. The token table was recreated with `uuidMorphs`: the integer morphs meant UUID users could never get a token.
 - [x] 3.2 Configure Sanctum for the SPA (stateful domains for `apps/web`, CORS) and token auth for mobile. *2026-11-15*: `statefulApi()`; CORS for `api/*` and `sanctum/csrf-cookie` with credentials, origins from `FRONTEND_URL` / `CORS_ALLOWED_ORIGINS`; `SANCTUM_STATEFUL_DOMAINS`. Mobile tokens expire after 90 days (`SANCTUM_TOKEN_EXPIRATION`). `GET /api/v1/me` works with either mode.
 - [x] 3.3 Add Scramble (OpenAPI) at `/docs/api`, and export `openapi.json` in CI. *2026-11-15*: documents `api/v1` with a bearer security scheme. Docs are open locally and admin-only elsewhere. `composer openapi` writes `api/openapi.json` (committed), and CI fails if it's stale.
-- [ ] 3.4 Rate limiting (auth, search, cart) and an API exception rendering check (JSON for `api/*`).
+- [x] 3.4 Rate limiting (auth, search, cart) and an API exception rendering check (JSON for `api/*`). *2026-11-15*: `api` limiter, 120/min per user or IP, on every API route (`throttleApi()`). `auth` (5/min per identifier+IP, 20/min per IP) and `search` (60/min) limiters are defined; apply them in 3.8 and 3.9. JSON errors were done in 3.1.
 
 ### 3b. Extract domain logic
 - [ ] 3.5 Move cart logic into `app/Actions/Cart/*` (add, update qty, remove, merge guest→user), used by both web and API controllers.

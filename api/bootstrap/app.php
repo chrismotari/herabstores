@@ -17,6 +17,7 @@ return Application::configure(basePath: dirname(__DIR__))
     ->withMiddleware(function (Middleware $middleware) {
         // Cookie-based Sanctum auth for first-party SPA requests (Next.js).
         $middleware->statefulApi();
+        $middleware->throttleApi(); // 'api' limiter, see AppServiceProvider
 
         $middleware->web(append: [
             AddLinkHeadersForPreloadedAssets::class,
