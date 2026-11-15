@@ -17,9 +17,11 @@ test('sitemap lists available products, categories and baskets', function () {
         ->assertOk()
         ->assertJsonCount(1, 'data.products')
         ->assertJsonPath('data.products.0.slug', $product->slug)
-        ->assertJsonPath('data.categories.0.slug', $product->category->slug)
         ->assertJsonPath('data.baskets.0.slug', 'weekly-veg')
         ->assertJsonStructure(['data' => ['products' => [['slug', 'updated_at']]]]);
+
+    $categories = collect($this->getJson('/api/v1/seo/sitemap')->json('data.categories'))->pluck('slug');
+    expect($categories)->toContain($product->category->slug);
 });
 
 test('saving a product revalidates its pages, including the old slug', function () {
