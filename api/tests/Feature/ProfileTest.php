@@ -1,5 +1,6 @@
 <?php
 
+use App\Models\Order;
 use App\Models\User;
 
 test('profile page is displayed', function () {
@@ -85,4 +86,14 @@ test('correct password must be provided to delete account', function () {
         ->assertRedirect('/profile');
 
     $this->assertNotNull($user->fresh());
+});
+
+test('deleting an account with orders keeps the orders (web)', function () {
+    $user = User::factory()->create();
+    $order = Order::factory()->for($user)->create();
+
+    $this->actingAs($user)->delete('/profile', ['password' => 'password'])->assertRedirect('/');
+
+    expect(User::find($user->id))->toBeNull()
+        ->and($order->fresh()->user_id)->toBeNull();
 });

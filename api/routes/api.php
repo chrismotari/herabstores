@@ -1,5 +1,6 @@
 <?php
 
+use App\Http\Controllers\Api\V1\AccountController;
 use App\Http\Controllers\Api\V1\AuthController;
 use App\Http\Controllers\Api\V1\BasketController;
 use App\Http\Controllers\Api\V1\CartController;
@@ -59,7 +60,18 @@ Route::prefix('v1')->name('api.v1.')->group(function () {
         });
     });
 
-    Route::middleware('auth:sanctum')->group(function () {
-        Route::get('me', [AuthController::class, 'me'])->name('me');
+    // The signed-in customer's account
+    Route::middleware('auth:sanctum')->prefix('me')->name('me.')->group(function () {
+        Route::get('/', [AuthController::class, 'me'])->name('show');
+        Route::controller(AccountController::class)->group(function () {
+            Route::patch('/', 'update')->name('update');
+            Route::delete('/', 'destroy')->name('destroy');
+            Route::put('password', 'updatePassword')->name('password');
+            Route::get('orders', 'orders')->name('orders.index');
+            Route::get('orders/{order}', 'order')->name('orders.show');
+            Route::get('favourites', 'favourites')->name('favourites.index');
+            Route::post('favourites', 'addFavourite')->name('favourites.store');
+            Route::delete('favourites/{product}', 'removeFavourite')->whereUuid('product')->name('favourites.destroy');
+        });
     });
 });

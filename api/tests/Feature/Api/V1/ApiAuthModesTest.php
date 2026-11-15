@@ -51,3 +51,13 @@ test('CORS does not allow unknown origins', function () {
     // With one allowed origin the header is fixed to it; the browser blocks the mismatch.
     expect($response->headers->get('Access-Control-Allow-Origin'))->not->toBe('https://evil.example');
 });
+
+test('account endpoints require authentication', function (string $method, string $url) {
+    $this->json($method, $url)->assertUnauthorized();
+})->with([
+    ['GET', '/api/v1/me/orders'],
+    ['GET', '/api/v1/me/favourites'],
+    ['PATCH', '/api/v1/me'],
+    ['DELETE', '/api/v1/me'],
+    ['PUT', '/api/v1/me/password'],
+]);
