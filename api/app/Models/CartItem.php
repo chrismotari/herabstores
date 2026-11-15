@@ -3,11 +3,12 @@
 namespace App\Models;
 
 use App\Traits\UUID;
+use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Database\Eloquent\Model;
 
 class CartItem extends Model
 {
-    use UUID;
+    use HasFactory, UUID;
 
     protected $fillable = [
         'cart_id',

@@ -3,13 +3,14 @@
 namespace App\Models;
 
 use App\Traits\UUID;
+use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Database\Eloquent\Model;
 use Illuminate\Support\Collection;
 use Illuminate\Support\Str;
 
 class Order extends Model
 {
-    use UUID;
+    use HasFactory, UUID;
 
     protected static function boot()
     {
@@ -17,7 +18,7 @@ class Order extends Model
 
         static::creating(function ($order) {
             if (! $order->id) {
-                $order->id = Str::uuid();
+                $order->id = Str::uuid()->toString();
             }
             $order->order_number = self::generateNHexa();
         });
