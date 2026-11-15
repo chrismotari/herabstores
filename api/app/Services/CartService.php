@@ -26,7 +26,8 @@ class CartService
 
     public function current(Request $request, bool $create = false): Cart
     {
-        if ($user = $request->user()) {
+        // The sanctum guard covers web sessions and bearer tokens (cart routes are public).
+        if ($user = $request->user('sanctum') ?? $request->user()) {
             return $this->forUser($user, $create);
         }
 

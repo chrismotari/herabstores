@@ -2,6 +2,7 @@
 
 use App\Http\Controllers\Api\V1\AuthController;
 use App\Http\Controllers\Api\V1\BasketController;
+use App\Http\Controllers\Api\V1\CartController;
 use App\Http\Controllers\Api\V1\CategoryController;
 use App\Http\Controllers\Api\V1\ProductController;
 use Illuminate\Support\Facades\Route;
@@ -24,6 +25,16 @@ Route::prefix('v1')->name('api.v1.')->group(function () {
         Route::get('products/{slug}', [ProductController::class, 'show'])->name('products.show');
         Route::get('baskets', [BasketController::class, 'index'])->name('baskets.index');
         Route::get('baskets/{slug}', [BasketController::class, 'show'])->name('baskets.show');
+    });
+
+    // Cart: logged-in user's cart, or a guest cart via the X-Cart-Token header
+    Route::prefix('cart')->name('cart.')->controller(CartController::class)->group(function () {
+        Route::get('/', 'show')->name('show');
+        Route::post('/', 'store')->name('store');
+        Route::delete('/', 'clear')->name('clear');
+        Route::post('items', 'addItem')->name('items.store');
+        Route::patch('items/{item}', 'updateItem')->whereUuid('item')->name('items.update');
+        Route::delete('items/{item}', 'removeItem')->whereUuid('item')->name('items.destroy');
     });
 
     // Auth

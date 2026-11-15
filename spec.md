@@ -4,7 +4,7 @@ Legend: `[ ]` todo · `[~]` in progress · `[x]` done (with date) · `[-]` dropp
 
 ## Current focus
 
-**Phase 3 → task 3.11**: cart API endpoints.
+**Phase 3 → task 3.12**: checkout + delivery locations API.
 
 ## Goal
 
@@ -85,7 +85,7 @@ sharing one generated TypeScript client (`packages/shared`). Payments: **pay on 
   - Accept: lookups by slug, no N+1 queries (tested), `Cache-Control` headers set. *2026-11-15*: only active products in active categories (`Product::available()`). Filters: `q` (ILIKE, wildcards escaped), `category` (slug), `min_price`/`max_price`, `in_stock`, `sort` (newest/price_asc/price_desc/name), `per_page` ≤ 60. `Cache-Control: public, max-age=60, s-maxage=300` + ETag. `throttle:search` on the listing. `App\Support\MediaUrl` turns stored paths into full URLs.
 - [x] 3.10 Baskets and offers (public read). *2026-11-15*: `GET /api/v1/baskets` and `/baskets/{slug}` (active, within the effective window, with active items). **Offers left out**: there's no working offers feature (empty `OfferController`, nothing applies discounts; the "50% OFF" banners are static theme text).
 - [ ] 3.10a **Owner decision:** should baskets be purchasable (add a basket to the cart as one line, or expand it into its products)? Should offers/discount codes be built (new feature: rules, validation at checkout, usage limits)?
-- [~] 3.11 Guest cart (token storage, header resolution and web-login merge done in 3.5; API endpoints + merge on API login remain): `POST carts` returns a `cart_token`. Cart endpoints accept the `X-Cart-Token` header. The guest cart merges into the user's cart at login.
+- [x] 3.11 Guest cart: `POST carts` returns a `cart_token`. Cart endpoints accept the `X-Cart-Token` header. The guest cart merges into the user's cart at login. *2026-11-15*: `/api/v1/cart` (GET, POST → 201 with a guest token, DELETE clears) and `/cart/items` (POST adds, PATCH `{quantity}` with 0 removing, DELETE). Items can only be changed through the cart that owns them (404 otherwise). Works for guests (`X-Cart-Token`), bearer tokens and SPA sessions. API login merges carts (3.8).
 - [ ] 3.12 Checkout: `POST orders` (pay on delivery). Delivery locations: `GET counties`, `GET counties/{id}/estates`, `GET delivery-zones` (with fee).
 - [ ] 3.13 Customer account: my orders (list, show, track), favourites (add/remove/list), profile update, addresses.
 - [ ] 3.14 Contact form `POST contacts`.
