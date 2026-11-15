@@ -476,6 +476,8 @@ export interface components {
             description: string;
             price: number;
             in_stock: boolean;
+            /** @description Maximum quantity that can be ordered right now. */
+            available_quantity: number;
             image_url: string | null;
             available_from: string;
             available_until: string;

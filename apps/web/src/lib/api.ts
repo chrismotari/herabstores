@@ -1,6 +1,6 @@
 import "server-only";
 
-import { createApiClient, type Category, type Product } from "@herabs/shared";
+import { createApiClient, type Category, type DeliveryZone, type Product } from "@herabs/shared";
 import { cacheLife, cacheTag } from "next/cache";
 import { SERVER_API_URL } from "./config";
 
@@ -104,6 +104,19 @@ export async function getCategory(slug: string): Promise<Category | null> {
   const { data, response } = await api.GET("/categories/{slug}", { params: { path: { slug } } });
   if (response.status === 404) return null;
   if (!data) throw new Error(`Failed to load category ${slug}`);
+
+  return data.data;
+}
+
+/** Active delivery zones with fees (not covered by the catalog webhook, so refreshed hourly). */
+export async function getDeliveryZones(): Promise<DeliveryZone[]> {
+  "use cache";
+  cacheTag("delivery-zones");
+  cacheLife("hours");
+  if (!apiAvailable()) return [];
+
+  const { data, error } = await api.GET("/delivery-zones");
+  if (error || !data) throw new Error("Failed to load delivery zones");
 
   return data.data;
 }

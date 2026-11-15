@@ -19,6 +19,8 @@ class BasketResource extends JsonResource
             'description' => $this->description,
             'price' => (float) $this->price,
             'in_stock' => $this->stock > 0,
+            /** Maximum quantity that can be ordered right now. */
+            'available_quantity' => (int) max(0, (int) $this->stock),
             'image_url' => MediaUrl::for($this->image),
             'available_from' => $this->effective_from?->toIso8601String(),
             'available_until' => $this->effective_to?->toIso8601String(),

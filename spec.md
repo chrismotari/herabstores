@@ -4,7 +4,7 @@ Legend: `[ ]` todo · `[~]` in progress · `[x]` done (with date) · `[-]` dropp
 
 ## Current focus
 
-**Phase 5 → task 5.7**: cart page, mini cart, checkout.
+**Phase 5 → task 5.8**: login/register and the customer account (orders, favourites, profile).
 
 ## Goal
 
@@ -116,7 +116,7 @@ sharing one generated TypeScript client (`packages/shared`). Payments: **pay on 
   - **Removed the fake 5-star ratings** on every product (no reviews exist; also bad for Rich Results).
   - Browser cart layer built early for add-to-cart: `lib/browser-api.ts` (session cookie + Sanctum CSRF + `X-Cart-Token` from localStorage) and `CartProvider` (live header count). Verified the CORS/CSRF flow against the API.
 - [x] 5.6 Content pages: about-us, contact-us (+form), terms-and-conditions, faq (currently reuses contact-us; give it real content). *2026-11-15*: all static. Contact form posts to `/api/v1/contacts`. **Copy tidied to match reality:** removed "exclusive deals & discounts" (no offers), "multiple payment methods" (pay on delivery only), "24/7 support" (real hours shown); fixed the contact email (`hello.com` → info@herabgroceries.com). New FAQ (delivery zones/fees, pay on delivery, guest checkout, tracking, 24h complaints, changes before dispatch). **Owner to review the FAQ wording.**
-- [ ] 5.7 Cart and checkout (client components, guest cart token in a cookie, county → estate → delivery fee, pay on delivery).
+- [x] 5.7 Cart and checkout (client components, guest cart token, delivery zone fee, pay on delivery). *2026-11-15*: theme mini cart in the header (hover; items, remove, total), `/cart` (quantities, remove, subtotal), `/checkout` (prefills logged-in customers' details and zone, zone picker with fees, live total, per-field API validation errors, stock errors), `/checkout/confirmation` (summary from the order response). All noindex. The guest token lives in **localStorage** (not a cookie: only the browser needs it). Zones are a cached server loader (hourly). API: baskets now expose `available_quantity`. Verified a full guest checkout via the API (the test order was canceled, which restored stock). Referrer (`ref_id`) isn't offered at checkout yet.
 - [ ] 5.8 Auth (Sanctum SPA) and account: orders, order tracking, favourites, profile. Point password-reset and verify-email links at the Next.js pages (`ResetPassword::createUrlUsing`, `VerifyEmail::createUrlUsing`).
 - [ ] 5.9 `/api/revalidate` route handler (secret-protected) used by the API webhook from 3.15. Tag every `fetch` with the same tags (see the 3.15 contract) and call `revalidateTag` for each one received.
 - [ ] 5.10 404/500 pages, and a `redirects()` map from old URLs (`/products/{uuid}` → `/products/{slug}`, `/index` → `/`, `/carts/show` → `/cart`).
