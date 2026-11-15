@@ -41,6 +41,13 @@ test('lists only available products, paginated', function () {
         ->assertJsonCount(2, 'data')
         ->assertJsonPath('meta.total', 3)
         ->assertJsonStructure(['data' => [['id', 'name', 'slug', 'price', 'in_stock', 'stock_status', 'image_url', 'category' => ['slug']]], 'links', 'meta']);
+
+    $this->getJson('/api/v1/products?per_page=2&page=2')
+        ->assertOk()
+        ->assertJsonCount(1, 'data')
+        ->assertJsonPath('meta.current_page', 2);
+
+    $this->getJson('/api/v1/products?page=0')->assertJsonValidationErrorFor('page');
 });
 
 test('filters by search, category, price and stock', function () {

@@ -76,7 +76,7 @@ export async function getProducts(query: ProductQuery = {}): Promise<ProductPage
   if (!apiAvailable()) return EMPTY_PAGE;
 
   const { data, error, response } = await api.GET("/products", {
-    params: { query: { ...query, in_stock: query.in_stock ? true : undefined } as never },
+    params: { query: { ...query, in_stock: query.in_stock ? true : undefined } },
   });
   if (response?.status === 422) return EMPTY_PAGE; // invalid filters from the URL
   if (error || !data) throw new Error("Failed to load products");

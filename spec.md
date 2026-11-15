@@ -4,7 +4,7 @@ Legend: `[ ]` todo · `[~]` in progress · `[x]` done (with date) · `[-]` dropp
 
 ## Current focus
 
-**Phase 6 → task 6.3**: mobile catalog (home, categories, product list/search, product detail). Open from 5.11: re-run Lighthouse on catalog pages once real product photos are uploaded.
+**Phase 6 → task 6.4**: mobile cart and checkout (pay on delivery, guest cart token). Open from 5.11: re-run Lighthouse on catalog pages once real product photos are uploaded.
 
 ## Goal
 
@@ -149,9 +149,9 @@ sharing one generated TypeScript client (`packages/shared`). Payments: **pay on 
 ## Phase 6: React Native app (`apps/mobile`)
 
 - [x] 6.1 Expo app (TypeScript, Expo Router) in the workspace, using `packages/shared`. *2026-11-15*: Expo SDK 58 (RN 0.88, React 19.3) in `apps/mobile` as `@herabs/mobile`, pnpm isolated installs (no hoisting needed). Native tabs (Home/Shop/Cart/Account, SF Symbols + Material icons), brand colours, TanStack Query, `src/lib/api.ts` (bearer + cart token from `expo-secure-store`). Home lists categories from the API. CI: typecheck, `expo lint`, iOS+Android bundle export. Checked in Expo web against the local API.
-  - Note for 6.3: API image URLs are built from `APP_URL` (`localhost`), which a phone can't reach. Serve images from a reachable host in dev (set `APP_URL` to the LAN IP) or rewrite them in the app.
+  - Images: uploaded image URLs come from `asset()`, which follows the request host, so a phone calling the API by LAN IP gets reachable URLs (checked 6.3).
 - [x] 6.2 Auth with a Sanctum token stored in `expo-secure-store`. *2026-11-15*: `src/lib/session.tsx` (TanStack Query `['me']`; a 401 drops the stored token). Sign-in/register modals send `device_name` and the guest cart token (merged, then cleared); forgot-password screen; Account tab with sign out and resend-verification. No API changes. Checked in Expo web: bad password error, token persists across reload, sign out revokes it.
-- [ ] 6.3 Catalog: home, categories, product list/search, product detail.
+- [x] 6.3 Catalog: home, categories, product list/search, product detail. *2026-11-15*: Home (search, categories, baskets, newest), Shop tab (debounced search, category and sort chips, infinite two-column grid), `/categories/{slug}`, `/products/{slug}` (image pager, stock badge), `/baskets/{slug}` (contents link to products). Same paths as the website, ready for deep links (6.6). Query definitions in `src/lib/catalog.ts`. API: `GET /products` now documents `page` (the web client no longer casts its query). Gotcha: `Link asChild` passes styles through a Slot that rejects style arrays; size linked cards with a wrapping View.
 - [ ] 6.4 Cart and checkout (pay on delivery), with a guest cart token persisted locally.
 - [ ] 6.5 Account: orders and tracking, favourites, profile.
 - [ ] 6.6 Deep links (`/products/{slug}` opens the app), app icons/splash, EAS build config.

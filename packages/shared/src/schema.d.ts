@@ -1617,6 +1617,7 @@ export interface operations {
                 in_stock?: boolean | null;
                 sort?: "newest" | "price_asc" | "price_desc" | "name" | null;
                 per_page?: number | null;
+                page?: number | null;
             };
             header?: never;
             path?: never;

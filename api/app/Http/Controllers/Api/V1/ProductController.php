@@ -32,6 +32,7 @@ class ProductController extends Controller
             'in_stock' => ['nullable', 'boolean'],
             'sort' => ['nullable', Rule::in(self::SORTS)],
             'per_page' => ['nullable', 'integer', 'min:1', 'max:60'],
+            'page' => ['nullable', 'integer', 'min:1'],
         ]);
 
         $products = Product::available()
