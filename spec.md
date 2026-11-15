@@ -4,7 +4,7 @@ Legend: `[ ]` todo · `[~]` in progress · `[x]` done (with date) · `[-]` dropp
 
 ## Current focus
 
-**Phase 2 → task 2.2**: upgrade Laravel 12 → 13.
+**Phase 2 → task 2.4**: pick the production database. Needs an owner decision.
 
 ## Goal
 
@@ -60,8 +60,8 @@ sharing one generated TypeScript client (`packages/shared`). Payments: **pay on 
 
 - [x] 2.1 Upgrade 11 → 12 (follow the official upgrade guide). Bump Pest, Sanctum, spatie/permission, Tinker and Collision.
   - Accept: tests green, the site works manually (home, shop, product, cart, checkout, admin). *2026-11-15*: v12.72.0. No dependency conflicts, no code changes needed (no `HasUuids`, Carbon 3 already in). 136/136 tests pass, and an HTTP smoke test as guest/customer/admin passes. Note: in 12 the `image` rule rejects SVG, so the SVG listed in `UserRequest` mimes is now refused (safer).
-- [ ] 2.2 Upgrade 12 → 13. Set `"php": "^8.3"` or higher in composer.json.
-  - Accept: tests green, `php artisan about` shows 13.x.
+- [x] 2.2 Upgrade 12 → 13. Set `"php": "^8.3"` or higher in composer.json.
+  - Accept: tests green, `php artisan about` shows 13.x. *2026-11-15*: v13.42.0, `php: ^8.3`. Pest 3 → 4 (PHPUnit 12), Tinker 2 → 3, Guzzle 7 → 8 (pulled in by the framework). spatie/laravel-permission **kept on 6.25** (it supports 13; the major bump is deferred to Phase 4). No code changes, no deprecations. Route and config caching work, and the HTTP smoke test matches 12.
 - [x] 2.3 Remove unused packages: `inertiajs/inertia-laravel`, `tightenco/ziggy`, `laravel/breeze`, `HandleInertiaRequests`, `resources/js/**/*.vue`, and the Vue npm deps.
   - Accept: `npm run build` and tests pass, no Inertia references remain. *2026-11-15*: also removed `views/app.blade.php`, `views/welcome.blade.php` and `jsconfig.json`. Kept Vite + Alpine + Tailwind, because the Blade auth pages (`layouts/guest`) use them. They go in 7.3.
 - [ ] 2.4 Decide on the production DB (SQLite → MySQL/Postgres?) and record the choice in the Decision log.
@@ -95,6 +95,7 @@ sharing one generated TypeScript client (`packages/shared`). Payments: **pay on 
 - [ ] 4.1 Install the latest Filament compatible with Laravel 13 at `/admin`. Access only for the admin role (`canAccessPanel`).
 - [ ] 4.2 Resources: Products (multi-image upload, fixes the README TODO), Categories, Baskets, Offers/OfferTypes.
 - [ ] 4.3 Resources: Orders (status workflow, dispatch to courier, tracking), Couriers, Customers.
+- [ ] 4.0 Upgrade spatie/laravel-permission 6 → 8 (read both upgrade guides; custom UUID `Role`/`Permission` models) before using it in Filament.
 - [ ] 4.4 Resources: Delivery zones, Counties, Estates, Refs, Users, Roles/Permissions (spatie plugin), Contacts inbox.
 - [ ] 4.5 Dashboard widgets: orders today, revenue, low stock.
 - [ ] 4.6 Remove the Blade admin (`layouts/backend`, admin views/routes, `public/backend` if unused).
