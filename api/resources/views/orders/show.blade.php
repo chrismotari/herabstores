@@ -175,12 +175,12 @@
                                         <span>Shipping to Area 57</span>
                                         <div class="shop-check-wrap">
                                             <div class="custom-control custom-checkbox">
-                                                <label for="customCheck1">KSHS 150</label>
+                                                <label for="customCheck1">KSHS {{ $selected_order->shipping_fee }}</label>
                                             </div>
                                             
                                         </div>
                                     </li>
-                                    <li class="cart-total-amount"><span>Total Price</span> <span class="amount">KSH {{$selected_order->total+150}}</span></li>
+                                    <li class="cart-total-amount"><span>Total Price</span> <span class="amount">KSH {{ $selected_order->total + $selected_order->shipping_fee }}</span></li>
                                 </ul>
                                 @if (Str::lower($selected_order->status) === 'new')
                                     <a class="btn btn-primary" href="{{route('orders.dispatch', $selected_order)}}" >Dispatch order</a>

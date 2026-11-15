@@ -32,6 +32,7 @@ class User extends Authenticatable
         'address',
         'city',
         'estate_id',
+        'delivery_zone_id',
         'country_id',
         'photo_url',
         'dob',

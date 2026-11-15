@@ -171,8 +171,7 @@ class CartItemController extends Controller
         // dd($product);
 
         if (auth()->check()) {
-            $cartItem = Auth::user()->cartItems()->where('product_id', $product->id)->first();
-            $cartItem->delete();
+            Auth::user()->cart?->cartItems()->where('product_id', $product->id)->delete();
         } else {
             $cart = session()->get('cart', []);
 

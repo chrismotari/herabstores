@@ -2,8 +2,10 @@
 
 namespace App\Http\Controllers;
 
+use App\Http\Requests\PlaceOrderRequest;
 use App\Models\Contact;
 use App\Models\Country;
+use App\Models\DeliveryZone;
 use App\Models\Estate;
 use App\Models\Order;
 use App\Models\Ref;
@@ -11,6 +13,7 @@ use App\Services\CartService;
 use Illuminate\Http\Request;
 use Illuminate\Routing\Controllers\Middleware;
 use Illuminate\Support\Facades\Auth;
+use Illuminate\Support\Facades\DB;
 
 class OrderController extends Controller
 {
@@ -57,79 +60,83 @@ class OrderController extends Controller
     /**
      * Store a newly created resource in storage.
      */
-    public function store(Request $request)
+    public function store(PlaceOrderRequest $request)
     {
-        // dd($request);
-        $estate = Estate::find($request->estate_id);
-        $cartService = new CartService;
-        $cart = auth()->check() ? auth()->user()->cart : $cartService->getGuestCart();
-        $cart_items = $cart->cartItems;
+        $data = $request->validated();
+        $user = $request->user();
+        $cart = $user ? $user->cart : (new CartService)->getGuestCart();
+        $cartItems = $cart?->cartItems ?? collect();
 
-        if ($cart_items->count() < 1) {
+        if ($cartItems->isEmpty()) {
             flash()->error('Cart is empty');
 
             return redirect()->back();
-        } else {
+        }
 
-            $totalPrice = $cart->total;
-            // delivery fees here
+        $zone = DeliveryZone::findOrFail($data['delivery_zone_id']);
+        $estate = isset($data['estate_id']) ? Estate::find($data['estate_id']) : null;
+        // The checkout page shows the estate's fee; fall back to the zone's fee.
+        $shippingFee = $estate?->delivery_fees ?? $zone->delivery_fees;
 
+        $order = DB::transaction(function () use ($data, $user, $cart, $cartItems, $zone, $shippingFee) {
             $order = Order::create([
-                'user_id' => auth()->id(),
-                'total' => $totalPrice,
+                'user_id' => $user?->id,
+                'total' => $cartItems->sum(fn ($item) => $item->product->price * $item->quantity),
+                'shipping_fee' => $shippingFee,
                 'status' => 'new',
-                'payment_status' => $request->payment_status,
-                'payment_method' => $request->payment_method,
-                'shipping_method' => $request->shipping_method,
-                // 'paid_at',
-                // 'amount_paid',
-                'shipping_fees' => $estate->delivery_fees,
-                'completed_at' => now(),
-                'fname' => $request->fname,
-                'lname' => $request->lname,
-                'company' => $request->company,
-                'phone' => $request->phone,
-                'alt_phone' => $request->alt_phone,
-                'email' => $request->email,
-                'address' => $request->address,
-                'city' => $request->city,
-                'estate_id' => $request->estate_id,
-                'country_id' => $request->country_id,
-                'message' => $request->message,
-                'ref_id' => $request->ref_id,
-                'order_items' => $cart_items->map(function ($item) {
-                    return [
-                        'product_id' => $item->product_id,
-                        'name' => $item->product->name, // Assuming product relationship
-                        'price' => $item->price,
-                        'quantity' => $item->quantity,
-                        'discount' => 0,
-                        'description' => 'No description',
-                    ];
-                })->toArray(),
+                'payment_method' => 'cash_on_delivery',
+                'payment_status' => 'pending',
+                'fname' => $data['fname'],
+                'lname' => $data['lname'],
+                'phone' => $data['phone'],
+                'alt_phone' => $data['alt_phone'] ?? null,
+                'email' => $data['email'] ?? null,
+                'address' => $data['address'],
+                'city' => $data['city'],
+                'delivery_zone' => $zone->id,
+                'message' => $data['message'] ?? null,
+                'ref_id' => $data['ref_id'] ?? null,
+                'order_items' => $cartItems->map(fn ($item) => [
+                    'product_id' => $item->product_id,
+                    'name' => $item->product->name,
+                    'price' => $item->product->price,
+                    'quantity' => $item->quantity,
+                    'discount' => 0,
+                    'description' => 'No description',
+                ])->values()->all(),
             ]);
 
-            if ($request->consented) {
-                Contact::create([
-                    'email' => $request->email,
-                    'name' => "{$request->fname} {$request->lname}",
-                    'phone' => $request->phone,
-                    'consented' => true,
-                    'source' => 'Purchase',
+            // Sign-up doesn't ask for an address, so remember the first one used at checkout.
+            if ($user && blank($user->address)) {
+                $user->update([
+                    'address' => $data['address'],
+                    'city' => $data['city'],
+                    'delivery_zone_id' => $zone->id,
                 ]);
             }
 
-            // Clear the cart
-            if ($order) {
+            if ($user) {
                 $cart->cartItems()->delete();
-                session()->forget('cart');
-
-                return redirect()->route('shop')->with('success', 'Order has been placed successfully');
-            } else {
-                return back()->with('error', 'An Error occured while placing your order');
             }
+
+            return $order;
+        });
+
+        session()->forget('cart');
+
+        if ($request->boolean('consented')) {
+            Contact::create([
+                'email' => $data['email'] ?? null,
+                'name' => "{$data['fname']} {$data['lname']}",
+                'phone' => $data['phone'],
+                'consented' => true,
+                'source' => 'Purchase',
+            ]);
         }
 
+        flash()->success('Order has been placed successfully');
+
+        return redirect()->route('shop')->with('success', 'Order has been placed successfully');
     }
 
     /**

@@ -69,6 +69,9 @@ Route::delete('/cart-items/remove/{product}', [CartItemController::class, 'destr
 
 Route::resource('carts', CartController::class)->except(['show']);
 Route::get('/carts/show/{cart?}', [CartController::class, 'show'])->name('carts.show');
+// Must come before products/{product?}, or "search" is treated as a product id.
+Route::POST('products/search', [ProductController::class, 'search'])->name('products.search');
+Route::get('products/search', [ProductController::class, 'search']);
 Route::get('/products/{product?}', [ProductController::class, 'show'])->name('products.show');
 
 Route::get('shop', function () {
@@ -80,9 +83,6 @@ Route::resource('contacts', ContactController::class);
 Route::get('/index', function () {
     return redirect('/');
 })->name('index');
-
-Route::POST('products/search', [ProductController::class, 'search'])->name('products.search');
-Route::get('products/search', [ProductController::class, 'search']);
 
 Route::get('/', function () {
     return view('index')->with('products', Product::all());
