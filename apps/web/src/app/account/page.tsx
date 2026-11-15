@@ -2,6 +2,7 @@
 
 import Link from "next/link";
 import { useSession } from "@/components/auth/SessionProvider";
+import { EmailNotice } from "./EmailNotice";
 
 export default function AccountOverview() {
   const { user } = useSession();
@@ -9,6 +10,7 @@ export default function AccountOverview() {
 
   return (
     <div>
+      <EmailNotice />
       <h1 className="h3">Hello, {user.fname}!</h1>
       <p>From here you can follow your orders, manage favourites and update your details.</p>
       <div className="row mt-30">
