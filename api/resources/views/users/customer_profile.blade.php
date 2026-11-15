@@ -14,7 +14,7 @@
                                     <li class="breadcrumb-item"><a href="/">Home</a></li>
                                     <li class="breadcrumb-item"><a href="/">Pages</a></li>
                                     <li class="breadcrumb-item"><a href="/">Users</a></li>
-                                    <li class="breadcrumb-item active" aria-current="page">{{$selected_user->name}}</li>
+                                    <li class="breadcrumb-item active" aria-current="page">{{ $selected_user->fname }} {{ $selected_user->lname }}</li>
                                 </ol>
                             </nav>
                         </div>
@@ -36,11 +36,11 @@
                                         <div class="user d-sm-flex d-block pe-md-5 pe-0">
                                             <img src="{{$selected_user->photo_url}}" alt="">
                                             <div class="ms-sm-3 ms-0 me-md-5 md-0">
-                                                <h5 class="mb-1"><a href="javascript:void(0);" class="text-dark">{{$selected_user->name}}</a></h5>
+                                                <h5 class="mb-1"><a href="javascript:void(0);" class="text-dark">{{ $selected_user->fname }} {{ $selected_user->lname }}</a></h5>
                                                 <div class="listline-wrapper mb-2">
                                                     <span class="item"><i class="text-primary far fa-envelope"></i>{{$selected_user->email}}</span>
                                                     <span class="item"><i class="text-primary far fa-id-badge"></i>{{$selected_user->phone}}</span>
-                                                    <span class="item"><i class="text-primary fas fa-map-marker-alt"></i>{{$selected_user->city}}, {{$selected_user->country->name}}</span>
+                                                    <span class="item"><i class="text-primary fas fa-map-marker-alt"></i>{{ collect([$selected_user->city, $selected_user->country?->name])->filter()->join(", ") }}</span>
                                                 </div>
                                             </div>
                                         </div>

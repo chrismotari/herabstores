@@ -4,8 +4,8 @@ Legend: `[ ]` todo · `[~]` in progress · `[x]` done (with date) · `[-]` dropp
 
 ## Current focus
 
-**Phase 1 → task 1.4**: protect admin routes.
-Waiting on review (stacked, merge in order): `chore/prep-repo-for-claude` → `chore/ci-and-auth-tests` → `feat/phase1-factories-signup` → `feat/phase1-flow-tests-checkout`.
+**Phase 1 → task 1.6**: fix the stock status. Then 1.7, then decide 1.10.
+Waiting on review (stacked, merge in order): PRs #5 → #6 → #7 → #8 → #9.
 
 ## Goal
 
@@ -48,9 +48,9 @@ sharing one generated TypeScript client (`packages/shared`). Payments: **pay on 
 - [x] 1.2 Add factories for Product, Category, Cart, CartItem, Order, Favourite, Basket, DeliveryZone, County, Estate. *2026-11-15*: plus BasketProduct and a smoke test for each. Estate and BasketProduct got the `UUID` trait (inserts without an id failed). `Order` ids are now strings, not UUID objects.
 - [x] 1.3 Characterization tests for current web flows: guest cart add/remove, logged-in cart, checkout → order, favourites, baskets, product search.
   - Accept: each flow has at least one passing feature test that captures today's behaviour. *2026-11-15*: `tests/Feature/Flows/*`. Fixed along the way: removing from a logged-in cart crashed (`User::cartItems()` doesn't exist), and GET `/products/search` returned 404 (it was shadowed by `/products/{product?}`).
-- [ ] 1.4 **Security:** put `admin` middleware on admin-only resources (users, roles, permissions, products create/edit, categories, refs, estates, delivery_zones, counties, masscreate).
-  - Accept: tests show a customer gets 403 and an admin gets 200.
-- [ ] 1.5 **Security:** `Route::resource('orders')` is public, and `GET /orders` lists **every order with customer PII** to anyone. `GET /carts` (CartController@index) lists all carts publicly too. Require auth and scope orders to their owner (policy), with admin seeing all. Keep `orders.create`/`orders.store` open to guests (guest checkout).
+- [x] 1.4 **Security:** put `admin` middleware on admin-only resources (users, roles, permissions, products create/edit, categories, refs, estates, delivery_zones, counties, masscreate).
+  - Accept: tests show a customer gets 403 and an admin gets 200. *2026-11-15*: `routes/web.php` split into admin / auth / public groups. Contacts (customer PII) are admin-only except the public form. `tests/Feature/Security/AccessControlTest.php`.
+- [x] 1.5 **Security:** `Route::resource('orders')` is public, and `GET /orders` lists **every order with customer PII** to anyone. `GET /carts` (CartController@index) lists all carts publicly too. Require auth and scope orders to their owner (policy), with admin seeing all. Keep `orders.create`/`orders.store` open to guests (guest checkout). *2026-11-15*: `OrderPolicy` and `UserPolicy` (owner or admin, via `is_admin` for now; moves to spatie roles in Phase 3/4). The customer profile page also crashed for users without a country.
 - [ ] 1.6 Fix `Product::getIsInStockAttribute`, which always returns "In Stock" because of an early return.
 - [ ] 1.7 Remove the duplicate `Route::resource('users')` and dead code (`testRequest.php`, `layouts/app-old.blade.php`, unused Breeze `auth/register.blade.php`).
 - [x] 1.8 **Bug + security:** sign-up was broken (form sent `estate_id`, validation wanted `estate`), and POST `/register` used the admin `UserController@store`, which accepted `role_id`, so anyone could sign up with any role. *2026-11-15*: sign-up now goes to `RegisteredUserController@store` with `RegisterRequest` (fname, lname, phone, email, password only). Address is collected at checkout, and `users.address`/`city` are now nullable.
