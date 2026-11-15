@@ -14,7 +14,7 @@ class CountyFactory extends Factory
     {
         return [
             'name' => fake()->unique()->city(),
-            'code' => fake()->unique()->numberBetween(1, 9999),
+            'code' => fake()->unique()->numberBetween(1000, 99999), // 1-47 are Kenya's real counties (seeded by migration)
             'is_active' => true,
         ];
     }

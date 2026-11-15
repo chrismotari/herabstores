@@ -41,6 +41,19 @@ composer openapi                    # regenerate api/openapi.json after any API 
 
 Seeded logins: `admin@mail.com` / `password` (admin), `user@mail.com` / `password` (customer).
 
+## Commands (JS: repo root)
+
+```bash
+corepack enable --install-directory ~/.local/bin pnpm   # once, if `pnpm` isn't found
+pnpm install
+pnpm dev:web          # Next.js storefront on :3000 (needs the API on :8000)
+pnpm api:types        # regenerate packages/shared/src/schema.d.ts from api/openapi.json (CI checks it)
+pnpm typecheck && pnpm lint && pnpm build:web
+```
+
+- **Next.js 16 is newer than your training data.** Before writing Next code, read the relevant guide in `apps/web/node_modules/next/dist/docs/` (see `apps/web/AGENTS.md`). `cacheComponents` is on.
+- Call the API only through `@herabs/shared` (`createApiClient`), never with hand-written fetch URLs or types.
+
 ## Architecture (api/)
 
 - **Models**: `app/Models`. Most use UUID primary keys via `App\Traits\UUID`. Core: Product, Category, Basket (+BasketProduct), Cart (+CartItem), Order, Favourite, Offer/OfferType, Courier, DeliveryZone, County, Estate, Country, Ref, Store, User.

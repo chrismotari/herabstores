@@ -1,0 +1,43 @@
+name: web
+
+on:
+  pull_request:
+    paths: ['apps/**', 'packages/**', 'api/openapi.json', 'package.json', 'pnpm-lock.yaml', 'pnpm-workspace.yaml', '.github/workflows/web.yml']
+  push:
+    branches: [main]
+    paths: ['apps/**', 'packages/**', 'api/openapi.json', 'package.json', 'pnpm-lock.yaml', 'pnpm-workspace.yaml', '.github/workflows/web.yml']
+
+jobs:
+  check-and-build:
+    runs-on: ubuntu-latest
+    env:
+      COREPACK_ENABLE_DOWNLOAD_PROMPT: '0'
+      NEXT_PUBLIC_API_URL: http://localhost:8000/api/v1
+      NEXT_PUBLIC_SITE_URL: https://herabstores.example
+      # No API during CI builds: pages that need it render at request time.
+      API_URL: ''
+    steps:
+      - uses: actions/checkout@v4
+
+      - uses: actions/setup-node@v4
+        with:
+          node-version: 24
+
+      - run: corepack enable
+
+      - name: Cache pnpm store
+        uses: actions/cache@v4
+        with:
+          path: ~/.local/share/pnpm/store
+          key: pnpm-${{ hashFiles('pnpm-lock.yaml') }}
+
+      - run: pnpm install --frozen-lockfile
+
+      - name: API types are up to date
+        run: |
+          pnpm api:types
+          git diff --exit-code packages/shared/src/schema.d.ts || (echo "::error::Run 'pnpm api:types' and commit packages/shared/src/schema.d.ts" && exit 1)
+
+      - run: pnpm typecheck
+      - run: pnpm lint
+      - run: pnpm build:web

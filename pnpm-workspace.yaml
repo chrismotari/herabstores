@@ -1,0 +1,8 @@
+packages:
+  - apps/*
+  - packages/*
+
+# Packages allowed to run install scripts (from the Next.js scaffold)
+allowBuilds:
+  sharp: false
+  unrs-resolver: false

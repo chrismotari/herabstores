@@ -1,0 +1,22 @@
+{
+  "name": "@herabs/shared",
+  "version": "0.1.0",
+  "private": true,
+  "type": "module",
+  "description": "Typed client for the Herab Stores API (types generated from api/openapi.json)",
+  "exports": {
+    ".": "./src/index.ts"
+  },
+  "scripts": {
+    "generate": "openapi-typescript ../../api/openapi.json -o src/schema.d.ts",
+    "typecheck": "tsc --noEmit",
+    "lint": "true"
+  },
+  "dependencies": {
+    "openapi-fetch": "0.17.0"
+  },
+  "devDependencies": {
+    "openapi-typescript": "7.13.0",
+    "typescript": "^5"
+  }
+}

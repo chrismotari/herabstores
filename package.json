@@ -1,0 +1,15 @@
+{
+  "name": "herabstores",
+  "private": true,
+  "packageManager": "pnpm@12.21.0",
+  "engines": {
+    "node": ">=22"
+  },
+  "scripts": {
+    "dev:web": "pnpm --filter @herabs/web dev",
+    "build:web": "pnpm --filter @herabs/web build",
+    "api:types": "pnpm --filter @herabs/shared generate",
+    "lint": "pnpm -r lint",
+    "typecheck": "pnpm -r typecheck"
+  }
+}

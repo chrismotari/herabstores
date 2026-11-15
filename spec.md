@@ -4,7 +4,7 @@ Legend: `[ ]` todo · `[~]` in progress · `[x]` done (with date) · `[-]` dropp
 
 ## Current focus
 
-**Phase 5 → task 5.1**: monorepo + Next.js app (`apps/web`).
+**Phase 5 → task 5.3**: port the theme layout (header, nav, footer) to Next.js.
 
 ## Goal
 
@@ -24,7 +24,7 @@ sharing one generated TypeScript client (`packages/shared`). Payments: **pay on 
 | 2. Upgrade to Laravel 13 | done |
 | 3. REST API v1 | done |
 | 4. Filament admin | done |
-| 5. Next.js storefront | todo |
+| 5. Next.js storefront | in progress |
 | 6. React Native app | todo |
 | 7. Cut-over and cleanup | todo |
 
@@ -105,9 +105,9 @@ sharing one generated TypeScript client (`packages/shared`). Payments: **pay on 
 
 ## Phase 5: Next.js storefront (`apps/web`)
 
-- [ ] 5.1 Monorepo: pnpm workspaces at the root, `apps/web` (Next.js latest stable, TypeScript, App Router, Tailwind), `packages/shared`.
-- [ ] 5.2 `packages/shared`: generate a typed API client from `openapi.json` (e.g. `openapi-typescript` + `openapi-fetch`).
-- [ ] 5.3 Layout: header, nav, footer and the design system ported from the current theme. Use our own components and don't copy the theme's licensed JS.
+- [x] 5.1 Monorepo: pnpm workspaces at the root, `apps/web` (Next.js latest stable, TypeScript, App Router), `packages/shared`. *2026-11-15*: pnpm 12 (via corepack), Next.js 16.4.6 + React 19.3, `cacheComponents` on. **No Tailwind**: the owner chose to keep the current theme, so its CSS is reused. CI: `.github/workflows/web.yml` (types up to date, typecheck, lint, build).
+- [x] 5.2 `packages/shared`: generate a typed API client from `openapi.json` (e.g. `openapi-typescript` + `openapi-fetch`). *2026-11-15*: `createApiClient({ baseUrl, getAuthToken, getCartToken, credentials, fetch })` plus resource type aliases (`Product`, `Cart`, `Order`, ...). `pnpm api:types` regenerates the types.
+- [ ] 5.3 Layout: header, nav, footer and the design system ported from the current theme. Use our own components and don't copy the theme's licensed JS. Owner (2026-11-15): **keep the current design, with a little tidying.**
 - [ ] 5.4 SEO groundwork: `generateMetadata` defaults, `sitemap.ts`, `robots.ts`, Organization JSON-LD, canonical URLs.
 - [ ] 5.5 Pages (server-rendered, ISR): home (`index.blade.php`), shop (`shop.blade.php`), category, product detail (Product + Breadcrumb JSON-LD).
 - [ ] 5.6 Content pages: about-us, contact-us (+form), terms-and-conditions, faq (currently reuses contact-us; give it real content).
@@ -152,6 +152,7 @@ sharing one generated TypeScript client (`packages/shared`). Payments: **pay on 
 | 2026-11-15 | Delivery is priced **per delivery zone**. Estates don't carry a fee | One source of truth for fees. Matches the `orders.delivery_zone` column |
 | 2026-11-15 | Baskets are sold as one line at the basket's price and stock. Offers deferred | Baskets already have their own price and stock. Offers are a new feature |
 | 2026-11-15 | Admin access stays on `is_admin` + `is_active`; spatie roles/permissions are for finer-grained rights later | Switching every policy to roles now adds risk with no visible benefit |
+| 2026-11-15 | Storefront keeps the current theme (CSS reused, markup tidied); no Tailwind | Owner's choice; least visual change for customers |
 | 2026-11-15 | Sanctum: SPA cookies for web, tokens for mobile | First-party clients, no OAuth needed |
 | 2026-11-15 | Guest cart via `X-Cart-Token` instead of session | The API must be stateless for mobile |
 | 2026-11-15 | Work directly on `main` and commit at every stage | Owner's preference after Phase 1 |

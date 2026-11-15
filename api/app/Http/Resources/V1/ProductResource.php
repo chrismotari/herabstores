@@ -22,7 +22,7 @@ class ProductResource extends JsonResource
             /** "In Stock", "Few Items Left" or "Out of Stock". */
             'stock_status' => $this->is_in_stock,
             /** Maximum quantity that can be ordered right now. */
-            'available_quantity' => max(0, (int) $this->stock),
+            'available_quantity' => (int) max(0, (int) $this->stock),
             'image_url' => MediaUrl::for($this->image_url),
             'images' => $this->whenLoaded('images', fn () => $this->images->map(fn ($image) => MediaUrl::for($image->image_url))->values()),
             'category' => new CategoryResource($this->whenLoaded('category')),

@@ -2461,6 +2461,7 @@
                         ]
                     },
                     "available_quantity": {
+                        "type": "integer",
                         "description": "Maximum quantity that can be ordered right now."
                     },
                     "image_url": {
