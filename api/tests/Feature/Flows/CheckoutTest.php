@@ -179,3 +179,14 @@ test('order prices are taken from the product at checkout time', function () {
 
     expect((float) Order::sole()->total)->toBe(240.0);
 });
+
+test('marketing consent works for customers who gave no email', function () {
+    $product = Product::factory()->create();
+
+    $this->withSession(guestCartWith($product))
+        ->post(route('orders.store'), checkoutPayload(['email' => null, 'consented' => 'on']))
+        ->assertSessionHasNoErrors();
+
+    expect(Order::count())->toBe(1)
+        ->and(Contact::sole()->phone)->toBe('0711000000');
+});

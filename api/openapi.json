@@ -1390,6 +1390,50 @@
                 "security": []
             }
         },
+        "/contacts": {
+            "post": {
+                "operationId": "v1.contacts.store",
+                "summary": "Send a message through the contact form",
+                "tags": [
+                    "Contact"
+                ],
+                "requestBody": {
+                    "required": true,
+                    "content": {
+                        "application/json": {
+                            "schema": {
+                                "$ref": "#/components/schemas/ContactRequest"
+                            }
+                        }
+                    }
+                },
+                "responses": {
+                    "201": {
+                        "description": "",
+                        "content": {
+                            "application/json": {
+                                "schema": {
+                                    "type": "object",
+                                    "properties": {
+                                        "message": {
+                                            "type": "string",
+                                            "const": "Thanks! You'll hear from us soon."
+                                        }
+                                    },
+                                    "required": [
+                                        "message"
+                                    ]
+                                }
+                            }
+                        }
+                    },
+                    "422": {
+                        "$ref": "#/components/responses/ValidationException"
+                    }
+                },
+                "security": []
+            }
+        },
         "/products": {
             "get": {
                 "operationId": "v1.products.index",
@@ -1869,6 +1913,55 @@
                     "updated_at"
                 ],
                 "title": "CategoryResource"
+            },
+            "ContactRequest": {
+                "type": "object",
+                "properties": {
+                    "name": {
+                        "type": [
+                            "string",
+                            "null"
+                        ],
+                        "maxLength": 255
+                    },
+                    "email": {
+                        "type": "string",
+                        "format": "email",
+                        "maxLength": 255
+                    },
+                    "phone": {
+                        "type": [
+                            "string",
+                            "null"
+                        ],
+                        "maxLength": 20
+                    },
+                    "subject": {
+                        "type": [
+                            "string",
+                            "null"
+                        ],
+                        "maxLength": 255
+                    },
+                    "message": {
+                        "type": [
+                            "string",
+                            "null"
+                        ],
+                        "maxLength": 5000
+                    },
+                    "consented": {
+                        "type": [
+                            "boolean",
+                            "null"
+                        ],
+                        "description": "Agreed to receive marketing messages."
+                    }
+                },
+                "required": [
+                    "email"
+                ],
+                "title": "ContactRequest"
             },
             "DeliveryZoneResource": {
                 "type": "object",

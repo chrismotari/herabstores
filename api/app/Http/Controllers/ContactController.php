@@ -2,9 +2,9 @@
 
 namespace App\Http\Controllers;
 
+use App\Http\Requests\ContactRequest;
 use App\Models\Contact;
 use Illuminate\Http\Request;
-use Illuminate\Validation\ValidationException;
 
 class ContactController extends Controller
 {
@@ -27,22 +27,11 @@ class ContactController extends Controller
     /**
      * Store a newly created resource in storage.
      */
-    public function store(Request $request)
+    public function store(ContactRequest $request)
     {
-        try {
-            $request->validate([
-                'email' => ['required', 'email'],
-            ]);
-        } catch (ValidationException $e) {
-            return redirect()->back()->with('error', 'Invalid inputs.');
-        }
         Contact::create([
-            'email' => $request->email,
-            'name' => $request->name,
-            'phone' => $request->phone,
-            'consented' => $request->consented ? true : false,
-            'subject' => $request->subject,
-            'message' => $request->message,
+            ...$request->safe()->except('consented'),
+            'consented' => $request->boolean('consented'),
             'source' => 'Website',
         ]);
 

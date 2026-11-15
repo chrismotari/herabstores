@@ -6,6 +6,7 @@ use App\Http\Controllers\Api\V1\BasketController;
 use App\Http\Controllers\Api\V1\CartController;
 use App\Http\Controllers\Api\V1\CategoryController;
 use App\Http\Controllers\Api\V1\CheckoutController;
+use App\Http\Controllers\Api\V1\ContactController;
 use App\Http\Controllers\Api\V1\ProductController;
 use Illuminate\Support\Facades\Route;
 
@@ -43,6 +44,8 @@ Route::prefix('v1')->name('api.v1.')->group(function () {
     Route::get('delivery-zones', [CheckoutController::class, 'deliveryZones'])
         ->middleware('cache.headers:public;max_age=300;etag')->name('delivery-zones.index');
     Route::post('orders', [CheckoutController::class, 'placeOrder'])->middleware('throttle:10,1')->name('orders.store');
+
+    Route::post('contacts', [ContactController::class, 'store'])->middleware('throttle:5,1')->name('contacts.store');
 
     // Auth
     Route::prefix('auth')->name('auth.')->controller(AuthController::class)->group(function () {

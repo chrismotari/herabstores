@@ -4,7 +4,7 @@ Legend: `[ ]` todo · `[~]` in progress · `[x]` done (with date) · `[-]` dropp
 
 ## Current focus
 
-**Phase 3 → task 3.14**: contact form endpoint.
+**Phase 3 → task 3.15**: SEO support (sitemap feed + revalidation webhook).
 
 ## Goal
 
@@ -88,7 +88,7 @@ sharing one generated TypeScript client (`packages/shared`). Payments: **pay on 
 - [x] 3.11 Guest cart: `POST carts` returns a `cart_token`. Cart endpoints accept the `X-Cart-Token` header. The guest cart merges into the user's cart at login. *2026-11-15*: `/api/v1/cart` (GET, POST → 201 with a guest token, DELETE clears) and `/cart/items` (POST adds, PATCH `{quantity}` with 0 removing, DELETE). Items can only be changed through the cart that owns them (404 otherwise). Works for guests (`X-Cart-Token`), bearer tokens and SPA sessions. API login merges carts (3.8).
 - [x] 3.12 Checkout: `POST orders` (pay on delivery). Delivery locations: `GET counties`, `GET counties/{id}/estates`, `GET delivery-zones` (with fee). *2026-11-15*: `POST /api/v1/orders` (PlaceOrder, 201 + `OrderResource` with subtotal/delivery_fee/total, 10/min) and `GET /api/v1/delivery-zones`. Counties and estates aren't exposed, since pricing is per zone and checkout no longer asks for them.
 - [x] 3.13 Customer account: my orders (list, show, track), favourites (add/remove/list), profile update, addresses. *2026-11-15*: `/api/v1/me`: PATCH profile + default address (email change → unverified), PUT password (revokes other tokens), DELETE account, `orders` (own only; others' are 404), `favourites` (idempotent add/remove; unavailable products hidden). New `DeleteAccount` action, also used by the web profile page, which used to crash for users with orders. Orders are kept but unlinked. Tracking = order `status` + timestamps.
-- [ ] 3.14 Contact form `POST contacts`.
+- [x] 3.14 Contact form `POST contacts`. *2026-11-15*: `POST /api/v1/contacts` (5/min) with a shared `ContactRequest` (the web form now uses it too: only allowed fields are stored). Fixed: `contacts.email` was NOT NULL, so checkout consent from a customer without an email would have failed the whole order.
 - [ ] 3.15 SEO support: `GET seo/sitemap` (slugs + `updated_at` for products and categories), and a revalidation webhook that calls the Next.js `/api/revalidate` when a product or category is saved (queued, signed secret).
 
 ## Phase 4: Filament admin
