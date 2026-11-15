@@ -18,7 +18,6 @@ function admin(): User
 
 dataset('admin pages', [
     'dashboard' => '/dashboard',
-    'mass create' => '/masscreate',
     'customers' => '/users/customers',
     'users' => '/users',
     'create user' => '/users/create',

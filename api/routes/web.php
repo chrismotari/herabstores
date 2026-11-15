@@ -9,7 +9,6 @@ use App\Http\Controllers\CountyController;
 use App\Http\Controllers\DeliveryZoneController;
 use App\Http\Controllers\EstateController;
 use App\Http\Controllers\FavouriteController;
-use App\Http\Controllers\MassAddController;
 use App\Http\Controllers\OrderController;
 use App\Http\Controllers\PermissionController;
 use App\Http\Controllers\ProductController;
@@ -36,8 +35,6 @@ Route::middleware(['auth', 'admin'])->group(function () {
         return redirect('/dashboard');
     })->name('admin');
 
-    Route::get('/masscreate', [MassAddController::class, 'massAddProducts'])->name('masscreate');
-    Route::get('/products/massadd', [MassAddController::class, 'massAddProducts'])->name('products.massadd');
     Route::get('/users/customers', [UserController::class, 'customers'])->name('users.customers');
 
     Route::post('orders/dispatch', [OrderController::class, 'dispatch'])->name('orders.dispatch.save');

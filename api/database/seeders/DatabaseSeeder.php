@@ -71,5 +71,6 @@ class DatabaseSeeder extends Seeder
             'category_id' => Category::where('name', 'like', 'Test')->first()->id,
         ]);
 
+        $this->call(CatalogSeeder::class);
     }
 }
