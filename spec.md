@@ -4,7 +4,7 @@ Legend: `[ ]` todo · `[~]` in progress · `[x]` done (with date) · `[-]` dropp
 
 ## Current focus
 
-**Phase 4 → task 4.0**: upgrade spatie/laravel-permission, then install Filament.
+**Phase 4 → task 4.1**: install Filament at `/admin`.
 
 ## Goal
 
@@ -23,7 +23,7 @@ sharing one generated TypeScript client (`packages/shared`). Payments: **pay on 
 | 1. Safety net and security fixes | done |
 | 2. Upgrade to Laravel 13 | done |
 | 3. REST API v1 | done |
-| 4. Filament admin | todo |
+| 4. Filament admin | in progress |
 | 5. Next.js storefront | todo |
 | 6. React Native app | todo |
 | 7. Cut-over and cleanup | todo |
@@ -97,7 +97,7 @@ sharing one generated TypeScript client (`packages/shared`). Payments: **pay on 
 - [ ] 4.1 Install the latest Filament compatible with Laravel 13 at `/admin`. Access only for the admin role (`canAccessPanel`).
 - [ ] 4.2 Resources: Products (multi-image upload, fixes the README TODO; CSV import action), Categories, Baskets, Offers/OfferTypes.
 - [ ] 4.3 Resources: Orders (status workflow, dispatch to courier, tracking), Couriers, Customers.
-- [ ] 4.0 Upgrade spatie/laravel-permission 6 → 8 (read both upgrade guides; custom UUID `Role`/`Permission` models) before using it in Filament.
+- [x] 4.0 Upgrade spatie/laravel-permission 6 → 8 (read both upgrade guides; custom UUID `Role`/`Permission` models) before using it in Filament. *2026-11-15*: 8.5.0. No breaking changes affect us (no custom contracts, events, commands or middleware). Added the new config keys (`models.team`, `models.default_model`, `team_resolver`, `events_enabled`). Schema unchanged (ours uses UUIDs). Tests cover UUID roles and permissions. Also fixed: admin user creation always failed on Postgres (`dob` stored `strtotime()` output in a date column).
 - [ ] 4.4 Resources: Delivery zones, Counties, Estates, Refs, Users, Roles/Permissions (spatie plugin), Contacts inbox.
 - [ ] 4.5 Dashboard widgets: orders today, revenue, low stock.
 - [ ] 4.6 Remove the Blade admin (`layouts/backend`, admin views/routes, `public/backend` if unused).

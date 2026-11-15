@@ -68,7 +68,7 @@ class UserController extends Controller implements HasMiddleware
                 'alt_phone' => $request->alt_phone,
                 'email' => $request->email,
                 'alt_email' => $request->alt_email,
-                'dob' => strtotime($request->dob),
+                'dob' => $request->dob ?: null,
                 'password' => Hash::make($request->password),
                 'address' => $request->address,
                 'city' => $request->city,

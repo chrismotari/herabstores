@@ -1,5 +1,6 @@
 <?php
 
+use Spatie\Permission\DefaultTeamResolver;
 use Spatie\Permission\Models\Permission;
 use Spatie\Permission\Models\Role;
 
@@ -28,6 +29,17 @@ return [
          */
 
         'role' => Role::class,
+
+        /*
+         * Team model (teams feature is off).
+         */
+        'team' => null,
+
+        /*
+         * Model used to resolve raw IDs passed to HasModels sync/attach/detach.
+         * Null defaults to the guard's model.
+         */
+        'default_model' => null,
 
     ],
 
@@ -124,6 +136,16 @@ return [
      */
 
     'teams' => false,
+
+    /*
+     * The class to use to resolve the permissions team id.
+     */
+    'team_resolver' => DefaultTeamResolver::class,
+
+    /*
+     * Fire RoleAttachedEvent / PermissionAttachedEvent etc.
+     */
+    'events_enabled' => false,
 
     /*
      * Passport Client Credentials Grant
