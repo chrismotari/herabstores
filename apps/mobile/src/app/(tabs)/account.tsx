@@ -1,6 +1,6 @@
-import { Link } from 'expo-router';
+import { Link, type Href } from 'expo-router';
 import { useState } from 'react';
-import { Alert, Platform, ScrollView, StyleSheet, View } from 'react-native';
+import { Alert, Platform, Pressable, ScrollView, StyleSheet, View } from 'react-native';
 
 import { ScreenState } from '@/components/screen-state';
 import { ThemedText } from '@/components/themed-text';
@@ -63,6 +63,11 @@ export default function AccountScreen() {
               )}
             </ThemedView>
           )}
+          <View style={[styles.menu, { borderColor: colors.border }]}>
+            <MenuRow href="/account/orders" label="My orders" />
+            <MenuRow href="/account/favourites" label="Favourites" />
+            <MenuRow href="/account/profile" label="Profile and password" last />
+          </View>
           <Button title="Sign out" variant="outline" onPress={confirmLogout} />
         </>
       ) : (
@@ -85,7 +90,29 @@ export default function AccountScreen() {
   );
 }
 
+function MenuRow({ href, label, last }: { href: Href; label: string; last?: boolean }) {
+  const colors = useTheme();
+  return (
+    <Link href={href} asChild>
+      <Pressable
+        accessibilityRole="link"
+        style={StyleSheet.flatten([styles.menuRow, !last && { borderBottomWidth: StyleSheet.hairlineWidth, borderColor: colors.border }])}>
+        <ThemedText>{label}</ThemedText>
+        <ThemedText themeColor="textSecondary">›</ThemedText>
+      </Pressable>
+    </Link>
+  );
+}
+
 const styles = StyleSheet.create({
+  menu: { borderWidth: StyleSheet.hairlineWidth, borderRadius: Spacing.three, overflow: 'hidden' },
+  menuRow: {
+    flexDirection: 'row',
+    justifyContent: 'space-between',
+    alignItems: 'center',
+    paddingHorizontal: Spacing.three,
+    minHeight: 52,
+  },
   content: {
     padding: Spacing.four,
     gap: Spacing.three,

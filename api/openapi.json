@@ -139,20 +139,10 @@
             },
             "delete": {
                 "operationId": "v1.me.destroy",
-                "description": "Orders are kept for records but unlinked from the account.",
+                "description": "Orders are kept for records but unlinked from the account.\nSend `password` in the JSON body, not the query string (URLs end up in logs).\n(Scramble can't document a DELETE body, so it isn't in the generated types.)",
                 "summary": "Delete the account. Requires the password",
                 "tags": [
                     "Account"
-                ],
-                "parameters": [
-                    {
-                        "name": "password",
-                        "in": "query",
-                        "required": true,
-                        "schema": {
-                            "type": "string"
-                        }
-                    }
                 ],
                 "responses": {
                     "200": {
@@ -281,6 +271,19 @@
                 "summary": "My orders, newest first",
                 "tags": [
                     "Account"
+                ],
+                "parameters": [
+                    {
+                        "name": "page",
+                        "in": "query",
+                        "schema": {
+                            "type": [
+                                "integer",
+                                "null"
+                            ],
+                            "minimum": 1
+                        }
+                    }
                 ],
                 "responses": {
                     "200": {
@@ -431,6 +434,9 @@
                                 }
                             }
                         }
+                    },
+                    "422": {
+                        "$ref": "#/components/responses/ValidationException"
                     },
                     "401": {
                         "$ref": "#/components/responses/AuthenticationException"

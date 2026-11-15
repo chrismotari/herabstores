@@ -10,6 +10,7 @@ use App\Http\Resources\V1\UserResource;
 use App\Models\Favourite;
 use App\Models\Order;
 use App\Models\Product;
+use Dedoc\Scramble\Attributes\IgnoreParam;
 use Illuminate\Http\JsonResponse;
 use Illuminate\Http\Request;
 use Illuminate\Http\Resources\Json\AnonymousResourceCollection;
@@ -75,7 +76,10 @@ class AccountController extends Controller
      * Delete the account. Requires the password.
      *
      * Orders are kept for records but unlinked from the account.
+     * Send `password` in the JSON body, not the query string (URLs end up in logs).
+     * (Scramble can't document a DELETE body, so it isn't in the generated types.)
      */
+    #[IgnoreParam('password', in: 'query')]
     public function destroy(Request $request, DeleteAccount $delete): JsonResponse
     {
         $request->validate(['password' => ['required', 'current_password:sanctum']]);
@@ -95,6 +99,8 @@ class AccountController extends Controller
      */
     public function orders(Request $request): AnonymousResourceCollection
     {
+        $request->validate(['page' => ['nullable', 'integer', 'min:1']]);
+
         return OrderResource::collection(
             $request->user()->orders()->with('deliveryZone')->latest()->paginate(20)
         );

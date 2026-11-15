@@ -40,7 +40,13 @@ export default function ConfirmationScreen() {
       {order && <OrderSummary order={order} />}
 
       <View style={styles.actions}>
-        {user && <Button title="View my orders" variant="outline" onPress={() => router.dismissTo('/account')} />}
+        {user && order && (
+          <Button
+            title="Track this order"
+            variant="outline"
+            onPress={() => router.replace({ pathname: '/account/orders/[id]', params: { id: order.id } })}
+          />
+        )}
         <Button title="Continue shopping" onPress={() => router.dismissTo('/')} />
       </View>
     </FormScreen>

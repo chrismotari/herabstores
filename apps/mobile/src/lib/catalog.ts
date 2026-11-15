@@ -1,4 +1,4 @@
-import type { Basket, Category, Product } from '@herabs/shared';
+import type { Basket, Category, DeliveryZone, Product } from '@herabs/shared';
 import { infiniteQueryOptions, queryOptions } from '@tanstack/react-query';
 
 import { api, unwrap } from './api';
@@ -59,3 +59,9 @@ export const basketQuery = (slug: string) =>
     queryFn: async (): Promise<Basket> =>
       unwrap(await api.GET('/baskets/{slug}', { params: { path: { slug } } })).data,
   });
+
+export const zonesQuery = queryOptions({
+  queryKey: ['delivery-zones'],
+  queryFn: async (): Promise<DeliveryZone[]> => unwrap(await api.GET('/delivery-zones')).data,
+  staleTime: 60 * 60_000,
+});

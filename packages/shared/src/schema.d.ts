@@ -34,6 +34,8 @@ export interface paths {
         /**
          * Delete the account. Requires the password
          * @description Orders are kept for records but unlinked from the account.
+         *     Send `password` in the JSON body, not the query string (URLs end up in logs).
+         *     (Scramble can't document a DELETE body, so it isn't in the generated types.)
          */
         delete: operations["v1.me.destroy"];
         options?: never;
@@ -799,9 +801,7 @@ export interface operations {
     };
     "v1.me.destroy": {
         parameters: {
-            query: {
-                password: string;
-            };
+            query?: never;
             header?: never;
             path?: never;
             cookie?: never;
@@ -896,7 +896,9 @@ export interface operations {
     };
     "v1.me.orders.index": {
         parameters: {
-            query?: never;
+            query?: {
+                page?: number | null;
+            };
             header?: never;
             path?: never;
             cookie?: never;
@@ -940,6 +942,7 @@ export interface operations {
                 };
             };
             401: components["responses"]["AuthenticationException"];
+            422: components["responses"]["ValidationException"];
         };
     };
     "v1.me.orders.show": {

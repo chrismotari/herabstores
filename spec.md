@@ -4,7 +4,7 @@ Legend: `[ ]` todo · `[~]` in progress · `[x]` done (with date) · `[-]` dropp
 
 ## Current focus
 
-**Phase 6 → task 6.5**: mobile account (orders and tracking, favourites, profile). Open from 5.11: re-run Lighthouse on catalog pages once real product photos are uploaded.
+**Phase 6 → task 6.6**: deep links, app icon/splash, EAS build config. Open from 5.11: re-run Lighthouse on catalog pages once real product photos are uploaded.
 
 ## Goal
 
@@ -153,7 +153,7 @@ sharing one generated TypeScript client (`packages/shared`). Payments: **pay on 
 - [x] 6.2 Auth with a Sanctum token stored in `expo-secure-store`. *2026-11-15*: `src/lib/session.tsx` (TanStack Query `['me']`; a 401 drops the stored token). Sign-in/register modals send `device_name` and the guest cart token (merged, then cleared); forgot-password screen; Account tab with sign out and resend-verification. No API changes. Checked in Expo web: bad password error, token persists across reload, sign out revokes it.
 - [x] 6.3 Catalog: home, categories, product list/search, product detail. *2026-11-15*: Home (search, categories, baskets, newest), Shop tab (debounced search, category and sort chips, infinite two-column grid), `/categories/{slug}`, `/products/{slug}` (image pager, stock badge), `/baskets/{slug}` (contents link to products). Same paths as the website, ready for deep links (6.6). Query definitions in `src/lib/catalog.ts`. API: `GET /products` now documents `page` (the web client no longer casts its query). Gotcha: `Link asChild` passes styles through a Slot that rejects style arrays; size linked cards with a wrapping View.
 - [x] 6.4 Cart and checkout (pay on delivery), with a guest cart token persisted locally. *2026-11-15*: `src/lib/cart.ts` (TanStack Query `['cart']`; the guest token from each cart response goes to the secure store). Add to cart with a quantity stepper on product and basket screens; Cart tab with badge, quantity/remove, discount codes; checkout (prefilled for signed-in customers, delivery-zone picker with fees, terms opens the website) and a confirmation screen. Checked in Expo web as a guest: add, WELCOME10, terms error, order placed, cart emptied (test order canceled, test carts removed). `EXPO_PUBLIC_SITE_URL` added.
-- [ ] 6.5 Account: orders and tracking, favourites, profile.
+- [x] 6.5 Account: orders and tracking, favourites, profile. *2026-11-15*: Account menu; `/account/orders` (infinite list) and `/account/orders/{id}` (Received → On the way → Delivered timeline, or canceled); favourites screen plus a save toggle on products (signed-out taps go to sign in); profile (details, default delivery zone, change password, delete account). Confirmation offers "Track this order". Fixed: checkout opened cold (before the session loaded) wasn't prefilled. API: `GET /me/orders` documents `page`; `DELETE /me` no longer documents the password as a query param (send it in the body; Scramble can't document DELETE bodies). Checked in Expo web as the seed customer; test order #62450 canceled, test tokens removed.
 - [ ] 6.6 Deep links (`/products/{slug}` opens the app), app icons/splash, EAS build config.
 
 ## Phase 7: Cut-over and cleanup

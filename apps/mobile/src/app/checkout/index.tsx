@@ -1,12 +1,13 @@
-import type { DeliveryZone, Order, PlaceOrderInput } from '@herabs/shared';
+import type { Cart, DeliveryZone, Order, PlaceOrderInput, User } from '@herabs/shared';
 import { formatPrice } from '@herabs/shared';
 import { useQuery, useQueryClient } from '@tanstack/react-query';
 import { router } from 'expo-router';
 import { openBrowserAsync } from 'expo-web-browser';
 import { useState } from 'react';
-import { Pressable, StyleSheet, View } from 'react-native';
+import { StyleSheet, View } from 'react-native';
 
 import { Totals } from '@/components/cart/totals';
+import { ZonePicker } from '@/components/order/zone-picker';
 import { ScreenState } from '@/components/screen-state';
 import { ThemedText } from '@/components/themed-text';
 import { Button } from '@/components/ui/button';
@@ -14,9 +15,9 @@ import { Checkbox } from '@/components/ui/checkbox';
 import { FormScreen } from '@/components/ui/form-screen';
 import { TextField } from '@/components/ui/text-field';
 import { Spacing } from '@/constants/theme';
-import { useTheme } from '@/hooks/use-theme';
-import { api, unwrap } from '@/lib/api';
+import { api } from '@/lib/api';
 import { cartQuery, placedOrderKey, useCart } from '@/lib/cart';
+import { zonesQuery } from '@/lib/catalog';
 import { SITE_URL } from '@/lib/config';
 import { useSession, type FieldErrors } from '@/lib/session';
 
@@ -26,17 +27,28 @@ type Fields = Pick<PlaceOrderInput, 'fname' | 'lname' | 'phone' | 'address' | 'c
   message: string;
 };
 
-const zonesQuery = {
-  queryKey: ['delivery-zones'],
-  queryFn: async (): Promise<DeliveryZone[]> => unwrap(await api.GET('/delivery-zones')).data,
-};
-
 export default function CheckoutScreen() {
-  const colors = useTheme();
-  const queryClient = useQueryClient();
-  const { user } = useSession();
+  const { user, loading } = useSession();
   const cart = useCart();
   const zones = useQuery(zonesQuery);
+
+  if (loading || !cart.data || !zones.data) {
+    return <ScreenState error={cart.error ?? zones.error} onRetry={() => void (cart.refetch(), zones.refetch())} />;
+  }
+  if (cart.data.items.length === 0) {
+    return (
+      <FormScreen>
+        <ThemedText themeColor="textSecondary">Your cart is empty.</ThemedText>
+        <Button title="Start shopping" onPress={() => router.dismissTo('/shop')} />
+      </FormScreen>
+    );
+  }
+  // Rendered once the session is known, so the form starts prefilled.
+  return <CheckoutForm cart={cart.data} zones={zones.data} user={user} />;
+}
+
+function CheckoutForm({ cart: c, zones, user }: { cart: Cart; zones: DeliveryZone[]; user: User | null }) {
+  const queryClient = useQueryClient();
 
   const [fields, setFields] = useState<Fields>({
     fname: user?.fname ?? '',
@@ -54,22 +66,8 @@ export default function CheckoutScreen() {
   const [busy, setBusy] = useState(false);
   const [errors, setErrors] = useState<FieldErrors>({});
 
-  if (!cart.data || !zones.data) {
-    return <ScreenState error={cart.error ?? zones.error} onRetry={() => void (cart.refetch(), zones.refetch())} />;
-  }
-
-  const c = cart.data;
-  if (c.items.length === 0) {
-    return (
-      <FormScreen>
-        <ThemedText themeColor="textSecondary">Your cart is empty.</ThemedText>
-        <Button title="Start shopping" onPress={() => router.dismissTo('/shop')} />
-      </FormScreen>
-    );
-  }
-
-  const zoneId = zoneChoice ?? user?.delivery_zone_id ?? (zones.data.length === 1 ? zones.data[0].id : '');
-  const zone = zones.data.find((z) => z.id === zoneId);
+  const zoneId = zoneChoice ?? user?.delivery_zone_id ?? (zones.length === 1 ? zones[0].id : '');
+  const zone = zones.find((z) => z.id === zoneId);
   const discount = c.discount && !c.discount.error ? c.discount.amount : 0;
 
   const field = (name: keyof Fields) => ({
@@ -102,9 +100,10 @@ export default function CheckoutScreen() {
     if (data) {
       const order: Order = data.data;
       queryClient.setQueryData(placedOrderKey(order.order_number), order);
-      await queryClient.invalidateQueries({ queryKey: cartQuery.queryKey });
-      await queryClient.invalidateQueries({ queryKey: ['products'] }); // stock changed
       router.replace({ pathname: '/checkout/confirmation', params: { order: order.order_number } });
+      void queryClient.invalidateQueries({ queryKey: cartQuery.queryKey });
+      void queryClient.invalidateQueries({ queryKey: ['products'] }); // stock changed
+      void queryClient.invalidateQueries({ queryKey: ['account', 'orders'] });
       return;
     }
     const body = error as { errors?: FieldErrors; message?: string } | undefined;
@@ -141,38 +140,12 @@ export default function CheckoutScreen() {
       <ThemedText type="smallBold" style={styles.heading}>
         Delivery area
       </ThemedText>
-      <View style={styles.zones} accessibilityRole="radiogroup">
-        {zones.data.map((z) => {
-          const selected = z.id === zoneId;
-          return (
-            <Pressable
-              key={z.id}
-              accessibilityRole="radio"
-              accessibilityState={{ checked: selected }}
-              onPress={() => setZoneChoice(z.id)}
-              style={StyleSheet.flatten([
-                styles.zone,
-                { borderColor: selected ? colors.primary : colors.border },
-                selected && { backgroundColor: colors.backgroundSelected },
-              ])}>
-              <View style={styles.flex}>
-                <ThemedText type="smallBold">{z.name}</ThemedText>
-                {!!z.description && (
-                  <ThemedText type="small" themeColor="textSecondary">
-                    {z.description}
-                  </ThemedText>
-                )}
-              </View>
-              <ThemedText type="smallBold">{formatPrice(z.delivery_fee)}</ThemedText>
-            </Pressable>
-          );
-        })}
-      </View>
-      {errors.delivery_zone_id && (
-        <ThemedText type="small" themeColor="danger">
-          {errors.delivery_zone_id[0]}
-        </ThemedText>
-      )}
+      <ZonePicker
+        zones={zones}
+        value={zoneId}
+        onChange={setZoneChoice}
+        error={errors.delivery_zone_id?.[0]}
+      />
 
       <TextField
         label="Notes for the rider (optional)"
@@ -237,15 +210,6 @@ export default function CheckoutScreen() {
 
 const styles = StyleSheet.create({
   heading: { textTransform: 'uppercase', letterSpacing: 1, marginTop: Spacing.two },
-  zones: { gap: Spacing.two },
-  zone: {
-    flexDirection: 'row',
-    alignItems: 'center',
-    gap: Spacing.three,
-    borderWidth: 1,
-    borderRadius: Spacing.two,
-    padding: Spacing.three,
-  },
   flex: { flex: 1 },
   summaryLine: { flexDirection: 'row', gap: Spacing.three },
 });

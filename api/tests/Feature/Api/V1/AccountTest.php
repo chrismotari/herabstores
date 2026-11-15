@@ -72,6 +72,9 @@ test('lists only my orders, newest first', function () {
         ->assertJsonCount(2, 'data')
         ->assertJsonPath('data.0.id', $new->id)
         ->assertJsonPath('data.1.id', $old->id);
+
+    $this->getJson('/api/v1/me/orders?page=2')->assertOk()->assertJsonCount(0, 'data');
+    $this->getJson('/api/v1/me/orders?page=x')->assertJsonValidationErrorFor('page');
 });
 
 test('shows my order; someone else\'s is a 404', function () {

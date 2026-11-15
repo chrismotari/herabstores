@@ -4,6 +4,7 @@ import { Link, Stack, useLocalSearchParams } from 'expo-router';
 import { ScrollView, StyleSheet, useWindowDimensions, View } from 'react-native';
 
 import { AddToCart } from '@/components/cart/add-to-cart';
+import { FavouriteButton } from '@/components/catalog/favourite-button';
 import { DetailScroll } from '@/components/catalog/detail-scroll';
 import { ProductImage } from '@/components/catalog/product-image';
 import { StockBadge } from '@/components/catalog/stock-badge';
@@ -54,6 +55,7 @@ export default function ProductScreen() {
       </View>
 
       <AddToCart productId={p.id} maxQuantity={p.available_quantity} />
+      <FavouriteButton productId={p.id} />
 
       {!!p.description && <ThemedText themeColor="textSecondary">{p.description}</ThemedText>}
 

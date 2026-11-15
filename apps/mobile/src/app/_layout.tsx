@@ -28,6 +28,10 @@ export default function RootLayout() {
             <Stack.Screen name="categories/[slug]" options={{ title: '' }} />
             <Stack.Screen name="baskets/[slug]" options={{ title: 'Basket' }} />
             <Stack.Screen name="checkout/index" options={{ title: 'Checkout' }} />
+            <Stack.Screen name="account/orders/index" options={{ title: 'My orders' }} />
+            <Stack.Screen name="account/orders/[id]" options={{ title: 'Order' }} />
+            <Stack.Screen name="account/favourites" options={{ title: 'Favourites' }} />
+            <Stack.Screen name="account/profile" options={{ title: 'Profile' }} />
             <Stack.Screen
               name="checkout/confirmation"
               options={{ title: 'Order placed', headerBackVisible: false, gestureEnabled: false }}

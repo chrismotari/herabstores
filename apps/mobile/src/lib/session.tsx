@@ -25,6 +25,9 @@ type SessionValue = {
   login: (email: string, password: string) => Promise<AuthResult>;
   register: (input: RegisterInput) => Promise<AuthResult>;
   logout: () => Promise<void>;
+  /** Forget the token locally (the account was deleted). */
+  forget: () => Promise<void>;
+  setUser: (user: User) => void;
 };
 
 const SessionContext = createContext<SessionValue | null>(null);
@@ -80,6 +83,13 @@ export function SessionProvider({ children }: { children: ReactNode }) {
     [queryClient],
   );
 
+  const forget = useCallback(async () => {
+    await storage.set(AUTH_TOKEN_KEY, null);
+    queryClient.setQueryData(ME_KEY, null);
+    queryClient.removeQueries({ queryKey: ['account'] });
+    await queryClient.invalidateQueries({ queryKey: ['cart'] });
+  }, [queryClient]);
+
   const value = useMemo<SessionValue>(
     () => ({
       user: me.data ?? null,
@@ -102,13 +112,12 @@ export function SessionProvider({ children }: { children: ReactNode }) {
       },
       logout: async () => {
         await api.POST('/auth/logout').catch(() => undefined); // sign out locally even if offline
-        await storage.set(AUTH_TOKEN_KEY, null);
-        queryClient.setQueryData(ME_KEY, null);
-        queryClient.removeQueries({ queryKey: ['account'] });
-        await queryClient.invalidateQueries({ queryKey: ['cart'] });
+        await forget();
       },
+      forget,
+      setUser: (user) => queryClient.setQueryData(ME_KEY, user),
     }),
-    [me.data, me.isPending, signedIn, queryClient],
+    [me.data, me.isPending, signedIn, forget, queryClient],
   );
 
   return <SessionContext value={value}>{children}</SessionContext>;
