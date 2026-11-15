@@ -63,7 +63,7 @@ class AppServiceProvider extends ServiceProvider
         });
         View::composer('orders.create', function ($view) {
             $view->with([
-                'delivery_zones' => DeliveryZone::all(),
+                'delivery_zones' => DeliveryZone::where('is_active', true)->orderBy('name')->get(),
             ]);
         });
 

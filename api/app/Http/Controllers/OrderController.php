@@ -6,7 +6,6 @@ use App\Http\Requests\PlaceOrderRequest;
 use App\Models\Contact;
 use App\Models\Country;
 use App\Models\DeliveryZone;
-use App\Models\Estate;
 use App\Models\Order;
 use App\Models\Ref;
 use App\Services\CartService;
@@ -52,7 +51,6 @@ class OrderController extends Controller
         return view('orders.create', [
             'selected_user' => Auth::user(),
             'cart' => auth()->check() ? auth()->user()->cart : $cartService->getGuestCart(),
-            'estates' => Estate::all(),
             'refs' => Ref::all(),
         ]);
     }
@@ -73,10 +71,9 @@ class OrderController extends Controller
             return redirect()->back();
         }
 
+        // Delivery is priced per zone (see spec decision log).
         $zone = DeliveryZone::findOrFail($data['delivery_zone_id']);
-        $estate = isset($data['estate_id']) ? Estate::find($data['estate_id']) : null;
-        // The checkout page shows the estate's fee; fall back to the zone's fee.
-        $shippingFee = $estate?->delivery_fees ?? $zone->delivery_fees;
+        $shippingFee = $zone->delivery_fees;
 
         $order = DB::transaction(function () use ($data, $user, $cart, $cartItems, $zone, $shippingFee) {
             $order = Order::create([

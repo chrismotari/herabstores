@@ -2,7 +2,6 @@
 
 use App\Models\Contact;
 use App\Models\DeliveryZone;
-use App\Models\Estate;
 use App\Models\Order;
 use App\Models\Product;
 use App\Models\User;
@@ -56,14 +55,38 @@ test('guest can place a pay-on-delivery order', function () {
         ->and(session('cart'))->toBeNull();
 });
 
-test('estate delivery fee takes precedence over the zone fee', function () {
+test('delivery fee comes from the chosen zone', function () {
     $product = Product::factory()->create();
-    $estate = Estate::factory()->create(['delivery_fees' => 350]);
+    $zone = DeliveryZone::factory()->create(['delivery_fees' => 350]);
 
     $this->withSession(guestCartWith($product))
-        ->post(route('orders.store'), checkoutPayload(['estate_id' => $estate->id]));
+        ->post(route('orders.store'), checkoutPayload(['delivery_zone_id' => $zone->id]));
 
     expect((float) Order::sole()->shipping_fee)->toBe(350.0);
+});
+
+test('inactive delivery zones are rejected', function () {
+    $product = Product::factory()->create();
+    $zone = DeliveryZone::factory()->create(['is_active' => false]);
+
+    $this->withSession(guestCartWith($product))
+        ->post(route('orders.store'), checkoutPayload(['delivery_zone_id' => $zone->id]))
+        ->assertSessionHasErrors('delivery_zone_id');
+
+    expect(Order::count())->toBe(0);
+});
+
+test('checkout page lists only active zones with their fee', function () {
+    $product = Product::factory()->create();
+    DeliveryZone::factory()->create(['name' => 'Westlands', 'delivery_fees' => 250]);
+    DeliveryZone::factory()->create(['name' => 'Closed Zone', 'is_active' => false]);
+
+    $this->withSession(guestCartWith($product))
+        ->get(route('orders.create'))
+        ->assertSee('Westlands')
+        ->assertSee('data-fee="250.00"', false)
+        ->assertDontSee('Closed Zone')
+        ->assertDontSee('name="estate_id"', false);
 });
 
 test('logged-in checkout empties the cart and saves the first address', function () {

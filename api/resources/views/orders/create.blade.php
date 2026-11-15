@@ -116,20 +116,6 @@
                                             <x-input-error :messages="$errors->get('city')" class="mt-2 text-danger" />
                                         </div>
                                         <div class="col-md-4 col-sm-12 mb-4">
-                                            <label class="form-label">Estate<span class="text-danger scale5 ms-2">*</span></label>
-                                            <select id="select_delivery_zone" required class="nice-select default-select wide form-control" name="estate_id">
-                                                <option value="" disabled {{ old('estate_id', $selected_user->estate_id ?? null) === null ? 'selected' : '' }}>Choose...</option>
-                                                @forelse($estates as $estate)
-                                                <option value="{{ $estate->id }}" data-fee="{{ $estate->delivery_fees }}" data-destination="{{ $estate->name }}" {{ old('estate_id', $selected_user->estate_id ?? null) == $estate->id ? 'selected' : '' }}>
-                                                    {{ $estate->name }}
-                                                </option>
-                                                @empty
-                                                <option disabled>No estates available</option>
-                                                @endforelse
-                                            </select>
-                                            <x-input-error :messages="$errors->get('estate_id')" class="mt-2 text-danger" />
-                                        </div>
-                                        <div class="col-md-4 col-sm-12 mb-4">
                                             <label class="form-label">Delivery Zone<span class="text-danger scale5 ms-2">*</span></label>
                                             <select id="select_delivery_zone" required class="nice-select default-select wide form-control" name="delivery_zone_id">
                                                 <option value="" disabled {{ old('delivery_zone_id', $selected_user->delivery_zone_id ?? null) === null ? 'selected' : '' }}>Choose...</option>
