@@ -4,8 +4,8 @@ Legend: `[ ]` todo · `[~]` in progress · `[x]` done (with date) · `[-]` dropp
 
 ## Current focus
 
-**Phase 1 → task 1.2**: add factories for the core models.
-Waiting on review: PR for Phase 0 (`chore/prep-repo-for-claude`) and PR for 0.6 + 1.1 (`chore/ci-and-auth-tests`).
+**Phase 1 → task 1.3**: characterization tests (expect checkout to fail, see 1.9).
+Waiting on review (stacked, merge in order): `chore/prep-repo-for-claude` → `chore/ci-and-auth-tests` → `feat/phase1-factories-signup`.
 
 ## Goal
 
@@ -37,7 +37,7 @@ sharing one generated TypeScript client (`packages/shared`). Payments: **pay on 
 - [x] 0.2 Add `CLAUDE.md` and `spec.md` at repo root. *2026-11-15*
 - [x] 0.3 Make tests use in-memory SQLite (`api/phpunit.xml`). They were wiping the dev DB. *2026-11-15*
 - [x] 0.4 Record the test baseline: **4 passed, 21 failed** (Breeze tests don't fill required `users.fname`). *2026-11-15*
-- [~] 0.5 Open a PR for Phase 0 and merge it. Branch pushed, PR to be opened on GitHub (`gh` isn't installed locally).
+- [~] 0.5 Open a PR for Phase 0 and merge it. Branch pushed. PR waiting on `gh auth login`.
 - [x] 0.6 Add a GitHub Actions CI workflow for `api/` that runs Pint (`--test`) and Pest.
   - Accept: CI runs on PRs. *2026-11-15*: `.github/workflows/api.yml`. Pint was applied to all of `api/` in one style-only commit.
 
@@ -45,15 +45,16 @@ sharing one generated TypeScript client (`packages/shared`). Payments: **pay on 
 
 - [x] 1.1 Fix the Breeze auth/profile tests to match the custom `users` schema (fname/lname/phone/country_id). Update `UserFactory`.
   - Accept: `./vendor/bin/pest` passes. *2026-11-15*: 25/25. Also fixed: registration redirected new customers to the admin-only dashboard (403), and profile update dropped the non-existent `name` field.
-- [ ] 1.2 Add factories for Product, Category, Cart, CartItem, Order, Favourite, Basket, DeliveryZone, County, Estate.
+- [x] 1.2 Add factories for Product, Category, Cart, CartItem, Order, Favourite, Basket, DeliveryZone, County, Estate. *2026-11-15*: plus BasketProduct and a smoke test for each. Estate and BasketProduct got the `UUID` trait (inserts without an id failed). `Order` ids are now strings, not UUID objects.
 - [ ] 1.3 Characterization tests for current web flows: guest cart add/remove, logged-in cart, checkout → order, favourites, baskets, product search.
   - Accept: each flow has at least one passing feature test that captures today's behaviour.
 - [ ] 1.4 **Security:** put `admin` middleware on admin-only resources (users, roles, permissions, products create/edit, categories, refs, estates, delivery_zones, counties, masscreate).
   - Accept: tests show a customer gets 403 and an admin gets 200.
 - [ ] 1.5 **Security:** `Route::resource('orders')` is public. Require auth and scope orders to their owner (policy), with admin seeing all.
 - [ ] 1.6 Fix `Product::getIsInStockAttribute`, which always returns "In Stock" because of an early return.
-- [ ] 1.8 **Bug:** the Blade register form (`auth/register.blade.php`) only sends name/email/password, but `UserRequest` requires fname, lname, phone, address, city, estate and country_id, so nobody can sign up on the website. Fix the form, or relax the rules to what checkout really needs. Also: `estate` is validated as `max:10` and never saved.
-- [ ] 1.7 Remove the duplicate `Route::resource('users')` and dead code (`testRequest.php`, `layouts/app-old.blade.php`).
+- [ ] 1.7 Remove the duplicate `Route::resource('users')` and dead code (`testRequest.php`, `layouts/app-old.blade.php`, unused Breeze `auth/register.blade.php`).
+- [x] 1.8 **Bug + security:** sign-up was broken (form sent `estate_id`, validation wanted `estate`), and POST `/register` used the admin `UserController@store`, which accepted `role_id`, so anyone could sign up with any role. *2026-11-15*: sign-up now goes to `RegisteredUserController@store` with `RegisterRequest` (fname, lname, phone, email, password only). Address is collected at checkout, and `users.address`/`city` are now nullable.
+- [ ] 1.9 **Bug:** checkout (`OrderController@store`) can't work. It passes `fname`/`lname`/`shipping_fees`, which aren't in `Order::$fillable` (that has `first_name`/`last_name`; the column is `shipping_fee`), never sets the required `delivery_zone` column, and reads `estate_id`, but `orders.estate_id` is commented out of the migration. Fix it alongside the 1.3 checkout test. It should also save the delivery address to the user when they have none (decision: address collected at checkout).
 
 ## Phase 2: Upgrade to Laravel 13
 
@@ -138,6 +139,7 @@ sharing one generated TypeScript client (`packages/shared`). Payments: **pay on 
 | 2026-11-15 | Admin moves to **Filament**, not Next.js | Admin needs no SEO, and Filament is far less work |
 | 2026-11-15 | Monorepo: Laravel in `api/`, JS apps in `apps/*`, shared code in `packages/*` | Clean boundaries, one repo, shared TS client |
 | 2026-11-15 | **Pay on delivery** only for v1 | No payment integration exists. M-Pesa etc. can come later as a new phase |
+| 2026-11-15 | Sign-up asks only name, phone, email and password. Address is collected at checkout | Less friction at sign-up |
 | 2026-11-15 | Sanctum: SPA cookies for web, tokens for mobile | First-party clients, no OAuth needed |
 | 2026-11-15 | Guest cart via `X-Cart-Token` instead of session | The API must be stateless for mobile |
 | 2026-11-15 | Upgrade Laravel 11 → 12 → 13 one major at a time, after tests exist | Lower risk, and failures are easy to attribute |
