@@ -39,6 +39,8 @@ return [
     'storefront' => [
         'url' => env('FRONTEND_URL'),
         'revalidate_secret' => env('STOREFRONT_REVALIDATE_SECRET'),
+        // Shared with the Next.js server (API_SERVER_KEY): its requests skip per-IP rate limits.
+        'server_key' => env('STOREFRONT_SERVER_KEY'),
     ],
 
 ];

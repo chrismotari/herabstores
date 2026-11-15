@@ -37,6 +37,7 @@ export function Confirmation() {
                 </li>
               ))}
               <li className="sub-total"><span>Subtotal</span> {formatPrice(order.subtotal)}</li>
+              {order.discount > 0 && <li><span>Discount ({order.discount_code})</span> -{formatPrice(order.discount)}</li>}
               <li><span>Delivery</span> {formatPrice(order.delivery_fee)}</li>
               <li className="cart-total-amount"><span>Total due on delivery</span> <span className="amount">{formatPrice(order.total)}</span></li>
             </ul>

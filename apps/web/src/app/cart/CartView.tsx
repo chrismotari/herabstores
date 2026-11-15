@@ -5,6 +5,7 @@ import Link from "next/link";
 import { useState } from "react";
 import { useCart } from "@/components/cart/CartProvider";
 import { CartLineImage, lineHref, lineMax, lineName } from "@/components/cart/CartLineImage";
+import { DiscountForm } from "@/components/cart/DiscountForm";
 
 export function CartView() {
   const { cart, loading } = useCart();
@@ -48,12 +49,19 @@ export function CartView() {
         <div className="shop-cart-total">
           <h2 className="title h3">Cart totals</h2>
           <div className="shop-cart-widget">
+            <DiscountForm />
+            {/* The theme styles this list as `.shop-cart-widget form ul`; the form submits to checkout. */}
+            <form action="/checkout" method="get">
             <ul>
               <li className="sub-total"><span>Subtotal</span> {formatPrice(cart?.subtotal ?? 0)}</li>
+              {cart?.discount && cart.discount.amount > 0 && (
+                <li><span>Discount ({cart.discount.code})</span> -{formatPrice(cart.discount.amount)}</li>
+              )}
               <li><span>Delivery</span> Calculated at checkout</li>
               <li className="cart-total-amount"><span>Payment</span> <span className="amount">Pay on delivery</span></li>
             </ul>
-            <Link href="/checkout" className="btn">Proceed to checkout</Link>
+            <button type="submit" className="btn">Proceed to checkout</button>
+            </form>
           </div>
         </div>
       </div>
@@ -78,15 +86,20 @@ function CartRow({ item }: { item: CartItem }) {
       <td className="product-name">
         <h4><Link href={lineHref(item)}>{lineName(item)}</Link></h4>
         {item.type === "basket" && <small>Basket</small>}
+        {/* Phones: the remove column is hidden (see globals.css) */}
+        <button type="button" className="d-sm-none btn-link border-0 bg-transparent p-0 small d-block mx-auto" onClick={() => remove(item.id)}>Remove</button>
         {error && <small className="d-block text-danger" role="alert">{error}</small>}
       </td>
       <td className="product-price">{formatPrice(item.unit_price)}</td>
       <td className="product-quantity">
+        {/* The theme styles the stepper inside .shop-perched-info .sd-cart-wrap */}
+        <div className="shop-perched-info justify-content-center"><div className="sd-cart-wrap mr-0">
         <div className="cart-plus-minus">
           <input className="cart-plus-minus-box" readOnly value={item.quantity} aria-label="Quantity" />
           <button type="button" className="dec qtybutton" aria-label="Decrease" onClick={() => change(item.quantity - 1)}>-</button>
           <button type="button" className="inc qtybutton" aria-label="Increase" disabled={item.quantity >= max} onClick={() => change(item.quantity + 1)}>+</button>
         </div>
+        </div></div>
       </td>
       <td className="product-subtotal"><span>{formatPrice(item.line_total)}</span></td>
       <td className="product-delete">

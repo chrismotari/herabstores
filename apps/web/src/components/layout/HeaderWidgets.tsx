@@ -72,7 +72,7 @@ export function HeaderCart() {
               <li>
                 <div className="total-price">
                   <span className="f-left">Total:</span>
-                  <span className="f-right">{formatPrice(cart?.subtotal ?? 0)}</span>
+                  <span className="f-right">{formatPrice(cart?.total ?? 0)}</span>
                 </div>
               </li>
               <li>
@@ -85,7 +85,7 @@ export function HeaderCart() {
           )}
         </ul>
       </div>
-      <div className="cart-amount">{formatPrice(cart?.subtotal ?? 0)}</div>
+      <div className="cart-amount">{formatPrice(cart?.total ?? 0)}</div>
     </li>
   );
 }

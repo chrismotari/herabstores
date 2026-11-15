@@ -51,3 +51,16 @@
   .shop-products-wrap .sp-product-content .title { font-size: 14px; }
   .card-cart-btn { padding: 7px 12px; font-size: 11px; white-space: nowrap; }
 }
+
+/* Cart table on phones: drop thumbnail and unit price so quantity, subtotal and remove fit */
+@media (max-width: 575px) {
+  .cart-wrapper .product-thumbnail,
+  .cart-wrapper .product-price,
+  .cart-wrapper .product-delete { display: none; }
+  .cart-wrapper .table th,
+  .cart-wrapper .table td { padding: 12px 4px; }
+  .cart-wrapper .product-name h4 { font-size: 14px; }
+  .cart-wrapper .table { min-width: 0; } /* theme sets 600px */
+  .cart-wrapper .shop-perched-info .sd-cart-wrap { width: auto; margin: 0; }
+  .cart-wrapper .shop-perched-info .sd-cart-wrap .cart-plus-minus { width: 118px; }
+}

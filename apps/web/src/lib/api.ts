@@ -11,7 +11,11 @@ import { SERVER_API_URL } from "./config";
  * webhook (see spec 3.15): `categories`, `products`, `product:{slug}`, ...
  * Cached for a long time; the webhook refreshes them when admins edit the catalog.
  */
-export const api = createApiClient({ baseUrl: SERVER_API_URL || "http://invalid.local" });
+export const api = createApiClient({
+  baseUrl: SERVER_API_URL || "http://invalid.local",
+  // Lets the API exempt this server from per-IP rate limits (prerendering many pages at once).
+  headers: process.env.API_SERVER_KEY ? { "X-Storefront-Key": process.env.API_SERVER_KEY } : undefined,
+});
 
 const apiAvailable = () => SERVER_API_URL !== "";
 
@@ -90,7 +94,7 @@ export async function getProduct(slug: string): Promise<Product | null> {
 
   const { data, response } = await api.GET("/products/{slug}", { params: { path: { slug } } });
   if (response.status === 404) return null;
-  if (!data) throw new Error(`Failed to load product ${slug}`);
+  if (!data) throw new Error(`Failed to load product ${slug} (HTTP ${response.status})`);
 
   return data.data;
 }
@@ -103,7 +107,7 @@ export async function getCategory(slug: string): Promise<Category | null> {
 
   const { data, response } = await api.GET("/categories/{slug}", { params: { path: { slug } } });
   if (response.status === 404) return null;
-  if (!data) throw new Error(`Failed to load category ${slug}`);
+  if (!data) throw new Error(`Failed to load category ${slug} (HTTP ${response.status})`);
 
   return data.data;
 }
@@ -143,7 +147,7 @@ export async function getBasket(slug: string): Promise<Basket | null> {
 
   const { data, response } = await api.GET("/baskets/{slug}", { params: { path: { slug } } });
   if (response.status === 404) return null;
-  if (!data) throw new Error(`Failed to load basket ${slug}`);
+  if (!data) throw new Error(`Failed to load basket ${slug} (HTTP ${response.status})`);
 
   return data.data;
 }

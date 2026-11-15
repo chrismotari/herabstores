@@ -87,6 +87,13 @@ sharing one generated TypeScript client (`packages/shared`). Payments: **pay on 
 - [x] 3.10a **Owner decision:** purchasable baskets? offers/discount codes? *2026-11-15*: baskets **yes**, offers **later** (see the Backlog).
 - [x] 3.16 Purchasable baskets. *2026-11-15*: a basket is one cart line at its own price and stock (`cart_items.basket_id`; a DB check constraint means each line is exactly one product or one basket). `POST /api/v1/cart/items` takes `product_id` or `basket_id`. Checkout locks and decrements basket stock (the contents aren't deducted separately), and order lines record `type`/`basket_id`. Web cart/checkout/header render basket lines, and web removal is now by line id (`cart_items.remove`).
 - [x] 3.17 Baskets on the web storefront (from the backlog). *2026-11-15*: `/baskets` (grid) and `/baskets/[slug]` (contents linked to products, availability date, add to cart; prerendered, real 404 for unknown/expired), "Baskets" in the main menu, baskets in the sitemap, cart lines link to their basket. Loaders tagged `baskets` / `basket:{slug}`, cached for hours (availability windows open and close on a schedule).
+- [x] 3.18 Discount codes (from the backlog; owner: "do the backlog", 2026-11-15). Rules are in the decision log.
+  - API: `offers` became redeemable codes (`discount_type` percent|fixed, unique upper-case `code`, optional category/product scope, minimum order, window, `max_uses`, `max_uses_per_user`). `App\Services\DiscountCalculator` holds the rules. `POST/DELETE /api/v1/cart/discount`; the cart returns `discount {code, name, amount, error}` and `total`. `PlaceOrder` locks the offer row, re-validates (guests by phone) and stores `offer_id`, `discount_code`, `discount`. `Order::amount_due` = items - discount + delivery, used by the API, Filament (order page, list, dashboard sales) and the Blade order page.
+  - Admin: Filament "Discount codes" (Sales group) with scope picker, limits, and uses / discount given per code.
+  - Web: discount box on `/cart` and `/checkout`, discount lines in the totals, confirmation and order history; mini cart shows the total after discount.
+  - Found while testing in a browser: the cart totals and quantity stepper were unstyled (the theme only styles them inside its own wrappers; now matched), and the cart table was 600 px wide on phones (now name/quantity/subtotal with a "Remove" link).
+  - Found while building: prerendering ~80 pages from one IP tripped the API's 120/min limit. The Next.js server now sends `X-Storefront-Key` (`API_SERVER_KEY` = API's `STOREFRONT_SERVER_KEY`) and is exempt from per-IP limits.
+  - Dev data left for trying it out: basket "Weekly Veg Box" and code `WELCOME10` (10%, once per customer). Delete them in the admin if unwanted.
 - [x] 3.11 Guest cart: `POST carts` returns a `cart_token`. Cart endpoints accept the `X-Cart-Token` header. The guest cart merges into the user's cart at login. *2026-11-15*: `/api/v1/cart` (GET, POST → 201 with a guest token, DELETE clears) and `/cart/items` (POST adds, PATCH `{quantity}` with 0 removing, DELETE). Items can only be changed through the cart that owns them (404 otherwise). Works for guests (`X-Cart-Token`), bearer tokens and SPA sessions. API login merges carts (3.8).
 - [x] 3.12 Checkout: `POST orders` (pay on delivery). Delivery locations: `GET counties`, `GET counties/{id}/estates`, `GET delivery-zones` (with fee). *2026-11-15*: `POST /api/v1/orders` (PlaceOrder, 201 + `OrderResource` with subtotal/delivery_fee/total, 10/min) and `GET /api/v1/delivery-zones`. Counties and estates aren't exposed, since pricing is per zone and checkout no longer asks for them.
 - [x] 3.13 Customer account: my orders (list, show, track), favourites (add/remove/list), profile update, addresses. *2026-11-15*: `/api/v1/me`: PATCH profile + default address (email change → unverified), PUT password (revokes other tokens), DELETE account, `orders` (own only; others' are 404), `favourites` (idempotent add/remove; unavailable products hidden). New `DeleteAccount` action, also used by the web profile page, which used to crash for users with orders. Orders are kept but unlinked. Tracking = order `status` + timestamps.
@@ -160,7 +167,7 @@ sharing one generated TypeScript client (`packages/shared`). Payments: **pay on 
 
 ## Backlog (not scheduled)
 
-- Offers / discount codes: rules (percent/fixed, product/category/cart level), code validation at checkout, usage limits (`offers` table exists, but there's no logic). Owner: "keep it for later" (2026-11-15).
+(empty)
 
 ## Decision log
 
@@ -174,6 +181,8 @@ sharing one generated TypeScript client (`packages/shared`). Payments: **pay on 
 | 2026-11-15 | Baskets are sold as one line at the basket's price and stock. Offers deferred | Baskets already have their own price and stock. Offers are a new feature |
 | 2026-11-15 | Admin access stays on `is_admin` + `is_active`; spatie roles/permissions are for finer-grained rights later | Switching every policy to roles now adds risk with no visible benefit |
 | 2026-11-15 | Storefront keeps the current theme (CSS reused, markup tidied); no Tailwind | Owner's choice; least visual change for customers |
+| 2026-11-15 | Discount codes: entered by the customer (no automatic offers), one per order; percent or fixed; whole cart, one category or one product (baskets only count for whole-cart codes); delivery never discounted; discount capped at the eligible amount; optional minimum order (cart subtotal), window, total uses, uses per customer (account, or phone for guests); canceled orders free their use; a code that stops being valid blocks checkout with a clear message instead of silently dropping | Common, predictable rules; easy to change in `DiscountCalculator` |
+| 2026-11-15 | The Next.js server authenticates to the API with a shared key (`X-Storefront-Key`) to skip per-IP rate limits | Builds prerender many pages from one IP |
 | 2026-11-15 | Sanctum: SPA cookies for web, tokens for mobile | First-party clients, no OAuth needed |
 | 2026-11-15 | Guest cart via `X-Cart-Token` instead of session | The API must be stateless for mobile |
 | 2026-11-15 | Work directly on `main` and commit at every stage | Owner's preference after Phase 1 |

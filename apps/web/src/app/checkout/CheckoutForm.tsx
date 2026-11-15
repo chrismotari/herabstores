@@ -7,6 +7,7 @@ import { useState, type FormEvent } from "react";
 import { useSession } from "@/components/auth/SessionProvider";
 import { useCart } from "@/components/cart/CartProvider";
 import { lineName } from "@/components/cart/CartLineImage";
+import { DiscountForm } from "@/components/cart/DiscountForm";
 import { browserApi } from "@/lib/browser-api";
 
 export const LAST_ORDER_KEY = "herabs.lastOrder";
@@ -27,6 +28,7 @@ export function CheckoutForm({ zones }: { zones: DeliveryZone[] }) {
   const items = cart?.items ?? [];
   const zone = zones.find((z) => z.id === zoneId);
   const subtotal = cart?.subtotal ?? 0;
+  const discount = cart?.discount && !cart.discount.error ? cart.discount.amount : 0;
   const fieldError = (name: string) => errors[name]?.[0];
 
   async function onSubmit(event: FormEvent<HTMLFormElement>) {
@@ -144,10 +146,11 @@ export function CheckoutForm({ zones }: { zones: DeliveryZone[] }) {
                 </li>
               ))}
               <li className="sub-total"><span>Subtotal</span> {formatPrice(subtotal)}</li>
+              {discount > 0 && <li><span>Discount ({cart?.discount?.code})</span> -{formatPrice(discount)}</li>}
               <li><span>Delivery</span> {zone ? formatPrice(zone.delivery_fee) : "Choose a zone"}</li>
               <li className="cart-total-amount">
                 <span>Total (pay on delivery)</span>
-                <span className="amount">{formatPrice(subtotal + (zone?.delivery_fee ?? 0))}</span>
+                <span className="amount">{formatPrice(subtotal - discount + (zone?.delivery_fee ?? 0))}</span>
               </li>
             </ul>
             <div className="mb-10"><label><input type="checkbox" name="consented" /> Send me news and offers</label></div>
@@ -157,9 +160,10 @@ export function CheckoutForm({ zones }: { zones: DeliveryZone[] }) {
               </label>
               {fieldError("accept_terms") && <div className="text-danger small">{fieldError("accept_terms")}</div>}
             </div>
-            {(errors.cart || errors.form) && (
+            <DiscountForm />
+            {(errors.cart || errors.form || errors.discount_code) && (
               <div className="alert alert-danger" role="alert">
-                {[...(errors.cart ?? []), ...(errors.form ?? [])].map((m) => <div key={m}>{m}</div>)}
+                {[...(errors.cart ?? []), ...(errors.discount_code ?? []), ...(errors.form ?? [])].map((m) => <div key={m}>{m}</div>)}
               </div>
             )}
             <button type="submit" className="btn" disabled={submitting || !zoneId}>

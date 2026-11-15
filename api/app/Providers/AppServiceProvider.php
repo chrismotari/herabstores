@@ -95,15 +95,28 @@ class AppServiceProvider extends ServiceProvider
      */
     protected function configureRateLimiting(): void
     {
-        RateLimiter::for('api', fn (Request $request) => Limit::perMinute(120)
-            ->by($request->user()?->id ?: $request->ip()));
+        RateLimiter::for('api', fn (Request $request) => $this->isStorefrontServer($request)
+            ? Limit::none()
+            : Limit::perMinute(120)->by($request->user()?->id ?: $request->ip()));
 
         RateLimiter::for('auth', fn (Request $request) => [
             Limit::perMinute(5)->by(strtolower((string) ($request->input('email') ?? $request->input('phone'))).'|'.$request->ip()),
             Limit::perMinute(20)->by($request->ip()),
         ]);
 
-        RateLimiter::for('search', fn (Request $request) => Limit::perMinute(60)
-            ->by($request->user()?->id ?: $request->ip()));
+        RateLimiter::for('search', fn (Request $request) => $this->isStorefrontServer($request)
+            ? Limit::none()
+            : Limit::perMinute(60)->by($request->user()?->id ?: $request->ip()));
+    }
+
+    /**
+     * The Next.js server (builds and cache refreshes) sends X-Storefront-Key so prerendering
+     * dozens of pages from one IP isn't rate limited. Browsers never get this key.
+     */
+    private function isStorefrontServer(Request $request): bool
+    {
+        $key = (string) config('services.storefront.server_key');
+
+        return $key !== '' && hash_equals($key, (string) $request->header('X-Storefront-Key'));
     }
 }

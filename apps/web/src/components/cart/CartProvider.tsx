@@ -14,6 +14,8 @@ type CartContextValue = {
   add: (input: AddInput) => Promise<Result>;
   update: (itemId: string, quantity: number) => Promise<Result>;
   remove: (itemId: string) => Promise<Result>;
+  applyDiscount: (code: string) => Promise<Result>;
+  removeDiscount: () => Promise<Result>;
   refresh: () => Promise<void>;
 };
 
@@ -72,6 +74,8 @@ export function CartProvider({ children }: { children: ReactNode }) {
       update: (itemId, quantity) =>
         run(browserApi.PATCH("/cart/items/{item}", { params: { path: { item: itemId } }, body: { quantity } })),
       remove: (itemId) => run(browserApi.DELETE("/cart/items/{item}", { params: { path: { item: itemId } } })),
+      applyDiscount: (code) => run(browserApi.POST("/cart/discount", { body: { code } })),
+      removeDiscount: () => run(browserApi.DELETE("/cart/discount")),
     };
   }, [cart, loading, refresh, accept]);
 
