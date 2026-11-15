@@ -1,41 +1,62 @@
 <?php
 
+use App\Models\Cart;
+use App\Models\CartItem;
 use App\Models\Product;
 use App\Models\User;
+use App\Services\CartService;
 
-test('guest can add a product to the session cart', function () {
-    $product = Product::factory()->create();
+test('guest add creates a token cart in the database', function () {
+    $product = Product::factory()->create(['stock' => 10]);
 
     $this->post(route('cart_items.store'), ['product_id' => $product->id, 'quantity' => 2])
         ->assertRedirect();
 
-    expect(session('cart'))->toHaveKey($product->id)
-        ->and(session('cart')[$product->id]['quantity'])->toEqual(2);
+    $cart = Cart::where('token', session(CartService::SESSION_KEY))->sole();
+    expect($cart->user_id)->toBeNull()
+        ->and($cart->cartItems->sole()->quantity)->toBe(2);
 });
 
-test('guest cannot add the same product twice', function () {
-    $product = Product::factory()->create();
-    $payload = ['product_id' => $product->id, 'quantity' => 1];
+test('adding a product already in the cart increases its quantity', function () {
+    $product = Product::factory()->create(['stock' => 10]);
 
-    $this->post(route('cart_items.store'), $payload);
-    $this->post(route('cart_items.store'), ['product_id' => $product->id, 'quantity' => 5]);
+    $this->post(route('cart_items.store'), ['product_id' => $product->id, 'quantity' => 1]);
+    $this->post(route('cart_items.store'), ['product_id' => $product->id, 'quantity' => 3]);
 
-    expect(session('cart')[$product->id]['quantity'])->toBe(1);
+    expect(Cart::sole()->cartItems->sole()->quantity)->toBe(4);
+});
+
+test('cannot add more than is in stock', function () {
+    $product = Product::factory()->create(['stock' => 2]);
+
+    $this->post(route('cart_items.store'), ['product_id' => $product->id, 'quantity' => 3])
+        ->assertSessionHasErrors('quantity');
+
+    expect(Cart::count())->toBeLessThanOrEqual(1)
+        ->and(CartItem::count())->toBe(0);
+});
+
+test('cannot add inactive products', function () {
+    $product = Product::factory()->create(['is_active' => false]);
+
+    $this->post(route('cart_items.store'), ['product_id' => $product->id, 'quantity' => 1])
+        ->assertSessionHasErrors('product_id');
 });
 
 test('guest can remove a product from the cart', function () {
     $product = Product::factory()->create();
-    $this->withSession(['cart' => [$product->id => ['product_id' => $product->id, 'quantity' => 1]]]);
 
-    $this->delete(route('cart_items.destroy', $product))->assertRedirect();
+    $this->withSession(guestSessionWith($product))
+        ->delete(route('cart_items.destroy', $product))
+        ->assertRedirect();
 
-    expect(session('cart'))->not->toHaveKey($product->id);
+    expect(CartItem::count())->toBe(0);
 });
 
 test('guest can view a non-empty cart', function () {
     $product = Product::factory()->create();
 
-    $this->withSession(['cart' => [$product->id => ['product_id' => $product->id, 'quantity' => 1]]])
+    $this->withSession(guestSessionWith($product))
         ->get(route('carts.show'))
         ->assertOk()
         ->assertSee($product->name);
@@ -48,7 +69,7 @@ test('adding to cart validates product and quantity', function () {
 
 test('logged-in user gets a cart created on first add', function () {
     $user = User::factory()->create();
-    $product = Product::factory()->create();
+    $product = Product::factory()->create(['stock' => 10]);
 
     $this->actingAs($user)
         ->post(route('cart_items.store'), ['product_id' => $product->id, 'quantity' => 3])
@@ -69,3 +90,52 @@ test('logged-in user can view and remove from their cart', function () {
 
     expect($user->fresh()->cart->cartItems)->toBeEmpty();
 });
+
+test('guest cart merges into the user cart at login', function () {
+    $user = User::factory()->create();
+    $shared = Product::factory()->create(['stock' => 10]);
+    $guestOnly = Product::factory()->create(['stock' => 10]);
+    $userCart = $user->carts()->create(['status' => 'open']);
+    $userCart->cartItems()->create(['product_id' => $shared->id, 'quantity' => 2]);
+
+    $session = guestSessionWith([$shared, $guestOnly]);
+
+    $this->withSession($session)
+        ->post('/login', ['email' => $user->email, 'password' => 'password'])
+        ->assertRedirect();
+
+    $items = $userCart->fresh()->cartItems->keyBy('product_id');
+    expect($items)->toHaveCount(2)
+        ->and($items[$shared->id]->quantity)->toBe(3)
+        ->and($items[$guestOnly->id]->quantity)->toBe(1)
+        ->and(Cart::whereNull('user_id')->count())->toBe(0);
+});
+
+test('merging caps quantities at available stock', function () {
+    $user = User::factory()->create();
+    $product = Product::factory()->create(['stock' => 3]);
+    $user->carts()->create(['status' => 'open'])->cartItems()->create(['product_id' => $product->id, 'quantity' => 3]);
+
+    $this->withSession(guestSessionWith($product))
+        ->post('/login', ['email' => $user->email, 'password' => 'password']);
+
+    expect($user->fresh()->cart->cartItems->sole()->quantity)->toBe(3);
+});
+
+test('the cart token can come from the X-Cart-Token header', function () {
+    $cart = Cart::create(['token' => (string) Str::uuid()]);
+    $request = Request::create('/');
+    $request->headers->set(CartService::HEADER, $cart->token);
+
+    expect(app(CartService::class)->current($request)->is($cart))->toBeTrue();
+});
+
+test('an unknown or malformed token gives an empty, unsaved cart', function (string $token) {
+    $request = Request::create('/');
+    $request->headers->set(CartService::HEADER, $token);
+
+    $cart = app(CartService::class)->current($request);
+
+    expect($cart->exists)->toBeFalse()
+        ->and($cart->cartItems)->toBeEmpty();
+})->with(['not-a-uuid', fn () => (string) Str::uuid()]);

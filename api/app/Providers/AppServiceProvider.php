@@ -57,8 +57,7 @@ class AppServiceProvider extends ServiceProvider
         });
 
         View::composer('layouts.includes.header', function ($view) {
-            $cartService = new CartService;
-            $cart = auth()->check() ? auth()->user()->cart : $cartService->getGuestCart();
+            $cart = app(CartService::class)->current(request());
 
             $view->with([
                 'cart' => $cart,

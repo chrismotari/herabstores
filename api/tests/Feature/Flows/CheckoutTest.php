@@ -1,5 +1,6 @@
 <?php
 
+use App\Models\Cart;
 use App\Models\Contact;
 use App\Models\DeliveryZone;
 use App\Models\Order;
@@ -22,9 +23,7 @@ function checkoutPayload(array $overrides = []): array
 
 function guestCartWith(Product ...$products): array
 {
-    return ['cart' => collect($products)->mapWithKeys(fn ($p) => [
-        $p->id => ['product_id' => $p->id, 'quantity' => 2],
-    ])->all()];
+    return guestSessionWith($products, quantity: 2);
 }
 
 test('checkout page renders for a guest with a cart', function () {
@@ -52,7 +51,7 @@ test('guest can place a pay-on-delivery order', function () {
         ->and($order->fname)->toBe('Jane')
         ->and($order->order_items[0]['price'])->toEqual(150)
         ->and($order->order_items[0]['quantity'])->toBe(2)
-        ->and(session('cart'))->toBeNull();
+        ->and(Cart::count())->toBe(0);
 });
 
 test('delivery fee comes from the chosen zone', function () {

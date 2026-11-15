@@ -2,11 +2,13 @@
 
 namespace App\Http\Controllers;
 
-use App\Models\Cart;
+use App\Actions\Cart\AddItemToCart;
+use App\Actions\Cart\RemoveCartItem;
 use App\Models\CartItem;
 use App\Models\Product;
+use App\Services\CartService;
 use Illuminate\Http\Request;
-use Illuminate\Support\Facades\Auth;
+use Illuminate\Validation\ValidationException;
 
 class CartItemController extends Controller
 {
@@ -29,114 +31,23 @@ class CartItemController extends Controller
     /**
      * Store a newly created resource in storage.
      */
-    public function store(Request $request)
+    public function store(Request $request, CartService $carts, AddItemToCart $add)
     {
-        // $request->validate([
-        //     'product_id' => 'required|exists:products,id',
-        //     'quantity' => 'required|integer|min:1',
-        // ]);
-
-        // $user = auth()->user();
-        // $cart = $user->cart;
-
-        // if (!$cart) {
-        //     $cart = Cart::create([
-        //         'user_id' => $user->id,
-        //         'status' => 'open',
-        //     ]);
-        // }
-
-        // $existingCartItem = CartItem::where('cart_id', $cart->id)
-        //     ->where('product_id', $request->product_id)
-        //     ->first();
-
-        // if ($existingCartItem) {
-        //     flash()->error('Product already in cart');
-        //     return redirect()->back();
-        // }
-        // try {
-        //     $user = auth()->user();
-        //     $cart = $user->cart;
-
-        //     if(!$cart) {
-        //         $cart = Cart::create([
-        //             'user_id' => $user->id,
-        //             'status' => 'open',
-        //         ]);
-        //     }
-
-        //     $cartItem = CartItem::create([
-        //         'cart_id' => $cart->id,
-        //         'product_id' => $request->product_id,
-        //         'quantity' => $request->quantity,
-        //     ]);
-        //     flash()->success('Product added to cart');
-        // } catch (\Throwable $th) {
-        //     throw $th;
-        //     // flash()->error('Failed to add product to cart');
-        // }
-        // return redirect()->back();
-
-        $request->validate([
+        $data = $request->validate([
             'product_id' => 'required|uuid|exists:products,id',
             'quantity' => 'required|integer|min:1',
         ]);
 
-        if (auth()->check()) {
-            // Handle logged-in user
-            $user = auth()->user();
-            $cart = $user->cart;
-
-            if (! $cart) {
-                $cart = Cart::create([
-                    'user_id' => $user->id,
-                    'status' => 'open',
-                ]);
-            }
-
-            $existingCartItem = CartItem::where('cart_id', $cart->id)
-                ->where('product_id', $request->product_id)
-                ->first();
-
-            if ($existingCartItem) {
-                flash()->error('Product already in cart');
-
-                return redirect()->back();
-            }
-
-            try {
-                CartItem::create([
-                    'cart_id' => $cart->id,
-                    'product_id' => $request->product_id,
-                    'quantity' => $request->quantity,
-                ]);
-
-                flash()->success('Product added to cart');
-            } catch (\Throwable $th) {
-                flash()->error('Failed to add product to cart');
-            }
-
-        } else {
-            // Handle guest user by storing in session
-            $cart = session()->get('cart', []);
-
-            if (isset($cart[$request->product_id])) {
-                flash()->error('Product already in cart');
-
-                return redirect()->back();
-            }
-
-            $cart[$request->product_id] = [
-                'product_id' => $request->product_id,
-                'quantity' => $request->quantity,
-            ];
-
-            session()->put('cart', $cart);
+        try {
+            $add($carts->current($request, create: true), Product::findOrFail($data['product_id']), (int) $data['quantity']);
             flash()->success('Product added to cart');
+        } catch (ValidationException $e) {
+            flash()->error($e->validator->errors()->first());
+
+            return back()->withErrors($e->validator);
         }
 
-        return redirect()->back();
-
+        return back();
     }
 
     /**
@@ -166,21 +77,9 @@ class CartItemController extends Controller
     /**
      * Remove the specified resource from storage.
      */
-    public function destroy(Product $product)
+    public function destroy(Request $request, Product $product, CartService $carts, RemoveCartItem $remove)
     {
-        // dd($product);
-
-        if (auth()->check()) {
-            Auth::user()->cart?->cartItems()->where('product_id', $product->id)->delete();
-        } else {
-            $cart = session()->get('cart', []);
-
-            if (isset($cart[$product->id])) {
-                unset($cart[$product->id]); // Remove product from cart session
-                session()->put('cart', $cart);
-            }
-        }
-
+        $remove($carts->current($request), $product);
         flash()->success('Product removed from cart');
 
         return back();

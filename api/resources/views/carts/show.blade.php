@@ -102,7 +102,7 @@
                                         <li>
                                             <span>Shipping</span>
                                             <div class="shop-check-wrap">
-                                                KSHS 150
+                                                Calculated at checkout
                                                 {{-- <div class="custom-control custom-checkbox">
                                                     <input type="checkbox" class="custom-control-input" id="customCheck1">
                                                     <label class="custom-control-label" for="customCheck1">Home Delivery: KSH 150.00 </label>
@@ -113,7 +113,7 @@
                                                 </div> --}}
                                             </div>
                                         </li>
-                                        <li class="cart-total-amount"><span>Cart Total</span> <span class="amount">KSHS {{$cart->total + 150}} </span></li>
+                                        <li class="cart-total-amount"><span>Cart Total</span> <span class="amount"> KSHS {{ $cart->total }} </span></li>
                                     </ul>
                                     <a href="{{ route("orders.create") }}" class="btn">PROCEED TO CHECKOUT</a>
                                 </form>

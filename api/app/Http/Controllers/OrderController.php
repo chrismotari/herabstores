@@ -46,11 +46,10 @@ class OrderController extends Controller
      */
     public function create()
     {
-        $cartService = new CartService;
 
         return view('orders.create', [
             'selected_user' => Auth::user(),
-            'cart' => auth()->check() ? auth()->user()->cart : $cartService->getGuestCart(),
+            'cart' => app(CartService::class)->current(request()),
             'refs' => Ref::all(),
         ]);
     }
@@ -62,8 +61,8 @@ class OrderController extends Controller
     {
         $data = $request->validated();
         $user = $request->user();
-        $cart = $user ? $user->cart : (new CartService)->getGuestCart();
-        $cartItems = $cart?->cartItems ?? collect();
+        $cart = app(CartService::class)->current($request);
+        $cartItems = $cart->cartItems->load('product');
 
         if ($cartItems->isEmpty()) {
             flash()->error('Cart is empty');
@@ -112,14 +111,15 @@ class OrderController extends Controller
                 ]);
             }
 
-            if ($user) {
-                $cart->cartItems()->delete();
+            $cart->cartItems()->delete();
+            if (! $user) {
+                $cart->delete(); // guest carts are single-use
             }
 
             return $order;
         });
 
-        session()->forget('cart');
+        $request->session()->forget(CartService::SESSION_KEY);
 
         if ($request->boolean('consented')) {
             Contact::create([

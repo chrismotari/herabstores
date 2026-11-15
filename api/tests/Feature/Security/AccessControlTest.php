@@ -125,7 +125,7 @@ test('customers can view only their own profile', function () {
 test('guest checkout page is still public', function () {
     $product = Product::factory()->create();
 
-    $this->withSession(['cart' => [$product->id => ['product_id' => $product->id, 'quantity' => 1]]])
+    $this->withSession(guestSessionWith($product))
         ->get(route('orders.create'))
         ->assertOk();
 });

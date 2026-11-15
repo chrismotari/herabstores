@@ -4,7 +4,7 @@ Legend: `[ ]` todo · `[~]` in progress · `[x]` done (with date) · `[-]` dropp
 
 ## Current focus
 
-**Phase 3 → task 3.5**: move cart logic into Actions shared by web and API.
+**Phase 3 → task 3.6**: move order placement into `PlaceOrder` (stock decrement in a transaction).
 
 ## Goal
 
@@ -75,7 +75,7 @@ sharing one generated TypeScript client (`packages/shared`). Payments: **pay on 
 - [x] 3.4 Rate limiting (auth, search, cart) and an API exception rendering check (JSON for `api/*`). *2026-11-15*: `api` limiter, 120/min per user or IP, on every API route (`throttleApi()`). `auth` (5/min per identifier+IP, 20/min per IP) and `search` (60/min) limiters are defined; apply them in 3.8 and 3.9. JSON errors were done in 3.1.
 
 ### 3b. Extract domain logic
-- [ ] 3.5 Move cart logic into `app/Actions/Cart/*` (add, update qty, remove, merge guest→user), used by both web and API controllers.
+- [x] 3.5 Move cart logic into `app/Actions/Cart/*` (add, update qty, remove, merge guest→user), used by both web and API controllers. *2026-11-15*: guest carts moved from the session array into the DB (`carts.token`), resolved by `CartService::current()` from the `X-Cart-Token` header (API) or the session (web). Actions: `AddItemToCart` (adding again increases the quantity; it used to error "already in cart"), `UpdateCartItem`, `RemoveCartItem`, `MergeGuestCart` (runs on web login via a listener; quantities capped at stock). Stock and active status are enforced when adding. The cart page no longer shows a hard-coded 150 shipping.
 - [ ] 3.6 Move checkout/order placement into `app/Actions/Orders/PlaceOrder` (pay on delivery, delivery zone fee, stock decrement in a transaction).
 - [ ] 3.7 Move product import out of `MassAddController` (467 lines) into an Action or a queued job.
 
@@ -84,7 +84,7 @@ sharing one generated TypeScript client (`packages/shared`). Payments: **pay on 
 - [ ] 3.9 Catalog (public): `GET categories`, `GET categories/{slug}`, `GET products` (paginate, filter by category/price, sort, search), `GET products/{slug}`.
   - Accept: lookups by slug, no N+1 queries (tested), `Cache-Control` headers set.
 - [ ] 3.10 Baskets and offers (public read).
-- [ ] 3.11 Guest cart: `POST carts` returns a `cart_token`. Cart endpoints accept the `X-Cart-Token` header. The guest cart merges into the user's cart at login.
+- [~] 3.11 Guest cart (token storage, header resolution and web-login merge done in 3.5; API endpoints + merge on API login remain): `POST carts` returns a `cart_token`. Cart endpoints accept the `X-Cart-Token` header. The guest cart merges into the user's cart at login.
 - [ ] 3.12 Checkout: `POST orders` (pay on delivery). Delivery locations: `GET counties`, `GET counties/{id}/estates`, `GET delivery-zones` (with fee).
 - [ ] 3.13 Customer account: my orders (list, show, track), favourites (add/remove/list), profile update, addresses.
 - [ ] 3.14 Contact form `POST contacts`.

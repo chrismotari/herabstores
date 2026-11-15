@@ -39,8 +39,7 @@ class CartController extends Controller
      */
     public function show(Cart $cart)
     {
-        $cartService = new CartService;
-        $cart = auth()->check() ? auth()->user()->cart : $cartService->getGuestCart();
+        $cart = app(CartService::class)->current(request());
         if ($cart->cartItems->isEmpty()) {
             return redirect()->back()->with('error', 'Your cart is empty');
         }

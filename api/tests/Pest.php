@@ -1,6 +1,10 @@
 <?php
 
+use App\Models\Cart;
+use App\Models\Product;
+use App\Services\CartService;
 use Illuminate\Foundation\Testing\RefreshDatabase;
+use Illuminate\Support\Str;
 use Tests\TestCase;
 
 /*
@@ -44,7 +48,15 @@ expect()->extend('toBeOne', function () {
 |
 */
 
-function something()
+/**
+ * Session data for a guest who already has a database cart holding these products.
+ */
+function guestSessionWith(array|Product $products, int $quantity = 1): array
 {
-    // ..
+    $cart = Cart::create(['token' => (string) Str::uuid(), 'status' => 'open']);
+    foreach (is_array($products) ? $products : [$products] as $product) {
+        $cart->cartItems()->create(['product_id' => $product->id, 'quantity' => $quantity]);
+    }
+
+    return [CartService::SESSION_KEY => $cart->token];
 }
