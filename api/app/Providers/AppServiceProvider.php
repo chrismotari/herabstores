@@ -2,16 +2,12 @@
 
 namespace App\Providers;
 
-use App\Models\Cart;
-use App\Models\CartItem;
 use App\Models\Category;
-use App\Models\Company;
-use App\Models\ContractType;
 use App\Models\Country;
 use App\Models\Courier;
+use App\Models\DeliveryZone;
 use App\Models\Estate;
 use App\Models\Role;
-use App\Models\DeliveryZone;
 use App\Models\Store;
 use App\Services\CartService;
 use Illuminate\Support\Facades\Auth;
@@ -38,37 +34,37 @@ class AppServiceProvider extends ServiceProvider
 
         View::composer('users.form', function ($view) {
             $view->with([
-                'countries' => Country::where('name', 'like', 'Kenya')->get(), 
+                'countries' => Country::where('name', 'like', 'Kenya')->get(),
                 'roles' => Role::all(),
                 'estates' => Estate::all(),
-            ]); 
+            ]);
         });
 
         View::composer('layouts.includes.header', function ($view) {
-            $cartService = new CartService();
+            $cartService = new CartService;
             $cart = auth()->check() ? auth()->user()->cart : $cartService->getGuestCart();
-            
+
             $view->with([
-                'cart' => $cart, 
-                'favourites' => Auth::user()?->favourites, 
-                'categories' => Category::all(), 
-            ]); 
+                'cart' => $cart,
+                'favourites' => Auth::user()?->favourites,
+                'categories' => Category::all(),
+            ]);
         });
         View::composer('products.form', function ($view) {
             $view->with([
-                'categories' => Category::all(), 
-            ]); 
+                'categories' => Category::all(),
+            ]);
         });
         View::composer('orders.dispatch', function ($view) {
             $view->with([
                 'couriers' => Courier::all(),
-                'stores' => Store::all(), 
-            ]); 
+                'stores' => Store::all(),
+            ]);
         });
         View::composer('orders.create', function ($view) {
             $view->with([
-                'delivery_zones' => DeliveryZone::all(), 
-            ]); 
+                'delivery_zones' => DeliveryZone::where('is_active', true)->orderBy('name')->get(),
+            ]);
         });
 
     }

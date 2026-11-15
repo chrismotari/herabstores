@@ -9,13 +9,14 @@ use Illuminate\Support\Str;
 class Ref extends Model
 {
     use UUID;
+
     protected static function boot()
     {
         parent::boot();
 
         static::creating(function ($ref) {
-            if (!$ref->id) {
-                $ref->id = Str::uuid(); 
+            if (! $ref->id) {
+                $ref->id = Str::uuid();
             }
             $ref->ref_code = self::generateNHexa();
         });
@@ -39,9 +40,10 @@ class Ref extends Model
         'used_at',
         'canceled_at',
     ];
+
     public function user()
     {
         return $this->belongsTo(User::class);
-        
+
     }
 }

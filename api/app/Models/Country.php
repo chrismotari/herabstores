@@ -2,9 +2,10 @@
 
 namespace App\Models;
 
+use App\Traits\UUID;
 use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Database\Eloquent\Model;
-use App\Traits\UUID;
+
 class Country extends Model
 {
     use HasFactory, UUID;

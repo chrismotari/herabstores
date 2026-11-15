@@ -2,8 +2,8 @@
 
 namespace App\Http\Requests;
 
-use App\Http\Requests\FormRequest;
 use App\Models\User;
+use Illuminate\Contracts\Validation\ValidationRule;
 use Illuminate\Foundation\Http\FormRequest as LaravelFormRequest;
 use Illuminate\Validation\Rules;
 
@@ -21,14 +21,14 @@ class UserRequest extends LaravelFormRequest
     /**
      * Get the validation rules that apply to the request.
      *
-     * @return array<string, \Illuminate\Contracts\Validation\ValidationRule|array<mixed>|string>
+     * @return array<string, ValidationRule|array<mixed>|string>
      */
     public function rules(): array
     {
         // dump($this->id);
-        if($this->isMethod('POST')){
+        if ($this->isMethod('POST')) {
             return [
-                
+
                 'photo_url' => ['image', 'mimes:jpeg,png,jpg,gif,svg', 'max:2048'],
                 'fname' => ['required', 'string', 'max:255'],
                 'mname' => ['nullable', 'string', 'max:255'],
@@ -46,16 +46,16 @@ class UserRequest extends LaravelFormRequest
                 'country_id' => ['required', 'uuid', 'exists:countries,id'],
                 'role_id' => ['nullable', 'uuid', 'exists:roles,id'],
             ];
-        } else{
+        } else {
             return [
-                "fname" => ['required'],
-                "mname" => ['required'],
-                "lname" => ['required'],
-                "phone" => ["required","unique:users,phone,".$this->route('user')->id],
-                "alt_phone" => ["unique:users,alt_phone,".$this->route('user')->id],
-                "email" => ["required","email","unique:users,email,".$this->route('user')->id],
-                "alt_email" => ["email","unique:users,alt_email,".$this->route('user')->id],
-                "dob" => ['nullable','date'],
+                'fname' => ['required'],
+                'mname' => ['required'],
+                'lname' => ['required'],
+                'phone' => ['required', 'unique:users,phone,'.$this->route('user')->id],
+                'alt_phone' => ['unique:users,alt_phone,'.$this->route('user')->id],
+                'email' => ['required', 'email', 'unique:users,email,'.$this->route('user')->id],
+                'alt_email' => ['email', 'unique:users,alt_email,'.$this->route('user')->id],
+                'dob' => ['nullable', 'date'],
                 'photo_url' => 'image|mimes:jpeg,png,jpg,gif,svg|max:2048',
                 'role_id' => ['required', 'uuid', 'exists:roles,id'],
                 'address' => ['required', 'string', 'max:255'],

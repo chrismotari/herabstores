@@ -2,9 +2,9 @@
 
 namespace App\Models;
 
+use App\Traits\UUID;
 use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Database\Eloquent\Model;
-use App\Traits\UUID;
 
 class PasswordReset extends Model
 {
@@ -15,10 +15,10 @@ class PasswordReset extends Model
     const UPDATED_AT = null;
 
     protected $fillable = [
-        "id",
+        'id',
         'email',
         'token',
-        'created_at'
+        'created_at',
     ];
 
     protected $table = 'password_reset_tokens';

@@ -2,8 +2,9 @@
 
 namespace App\Http\Requests;
 
-use Illuminate\Foundation\Http\FormRequest;
 use App\Models\Basket;
+use Illuminate\Contracts\Validation\ValidationRule;
+use Illuminate\Foundation\Http\FormRequest;
 
 class BasketRequest extends FormRequest
 {
@@ -18,7 +19,7 @@ class BasketRequest extends FormRequest
     /**
      * Get the validation rules that apply to the request.
      *
-     * @return array<string, \Illuminate\Contracts\Validation\ValidationRule|array<mixed>|string>
+     * @return array<string, ValidationRule|array<mixed>|string>
      */
     public function rules(): array
     {
@@ -27,7 +28,7 @@ class BasketRequest extends FormRequest
             return [
                 'name' => 'required|string|max:255',
                 'description' => 'required|string',
-                'slug' => ['required', 'string', 'unique:'.Basket::class] ,
+                'slug' => ['required', 'string', 'unique:'.Basket::class],
                 'price' => 'required|numeric|min:0',
                 'stock' => 'required|integer|min:0',
                 'is_active' => 'boolean',
@@ -38,7 +39,7 @@ class BasketRequest extends FormRequest
             return [
                 'name' => 'sometimes|required|string|max:255',
                 'description' => 'sometimes|required|string',
-                'slug' => 'sometimes|required|string|unique:baskets,slug,' . $this->route('basket')->id,
+                'slug' => 'sometimes|required|string|unique:baskets,slug,'.$this->route('basket')->id,
                 'price' => 'sometimes|required|numeric|min:0',
                 'stock' => 'sometimes|required|integer|min:0',
                 'is_active' => 'sometimes|boolean',

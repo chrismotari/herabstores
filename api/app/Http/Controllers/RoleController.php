@@ -2,8 +2,8 @@
 
 namespace App\Http\Controllers;
 
-use Illuminate\Http\Request;
 use App\Models\Role;
+use Illuminate\Http\Request;
 
 class RoleController extends Controller
 {
@@ -13,17 +13,14 @@ class RoleController extends Controller
     public function index()
     {
         return view('roles.index', [
-            'roles' => Role::all()
+            'roles' => Role::all(),
         ]);
     }
 
     /**
      * Show the form for creating a new resource.
      */
-    public function create()
-    {
-        
-    }
+    public function create() {}
 
     /**
      * Store a newly created resource in storage.
@@ -31,9 +28,10 @@ class RoleController extends Controller
     public function store(Request $request)
     {
         $role = Role::create([
-            'name' => $request->name
+            'name' => $request->name,
         ]);
         flash()->success('Role created successfully');
+
         return redirect()->back();
     }
 

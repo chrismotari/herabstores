@@ -2,15 +2,17 @@
 
 namespace App\Http\Controllers;
 
-use App\Models\Country;
-use App\Models\Estate;
+use App\Http\Requests\PlaceOrderRequest;
 use App\Models\Contact;
+use App\Models\Country;
+use App\Models\DeliveryZone;
 use App\Models\Order;
 use App\Models\Ref;
 use App\Services\CartService;
 use Illuminate\Http\Request;
 use Illuminate\Routing\Controllers\Middleware;
 use Illuminate\Support\Facades\Auth;
+use Illuminate\Support\Facades\DB;
 
 class OrderController extends Controller
 {
@@ -20,6 +22,7 @@ class OrderController extends Controller
             new Middleware('admin', except: ['store', 'update', 'track']),
         ];
     }
+
     /**
      * Display a listing of the resource.
      */
@@ -28,7 +31,7 @@ class OrderController extends Controller
         $query = Order::query();
 
         if ($request->query('status') === 'new') {
-            $query->where('status', 'new'); 
+            $query->where('status', 'new');
         }
 
         $orders = $query->get();
@@ -43,11 +46,11 @@ class OrderController extends Controller
      */
     public function create()
     {
-        $cartService = new CartService();
+        $cartService = new CartService;
+
         return view('orders.create', [
             'selected_user' => Auth::user(),
-            'cart' =>  auth()->check() ? auth()->user()->cart : $cartService->getGuestCart(),
-            'estates' => Estate::all(),
+            'cart' => auth()->check() ? auth()->user()->cart : $cartService->getGuestCart(),
             'refs' => Ref::all(),
         ]);
     }
@@ -55,77 +58,82 @@ class OrderController extends Controller
     /**
      * Store a newly created resource in storage.
      */
-    public function store(Request $request)
-    {        
-        // dd($request);
-        $estate = Estate::find($request->estate_id);
-        $cartService = new CartService();
-        $cart = auth()->check() ? auth()->user()->cart : $cartService->getGuestCart();
-        $cart_items = $cart->cartItems;
+    public function store(PlaceOrderRequest $request)
+    {
+        $data = $request->validated();
+        $user = $request->user();
+        $cart = $user ? $user->cart : (new CartService)->getGuestCart();
+        $cartItems = $cart?->cartItems ?? collect();
 
-        if ($cart_items->count() < 1 ) {
+        if ($cartItems->isEmpty()) {
             flash()->error('Cart is empty');
+
             return redirect()->back();
-        }else{
-
-            $totalPrice = $cart->total;
-            //delivery fees here
-    
-            $order = Order::create([
-                'user_id' => auth()->id(),
-                'total' => $totalPrice,
-                'status' => "new",
-                'payment_status' => $request->payment_status,
-                'payment_method' => $request->payment_method,
-                'shipping_method' => $request->shipping_method,
-                // 'paid_at',
-                // 'amount_paid',
-                'shipping_fees' => $estate->delivery_fees,
-                'completed_at' => now(),
-                'fname' => $request->fname,
-                'lname' => $request->lname,
-                'company' => $request->company,
-                'phone' => $request->phone,
-                'alt_phone' => $request->alt_phone,
-                'email' => $request->email,
-                'address' => $request->address,
-                'city' => $request->city,
-                'estate_id' => $request->estate_id,
-                'country_id' => $request->country_id,
-                'message' => $request->message,
-                'ref_id' => $request->ref_id,
-                'order_items' => $cart_items->map(function ($item) {
-                    return [
-                        'product_id' => $item->product_id,
-                        'name' => $item->product->name, // Assuming product relationship
-                        'price' => $item->price,
-                        'quantity' => $item->quantity,
-                        'discount' => 0,
-                        'description' => "No description",
-                    ];
-                })->toArray(),
-            ]);
-
-            if ($request->consented) {
-                Contact::create([
-                    'email' => $request->email,
-                    'name' => "{$request->fname} {$request->lname}",
-                    'phone' => $request->phone,
-                    'consented' => true ,
-                    'source' => "Purchase",
-                ]);
-            }
-    
-            // Clear the cart
-            if ($order) {
-                $cart->cartItems()->delete();
-                session()->forget('cart');
-                return redirect()->route('shop')->with('success', 'Order has been placed successfully');
-            }else{
-                return back()->with('error', 'An Error occured while placing your order');
-            }
         }
 
+        // Delivery is priced per zone (see spec decision log).
+        $zone = DeliveryZone::findOrFail($data['delivery_zone_id']);
+        $shippingFee = $zone->delivery_fees;
+
+        $order = DB::transaction(function () use ($data, $user, $cart, $cartItems, $zone, $shippingFee) {
+            $order = Order::create([
+                'user_id' => $user?->id,
+                'total' => $cartItems->sum(fn ($item) => $item->product->price * $item->quantity),
+                'shipping_fee' => $shippingFee,
+                'status' => 'new',
+                'payment_method' => 'cash_on_delivery',
+                'payment_status' => 'pending',
+                'fname' => $data['fname'],
+                'lname' => $data['lname'],
+                'phone' => $data['phone'],
+                'alt_phone' => $data['alt_phone'] ?? null,
+                'email' => $data['email'] ?? null,
+                'address' => $data['address'],
+                'city' => $data['city'],
+                'delivery_zone' => $zone->id,
+                'message' => $data['message'] ?? null,
+                'ref_id' => $data['ref_id'] ?? null,
+                'order_items' => $cartItems->map(fn ($item) => [
+                    'product_id' => $item->product_id,
+                    'name' => $item->product->name,
+                    'price' => $item->product->price,
+                    'quantity' => $item->quantity,
+                    'discount' => 0,
+                    'description' => 'No description',
+                ])->values()->all(),
+            ]);
+
+            // Sign-up doesn't ask for an address, so remember the first one used at checkout.
+            if ($user && blank($user->address)) {
+                $user->update([
+                    'address' => $data['address'],
+                    'city' => $data['city'],
+                    'delivery_zone_id' => $zone->id,
+                ]);
+            }
+
+            if ($user) {
+                $cart->cartItems()->delete();
+            }
+
+            return $order;
+        });
+
+        session()->forget('cart');
+
+        if ($request->boolean('consented')) {
+            Contact::create([
+                'email' => $data['email'] ?? null,
+                'name' => "{$data['fname']} {$data['lname']}",
+                'phone' => $data['phone'],
+                'consented' => true,
+                'source' => 'Purchase',
+            ]);
+        }
+
+        flash()->success('Order has been placed successfully');
+
+        return redirect()->route('shop')->with('success', 'Order has been placed successfully');
     }
 
     /**
@@ -134,7 +142,7 @@ class OrderController extends Controller
     public function show(Order $order)
     {
         // dd($order->products->first()->name);
-        
+
         return view('orders.show', [
             'selected_order' => $order,
             'countries' => Country::all(),
@@ -152,28 +160,26 @@ class OrderController extends Controller
     /**
      * Update the specified resource in storage.
      */
-    public function update(Request $request, Order $order)
-    {
-        
-
-    }
+    public function update(Request $request, Order $order) {}
 
     public function track(Order $order)
     {
         dd('Not available at the moment');
 
     }
-    public function dispatch(Request $request, Order $order = new Order())
-    {   
+
+    public function dispatch(Request $request, Order $order = new Order)
+    {
         if ($request->isMethod('get')) {
-            return view('orders.dispatch', ['selected_order'=>$order]);
-        }elseif ($request->isMethod('post')) {
+            return view('orders.dispatch', ['selected_order' => $order]);
+        } elseif ($request->isMethod('post')) {
             $order->update([
                 'status' => 'dispatched',
                 'courier_id' => $request->courier_id,
                 'store_id' => $request->store_id,
                 // 'dispatched_at' => now(),
             ]);
+
             return redirect()->route('orders.show', $order)->with('success', 'Order has been dispatched successfully');
         }
 
@@ -185,6 +191,7 @@ class OrderController extends Controller
     public function destroy(Order $order)
     {
         $order->delete();
+
         return back()->with('success', 'Order has been deleted successfully');
     }
 }

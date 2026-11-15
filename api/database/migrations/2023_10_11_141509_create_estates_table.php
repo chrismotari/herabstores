@@ -12,12 +12,12 @@ return new class extends Migration
     public function up(): void
     {
         Schema::create('estates', function (Blueprint $table) {
-            $table->uuid("id")->primary();
-            $table->string("name")->unique();
-            $table->text("description")->nullable();
-            $table->decimal("delivery_fees", 10, 2)->default(0);
-            $table->boolean("is_active")->default(1);
-            $table->foreignUuid("county_id")->nullable()->constrained();
+            $table->uuid('id')->primary();
+            $table->string('name')->unique();
+            $table->text('description')->nullable();
+            $table->decimal('delivery_fees', 10, 2)->default(0);
+            $table->boolean('is_active')->default(1);
+            $table->foreignUuid('county_id')->nullable()->constrained();
             $table->timestamps();
         });
     }

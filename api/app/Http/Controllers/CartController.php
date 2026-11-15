@@ -14,7 +14,7 @@ class CartController extends Controller
     public function index()
     {
         return view('carts.index', [
-            'carts' => Cart::all()
+            'carts' => Cart::all(),
         ]);
     }
 
@@ -39,11 +39,12 @@ class CartController extends Controller
      */
     public function show(Cart $cart)
     {
-        $cartService = new CartService();
+        $cartService = new CartService;
         $cart = auth()->check() ? auth()->user()->cart : $cartService->getGuestCart();
         if ($cart->cartItems->isEmpty()) {
             return redirect()->back()->with('error', 'Your cart is empty');
         }
+
         return view('carts.show', compact('cart'));
     }
 

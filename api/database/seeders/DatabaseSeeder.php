@@ -20,31 +20,31 @@ class DatabaseSeeder extends Seeder
         // User::factory(10)->create();
 
         User::create([
-            'fname'=> 'Admin',
-            'mname'=> "Test",
-            'lname'=> "One",
-            'phone'=> 4545454,
-            'email'=> 'admin@mail.com',
+            'fname' => 'Admin',
+            'mname' => 'Test',
+            'lname' => 'One',
+            'phone' => 4545454,
+            'email' => 'admin@mail.com',
             'password' => Hash::make('password'),
-            "address" => "72, Fox street",
-            "city" => "Jerusalem",
+            'address' => '72, Fox street',
+            'city' => 'Jerusalem',
             // "estate" => "Bethsaida",
-            "country_id" => Country::where('name', "like", "Kenya")->first()->id,
-            "is_admin" => 1,  
+            'country_id' => Country::where('name', 'like', 'Kenya')->first()->id,
+            'is_admin' => 1,
         ]);
 
         User::create([
-            'fname'=> 'User',
-            'mname'=> "Test",
-            'lname'=> "One",
-            'phone'=> 6565615,
-            'email'=> 'user@mail.com',
+            'fname' => 'User',
+            'mname' => 'Test',
+            'lname' => 'One',
+            'phone' => 6565615,
+            'email' => 'user@mail.com',
             'password' => Hash::make('password'),
-            "address" => "72, Fox street",
-            "city" => "Jerusalem",
+            'address' => '72, Fox street',
+            'city' => 'Jerusalem',
             // "estate" => "Bethsaida",
-            "country_id" => Country::where('name', "like", "Kenya")->first()->id,
-            "is_admin" => 0,  
+            'country_id' => Country::where('name', 'like', 'Kenya')->first()->id,
+            'is_admin' => 0,
         ]);
 
         Category::create([
@@ -67,7 +67,7 @@ class DatabaseSeeder extends Seeder
             'price' => 100,
             'stock' => 1,
             'is_active' => 1,
-            'image_url' => "https://www.denverfruitier.com/cdn/shop/files/Medium-Tropical-Fruit-Basket.png",
+            'image_url' => 'https://www.denverfruitier.com/cdn/shop/files/Medium-Tropical-Fruit-Basket.png',
             'category_id' => Category::where('name', 'like', 'Test')->first()->id,
         ]);
 

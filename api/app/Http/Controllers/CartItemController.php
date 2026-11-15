@@ -57,14 +57,14 @@ class CartItemController extends Controller
         // try {
         //     $user = auth()->user();
         //     $cart = $user->cart;
-    
+
         //     if(!$cart) {
         //         $cart = Cart::create([
         //             'user_id' => $user->id,
         //             'status' => 'open',
         //         ]);
         //     }
-    
+
         //     $cartItem = CartItem::create([
         //         'cart_id' => $cart->id,
         //         'product_id' => $request->product_id,
@@ -77,8 +77,6 @@ class CartItemController extends Controller
         // }
         // return redirect()->back();
 
-
-   
         $request->validate([
             'product_id' => 'required|exists:products,id',
             'quantity' => 'required|integer|min:1',
@@ -89,7 +87,7 @@ class CartItemController extends Controller
             $user = auth()->user();
             $cart = $user->cart;
 
-            if (!$cart) {
+            if (! $cart) {
                 $cart = Cart::create([
                     'user_id' => $user->id,
                     'status' => 'open',
@@ -102,6 +100,7 @@ class CartItemController extends Controller
 
             if ($existingCartItem) {
                 flash()->error('Product already in cart');
+
                 return redirect()->back();
             }
 
@@ -123,6 +122,7 @@ class CartItemController extends Controller
 
             if (isset($cart[$request->product_id])) {
                 flash()->error('Product already in cart');
+
                 return redirect()->back();
             }
 
@@ -171,8 +171,7 @@ class CartItemController extends Controller
         // dd($product);
 
         if (auth()->check()) {
-            $cartItem = Auth::user()->cartItems()->where('product_id', $product->id)->first();
-            $cartItem->delete();
+            Auth::user()->cart?->cartItems()->where('product_id', $product->id)->delete();
         } else {
             $cart = session()->get('cart', []);
 
@@ -183,6 +182,7 @@ class CartItemController extends Controller
         }
 
         flash()->success('Product removed from cart');
+
         return back();
     }
 }

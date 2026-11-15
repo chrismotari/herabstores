@@ -2,12 +2,14 @@
 
 namespace App\Models;
 
-use Illuminate\Database\Eloquent\Model;
 use App\Traits\UUID;
+use Illuminate\Database\Eloquent\Factories\HasFactory;
+use Illuminate\Database\Eloquent\Model;
 
 class Product extends Model
 {
-    use UUID;
+    use HasFactory, UUID;
+
     protected $fillable = [
         'name',
         'description',
@@ -39,26 +41,24 @@ class Product extends Model
     {
         return $this->hasMany(ProductImage::class);
     }
-    public function getIsInStockAttribute()
+
+    public const LOW_STOCK_THRESHOLD = 5;
+
+    /**
+     * Stock label for the storefront. `total_stock` isn't maintained yet, so
+     * "few left" uses 10% of it when set, otherwise a fixed threshold.
+     */
+    public function getIsInStockAttribute(): string
     {
-        // skip function for now
-        return 'In Stock';
-
-        if (!$this->stock  || !$this->total_stock ) {
-            return 'Out of Stock';
-        }
-
         if ($this->stock < 1) {
             return 'Out of Stock';
         }
 
-        $tenPercent = $this->total_stock * 0.1;
+        $lowStock = $this->total_stock > 0
+            ? $this->total_stock * 0.1
+            : self::LOW_STOCK_THRESHOLD;
 
-        if ($this->stock < $tenPercent) {
-            return 'Few Items Left';
-        }
-
-        return 'In Stock';
+        return $this->stock <= $lowStock ? 'Few Items Left' : 'In Stock';
     }
 
     public function getIsFavouriteAttribute()

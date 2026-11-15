@@ -12,11 +12,11 @@ return new class extends Migration
     public function up(): void
     {
         Schema::create('basket_products', function (Blueprint $table) {
-            $table->uuid("id")->primary();
-            $table->uuid("basket_id");
-            $table->uuid("product_id");
-            $table->integer("quantity");
-            $table->boolean("is_active")->default(true);
+            $table->uuid('id')->primary();
+            $table->uuid('basket_id');
+            $table->uuid('product_id');
+            $table->integer('quantity');
+            $table->boolean('is_active')->default(true);
             $table->timestamps();
         });
     }

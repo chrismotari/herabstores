@@ -8,9 +8,7 @@ use App\Models\Favourite;
 use App\Models\Product;
 use App\Models\ProductImage;
 use Illuminate\Http\Request;
-use Illuminate\Support\Facades\Validator;
 use Illuminate\Routing\Controllers\HasMiddleware;
-use Flasher\Laravel\Facade as Flasher;
 use Illuminate\Routing\Controllers\Middleware;
 use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Facades\Storage;
@@ -40,7 +38,7 @@ class ProductController extends Controller implements HasMiddleware
      */
     public function create()
     {
-        return view('products.create',['categories' => Category::all()]);
+        return view('products.create', ['categories' => Category::all()]);
     }
 
     /**
@@ -54,31 +52,31 @@ class ProductController extends Controller implements HasMiddleware
             $file_path = null;
 
             if ($request->hasFile('image_url')) {
-                $filename = time(). '-' . $request->slug. '.' . $request->image_url->extension();
-                $file_path = $request->image_url->storeAs('images/product_images',  $filename, 'public');
+                $filename = time().'-'.$request->slug.'.'.$request->image_url->extension();
+                $file_path = $request->image_url->storeAs('images/product_images', $filename, 'public');
             }
-           $product = Product::create([
-               'name' => $request->name,
-               'description' => $request->description,
-               'slug' => $request->slug,
-               'price' => $request->price,
-               'stock' => $request->stock,
-               'image_url' => $file_path,
-               'is_active' => $request->is_active ? 1 : 0,
-               'category_id' => $request->category_id,
-               'user_id' => Auth::user()->id,
-           ]);
+            $product = Product::create([
+                'name' => $request->name,
+                'description' => $request->description,
+                'slug' => $request->slug,
+                'price' => $request->price,
+                'stock' => $request->stock,
+                'image_url' => $file_path,
+                'is_active' => $request->is_active ? 1 : 0,
+                'category_id' => $request->category_id,
+                'user_id' => Auth::user()->id,
+            ]);
             // handle multiple images upload
             if ($request->hasFile('images')) {
                 foreach ($request->file('images') as $index => $image) {
-                    $filename = time() . "-{$index}-" . $request->slug . '.' . $image->extension();
+                    $filename = time()."-{$index}-".$request->slug.'.'.$image->extension();
                     $path = $image->storeAs('images/product_images', $filename, 'public');
                     $img = ProductImage::create([
                         'product_id' => $product->id,
                         'image_url' => $path,
                         'sort_order' => $index,
                     ]);
-                    if (!$product->image_url) {
+                    if (! $product->image_url) {
                         $product->image_url = $path;
                         $product->save();
                     }
@@ -93,11 +91,12 @@ class ProductController extends Controller implements HasMiddleware
                     $product->save();
                 }
             }
-       } catch (\Throwable $th) {
-        throw $th;
-       }
+        } catch (\Throwable $th) {
+            throw $th;
+        }
 
         flash()->success('Product created successfully');
+
         return back();
     }
 
@@ -107,13 +106,14 @@ class ProductController extends Controller implements HasMiddleware
     public function show(Product $product)
     {
         return view('products.show', [
-            'product' => $product
+            'product' => $product,
         ]);
     }
+
     public function adminShow(Product $product)
     {
         return view('products.admin_show', [
-            'selected_product' => $product
+            'selected_product' => $product,
         ]);
     }
 
@@ -167,14 +167,14 @@ class ProductController extends Controller implements HasMiddleware
             if ($request->hasFile('images')) {
                 $maxSort = $product->images()->max('sort_order') ?? 0;
                 foreach ($request->file('images') as $index => $image) {
-                    $filename = time() . "-{$index}-" . $request->slug . '.' . $image->extension();
+                    $filename = time()."-{$index}-".$request->slug.'.'.$image->extension();
                     $path = $image->storeAs('images/product_images', $filename, 'public');
                     ProductImage::create([
                         'product_id' => $product->id,
                         'image_url' => $path,
                         'sort_order' => ++$maxSort,
                     ]);
-                    if (!$file_path) {
+                    if (! $file_path) {
                         $file_path = $path;
                     }
                 }
@@ -204,6 +204,7 @@ class ProductController extends Controller implements HasMiddleware
         }
 
         flash()->success('Product updated successfully');
+
         return back();
     }
 
@@ -230,6 +231,7 @@ class ProductController extends Controller implements HasMiddleware
         $product->delete();
 
         flash()->success('Product deleted successfully');
+
         return redirect()->back();
     }
 
@@ -239,14 +241,16 @@ class ProductController extends Controller implements HasMiddleware
             ->where('product_id', $product->id)
             ->first();
 
-        if (!$favourite) {
+        if (! $favourite) {
             flash()->error('This product is not in your favourites.');
+
             return redirect()->back();
         }
 
         $favourite->delete();
 
         flash()->success('Product removed from your favourites');
+
         return redirect()->back();
     }
 
@@ -256,21 +260,21 @@ class ProductController extends Controller implements HasMiddleware
         $categoryId = $request->query('category_id', $request->input('category_id'));
 
         $products = Product::where(function ($query) use ($search) {
-                if (!empty($search)) {
-                    $query->where('name', 'like', "%{$search}%")
-                          ->orWhere('description', 'like', "%{$search}%");
-                }
-            })->when(!empty($categoryId), function ($query) use ($categoryId) {
-                $query->where('category_id', $categoryId);
-            }, function ($query) {
-                // If no category_id is provided, allow products with or without a category
-                $query->orWhereNull('category_id');
-            })->get();
+            if (! empty($search)) {
+                $query->where('name', 'like', "%{$search}%")
+                    ->orWhere('description', 'like', "%{$search}%");
+            }
+        })->when(! empty($categoryId), function ($query) use ($categoryId) {
+            $query->where('category_id', $categoryId);
+        }, function ($query) {
+            // If no category_id is provided, allow products with or without a category
+            $query->orWhereNull('category_id');
+        })->get();
 
         return view('shop', [
             'products' => $products,
-            "search_term" => $search,
-            "serch_category" => $categoryId,
+            'search_term' => $search,
+            'serch_category' => $categoryId,
         ]);
     }
 }

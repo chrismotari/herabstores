@@ -38,7 +38,7 @@
                             <h4 class="text-center mb-4">Sign up to {{config('app.name')}}</h4>
                             <form action="{{ route('register') }}" method="POST">
                                 @csrf
-                                @include('users.form')
+                                @include('users.register-form')
                             </form>
                             <div class="new-account mt-3 __web-inspector-hide-shortcut__">
                                 <p>Already have an account? <a class="text-primary" href="{{route('login')}}">Login</a></p>

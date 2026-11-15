@@ -12,9 +12,9 @@ return new class extends Migration
     public function up(): void
     {
         Schema::create('carts', function (Blueprint $table) {
-            $table->uuid("id")->primary();
-            $table->foreignUuid("user_id")->nullable()->unique()->constrained("users");
-            $table->string("status")->nullable();
+            $table->uuid('id')->primary();
+            $table->foreignUuid('user_id')->nullable()->unique()->constrained('users');
+            $table->string('status')->nullable();
             $table->timestamps();
         });
     }

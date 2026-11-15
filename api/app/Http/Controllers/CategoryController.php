@@ -6,6 +6,7 @@ use App\Models\Category;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Storage;
 use Illuminate\Support\Str;
+
 class CategoryController extends Controller
 {
     /**
@@ -14,7 +15,8 @@ class CategoryController extends Controller
     public function index()
     {
         $categories = Category::all();
-        return view('categories.index', ['categories'=>$categories]);
+
+        return view('categories.index', ['categories' => $categories]);
     }
 
     /**
@@ -33,23 +35,23 @@ class CategoryController extends Controller
         $request->validate([
             'name' => 'required',
             'description' => 'required',
-            'is_active' => 'nullable'
+            'is_active' => 'nullable',
         ]);
 
         $file_path = null;
         $slug = Str::slug($request->name, '-');
 
         if ($request->hasFile('image_url')) {
-            $filename = time(). '-' . $request->slug. '.' . $request->image_url->extension();
-            $file_path = $request->image_url->storeAs('images/category_images',  $filename, 'public');
-        } 
+            $filename = time().'-'.$request->slug.'.'.$request->image_url->extension();
+            $file_path = $request->image_url->storeAs('images/category_images', $filename, 'public');
+        }
 
         $category = Category::create([
             'name' => $request->name,
             'description' => $request->description,
             'slug' => $slug,
             'image_url' => $file_path,
-            'is_active' => $request->is_active
+            'is_active' => $request->is_active,
         ]);
 
         return redirect()->back()->with('success', 'Category created successfully');
@@ -61,7 +63,7 @@ class CategoryController extends Controller
      */
     public function show(Category $category)
     {
-        return view('categories.show', ['selected_category'=>$category]);
+        return view('categories.show', ['selected_category' => $category]);
     }
 
     /**
@@ -80,7 +82,7 @@ class CategoryController extends Controller
         $request->validate([
             'name' => 'required',
             'description' => 'required',
-            'is_active' => 'nullable'
+            'is_active' => 'nullable',
         ]);
         $filename = $category->image_url; // Keep existing image
         $file_path = $category->image_url;
@@ -91,7 +93,7 @@ class CategoryController extends Controller
                 Storage::disk('public')->delete($category->image_url);
             }
 
-            $filename = time() . '-' . $request->slug . '.' . $request->image_url->extension();
+            $filename = time().'-'.$request->slug.'.'.$request->image_url->extension();
             $file_path = $request->image_url->storeAs('images/category_images', $filename, 'public');
         }
 
@@ -100,7 +102,7 @@ class CategoryController extends Controller
             'description' => $request->description,
             'slug' => Str::slug($request->name, '-'),
             'image_url' => $file_path,
-            'is_active' => $request->is_active
+            'is_active' => $request->is_active,
         ]);
 
         return redirect()->back()->with('success', 'Category updated successfully');
@@ -115,6 +117,7 @@ class CategoryController extends Controller
             Storage::disk('public')->delete($category->image_url);
         }
         $category->delete();
+
         return redirect()->back()->with('success', 'Category deleted successfully');
     }
 }

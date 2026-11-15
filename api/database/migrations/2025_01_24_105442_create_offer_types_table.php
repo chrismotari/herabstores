@@ -12,9 +12,9 @@ return new class extends Migration
     public function up(): void
     {
         Schema::create('offer_types', function (Blueprint $table) {
-            $table->uuid("id")->primary();
-            $table->string("name");
-            $table->text("description");
+            $table->uuid('id')->primary();
+            $table->string('name');
+            $table->text('description');
             $table->timestamps();
         });
     }

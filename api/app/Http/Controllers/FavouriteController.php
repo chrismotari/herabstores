@@ -37,24 +37,27 @@ class FavouriteController extends Controller
                     'string',
                     'max:50',
                     'exists:products,id',
-                    Rule::unique('favourites')->where(function ($query) use ($request) {
+                    Rule::unique('favourites')->where(function ($query) {
                         return $query->where('user_id', auth()->id());
                     }),
-                ]
-            ],[
+                ],
+            ], [
                 'product_id.unique' => 'Product already added to favourites',
             ]);
-    
+
             Favourite::create([
                 'user_id' => auth()->id(),
                 'product_id' => $validatedData['product_id'],
             ]);
+
             return back()->with('success', 'Product added to favourites');
-        }  catch (ValidationException $e) {
+        } catch (ValidationException $e) {
             flash()->error($e->validator->errors()->first());
+
             return redirect()->back()->withErrors($e->validator)->withInput();
-        }catch (\Throwable $th) {
+        } catch (\Throwable $th) {
             flash()->error('An error occurred while adding product to favourites');
+
             return redirect()->back();
 
         }
