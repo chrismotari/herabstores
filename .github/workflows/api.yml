@@ -54,6 +54,9 @@ jobs:
         run: ./vendor/bin/pest
 
       - name: OpenAPI spec is up to date
+        env:
+          DB_DATABASE: herabs_test # Scramble reads the schema to type model fields
         run: |
+          php artisan migrate --force
           composer openapi
           git diff --exit-code openapi.json || (echo "::error::api/openapi.json is stale. Run 'composer openapi' and commit it." && exit 1)
