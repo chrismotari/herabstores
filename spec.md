@@ -4,7 +4,7 @@ Legend: `[ ]` todo · `[~]` in progress · `[x]` done (with date) · `[-]` dropp
 
 ## Current focus
 
-**Phase 4 → task 4.1**: install Filament at `/admin`.
+**Phase 4 → task 4.2**: Filament resources for Products (images, CSV import), Categories, Baskets.
 
 ## Goal
 
@@ -94,7 +94,7 @@ sharing one generated TypeScript client (`packages/shared`). Payments: **pay on 
 
 ## Phase 4: Filament admin
 
-- [ ] 4.1 Install the latest Filament compatible with Laravel 13 at `/admin`. Access only for the admin role (`canAccessPanel`).
+- [x] 4.1 Install the latest Filament compatible with Laravel 13 at `/admin`. Access only for the admin role (`canAccessPanel`). *2026-11-15*: Filament 5.11.3 (needs PHP `intl` + `zip`, added to CI). `User` implements `FilamentUser`/`HasName`; access = `is_admin && is_active` (moves to spatie roles once role management is in Filament, 4.4). The old `/admin` → `/dashboard` redirect is removed; the Blade admin stays at `/dashboard` until 4.6. Same session as the site, so admins logged in on the storefront go straight in.
 - [ ] 4.2 Resources: Products (multi-image upload, fixes the README TODO; CSV import action), Categories, Baskets, Offers/OfferTypes.
 - [ ] 4.3 Resources: Orders (status workflow, dispatch to courier, tracking), Couriers, Customers.
 - [x] 4.0 Upgrade spatie/laravel-permission 6 → 8 (read both upgrade guides; custom UUID `Role`/`Permission` models) before using it in Filament. *2026-11-15*: 8.5.0. No breaking changes affect us (no custom contracts, events, commands or middleware). Added the new config keys (`models.team`, `models.default_model`, `team_resolver`, `events_enabled`). Schema unchanged (ours uses UUIDs). Tests cover UUID roles and permissions. Also fixed: admin user creation always failed on Postgres (`dob` stored `strtotime()` output in a date column).

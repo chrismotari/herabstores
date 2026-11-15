@@ -58,6 +58,7 @@ Seeded logins: `admin@mail.com` / `password` (admin), `user@mail.com` / `passwor
 
 ### Admin
 - Admin is moving to **Filament** (`app/Filament`). Don't build new admin Blade pages, and don't build admin screens in Next.js.
+- Panel: `/admin` (`App\Providers\Filament\AdminPanelProvider`), Filament 5. Generate resources with `php artisan make:filament-resource`. Requires PHP `intl` and `zip`.
 
 ## SEO rules (apps/web)
 - Product, category and content pages are **server-rendered** (Server Components with ISR/on-demand revalidation), never client-only.

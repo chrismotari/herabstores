@@ -31,9 +31,6 @@ Route::middleware(['auth', 'admin'])->group(function () {
     Route::get('dashboard', function () {
         return view('dashboard');
     })->name('dashboard');
-    Route::get('/admin', function () {
-        return redirect('/dashboard');
-    })->name('admin');
 
     Route::get('/users/customers', [UserController::class, 'customers'])->name('users.customers');
 

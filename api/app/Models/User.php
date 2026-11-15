@@ -2,8 +2,11 @@
 
 namespace App\Models;
 
-// use Illuminate\Contracts\Auth\MustVerifyEmail;
 use App\Traits\UUID;
+use Filament\Models\Contracts\FilamentUser;
+use Filament\Models\Contracts\HasName;
+// use Illuminate\Contracts\Auth\MustVerifyEmail;
+use Filament\Panel;
 use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Foundation\Auth\User as Authenticatable;
 // use Spatie\Permission\Models\Role;
@@ -12,7 +15,7 @@ use Illuminate\Notifications\Notifiable;
 use Laravel\Sanctum\HasApiTokens;
 use Spatie\Permission\Traits\HasRoles;
 
-class User extends Authenticatable
+class User extends Authenticatable implements FilamentUser, HasName
 {
     use HasApiTokens, HasFactory, HasRoles, Notifiable, UUID;
 
@@ -21,6 +24,12 @@ class User extends Authenticatable
      *
      * @var array<int, string>
      */
+    /** Match the column defaults so new (unsaved or not reloaded) models behave the same. */
+    protected $attributes = [
+        'is_active' => true,
+        'is_admin' => false,
+    ];
+
     protected $fillable = [
         'fname',
         'mname',
@@ -98,5 +107,18 @@ class User extends Authenticatable
     public function getMainRoleAttribute()
     {
         return $this->roles->first();
+    }
+
+    /**
+     * Filament admin (/admin): active admins only.
+     */
+    public function canAccessPanel(Panel $panel): bool
+    {
+        return (bool) $this->is_admin && (bool) $this->is_active;
+    }
+
+    public function getFilamentName(): string
+    {
+        return trim("{$this->fname} {$this->lname}") ?: $this->email;
     }
 }
