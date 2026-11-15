@@ -4,7 +4,7 @@ Legend: `[ ]` todo · `[~]` in progress · `[x]` done (with date) · `[-]` dropp
 
 ## Current focus
 
-**Phase 7 → task 7.1**: production queue worker, then deploy. Waiting on: hosting/domain choice; for the app stores, an Expo account (`eas init`), Apple/Google developer accounts and a square app icon. Open from 5.11: re-run Lighthouse on catalog pages once real product photos are uploaded.
+**Phase 7 → tasks 7.1–7.3 and 7.6**: all waiting on hosting and the domain (checklist: `deploy/README.md`); for the app stores, an Expo account (`eas init`), Apple/Google developer accounts and a square app icon. Open from 5.11: re-run Lighthouse on catalog pages once real product photos are uploaded.
 
 ## Goal
 
@@ -24,9 +24,9 @@ sharing one generated TypeScript client (`packages/shared`). Payments: **pay on 
 | 2. Upgrade to Laravel 13 | done |
 | 3. REST API v1 | done |
 | 4. Filament admin | done |
-| 5. Next.js storefront | in progress |
+| 5. Next.js storefront | done except 5.11 re-measure (needs real photos) |
 | 6. React Native app | done |
-| 7. Cut-over and cleanup | todo |
+| 7. Cut-over and cleanup | in progress (rest waits on hosting) |
 
 ---
 
@@ -162,7 +162,7 @@ sharing one generated TypeScript client (`packages/shared`). Payments: **pay on 
 - [ ] 7.2 Deploy: API on `api.<domain>`, Next.js on `<domain>`. Set env/CORS/Sanctum domains for production. Step-by-step checklist with every env var: `deploy/README.md` (waiting on hosting and the domain).
 - [ ] 7.3 Switch DNS to Next.js and check that 301s, the sitemap (submitted to Search Console) and canonicals work.
 - [x] 7.4 Remove the Blade storefront views, web routes, `public/ganic-live`, Vite/Tailwind config in `api/`, and `php-flasher`. *2026-11-15*: done ahead of 7.2/7.3 at the user's request; the last commit with the Blade site is tagged `blade-storefront-final` (deploy that tag if the old site must keep running until DNS moves). Removed Blade views, storefront and Breeze controllers/routes, theme assets (`public/ganic-live`, `backend`, `css`, `js`, `fonts`, `img`, `vendor`; Filament's generated assets stay), Vite/Tailwind/npm, php-flasher. Before removing, the business rules only the Blade tests covered were ported to `tests/Feature/Api/V1/CheckoutRulesTest.php`, and email verification moved to a signed API link (`GET /api/v1/auth/email/verify/{id}/{hash}`, no login needed, redirects to the website). The API domain: `/` redirects to the shop, `/dashboard` to `/admin`, robots.txt disallows all, guests needing a login go to the website's /login. Tests: 269 (web-route tests removed).
-- [ ] 7.5 Update `CLAUDE.md` and `README.md` to the final architecture.
+- [x] 7.5 Update `CLAUDE.md` and `README.md` to the final architecture. *2026-11-15*: monorepo layout, carts, email links, background work, `deploy/`; dropped migration-era guardrails (Blade, theme assets, npm in `api/`).
 - [ ] 7.6 Publish the app: `eas init` (Expo account), set `EXPO_PUBLIC_API_URL` / `EXPO_PUBLIC_SITE_URL` in the EAS `production` environment, replace the interim icon with a square mark, build and submit (`eas build -p all --profile production`, `eas submit`). Then set `APPLE_TEAM_ID` and `ANDROID_SHA256_CERT_FINGERPRINTS` on the website build so links open the app.
 
 ---

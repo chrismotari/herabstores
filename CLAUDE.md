@@ -5,12 +5,13 @@ Guidance for Claude (and humans) working in this repo.
 ## What this is
 
 **Herab Stores**: an online grocery storefront (Kenya; delivery zones by county/estate; pay on delivery).
-We are migrating from a Laravel + Blade monolith to:
+A pnpm monorepo (it was a Laravel + Blade monolith until spec Phase 7):
 
-- `api/`: Laravel (upgrading to **13**), a **REST API** under `/api/v1` plus a **Filament** admin panel at `/admin`
+- `api/`: Laravel 13, a **REST API** under `/api/v1` plus a **Filament** admin panel at `/admin`. No storefront pages: `/` redirects to the website.
 - `apps/web`: **Next.js** (App Router) storefront. **SEO is the top priority.**
 - `apps/mobile`: **React Native (Expo)** customer app
 - `packages/shared`: TypeScript API client and types generated from the API's OpenAPI spec
+- `deploy/`: production checklist, queue worker and scheduler config
 
 
 ## Read spec.md first
@@ -26,11 +27,11 @@ We are migrating from a Laravel + Blade monolith to:
 ## Commands (run from `api/`)
 
 ```bash
-composer install && npm install
+composer install
 cp .env.example .env && php artisan key:generate
 php artisan migrate --seed          # Postgres DB `herabs` (user app / password, see .env.example)
 php artisan storage:link            # once: serve uploaded images from public/storage
-composer dev                        # serve + queue + pail + vite
+composer dev                        # serve + queue + pail
 ./vendor/bin/pest                   # tests run on Postgres DB `herabs_test` (forced in phpunit.xml)
 ./vendor/bin/pest --filter=Name     # single test
 ./vendor/bin/pint                   # format PHP (run before committing)
@@ -38,7 +39,7 @@ php artisan route:list --path=api   # inspect API routes
 composer openapi                    # regenerate api/openapi.json after any API change (CI checks it)
 ```
 
-Seeded logins: `admin@mail.com` / `password` (admin), `user@mail.com` / `password` (customer).
+Seeded logins (dev only, never seed production): `admin@mail.com` / `password` (admin, at `/admin`), `user@mail.com` / `password` (customer, on the website or app).
 
 ## Commands (JS: repo root)
 
@@ -65,11 +66,12 @@ pnpm typecheck && pnpm lint && pnpm build:web
 ## Architecture (api/)
 
 - **Models**: `app/Models`. Most use UUID primary keys via `App\Traits\UUID`. Core: Product, Category, Basket (+BasketProduct), Cart (+CartItem), Order, Favourite, Offer/OfferType, Courier, DeliveryZone, County, Estate, Country, Ref, Store, User.
-- **Roles**: `spatie/laravel-permission`, plus a legacy `users.is_admin` flag used by `AdminMiddleware`.
-- **Current web layer (legacy storefront, replaced by Next.js in Phase 5)**: `routes/web.php`, Blade views in `resources/views`, controllers in `app/Http/Controllers`. The admin is Filament only.
-- **Guest cart** currently lives in the session (`app/Services/CartService.php`). The API replaces this with a cart token.
+- **Roles**: `spatie/laravel-permission`, plus the `users.is_admin` flag that gates the Filament panel (`User::canAccessPanel`).
+- **Carts** (`app/Services/CartService.php`): a guest cart is a DB cart found by its token (`X-Cart-Token` header, or the Sanctum session for the website); signed-in customers have one cart. Login merges the guest cart. Abandoned guest carts are pruned after 30 days.
+- **Email links**: password reset goes to the website's `/reset-password`; verification is a signed API URL that redirects to the website (`AppServiceProvider`). Both need `FRONTEND_URL`.
+- **Background work**: queue jobs (storefront revalidation, emails) and daily housekeeping in `routes/console.php`. Production setup: `deploy/README.md`.
 
-### Target conventions for new API code
+### Conventions for API code
 - Routes go in `routes/api.php` under the `v1` prefix and are named `api.v1.*`.
 - Controllers go in `app/Http/Controllers/Api/V1`. Keep them thin: validate with a **Form Request**, call an **Action** (`app/Actions/...`), and return an **API Resource**.
 - Authorization goes through **Policies** backed by spatie roles/permissions, never inline `is_admin` checks.
@@ -94,6 +96,7 @@ pnpm typecheck && pnpm lint && pnpm build:web
 - Database is **PostgreSQL** (dev, test, CI, production). Primary keys are UUIDs, so validate ids with `uuid` before `exists:` (Postgres errors on non-UUID input). Route binding already 404s on non-UUID keys (`App\Traits\UUID`).
 - Don't commit `.env`, `vendor/` or `node_modules/`.
 - Never commit a `composer.lock` resolved with `--ignore-platform-reqs`. `config.platform.php` pins production PHP (8.4), and an unconstrained resolve breaks CI. Install the missing extension instead.
-- Don't edit files under `public/ganic-live`, `public/backend` or `vendor/`. They're third-party theme and library assets.
-- Don't delete Blade views or web routes until the matching `spec.md` cut-over task says so. The site must keep working during migration.
+- Don't edit `vendor/` or Filament's generated assets in `api/public/{css,js,fonts}/filament`.
+- Don't add pages to `api/`: customer-facing UI goes in `apps/web` (and `apps/mobile`), admin UI in Filament.
+- The old Blade site is gone; tag `blade-storefront-final` is its last version. Old storefront URLs are redirected by `apps/web/next.config.ts`.
 - Work directly on `main` (no feature branches or PRs unless asked). Commit at every stage: one commit per spec task (or per step within a large task), with tests and Pint passing first.
