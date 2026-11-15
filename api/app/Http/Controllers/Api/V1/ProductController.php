@@ -7,6 +7,7 @@ use App\Http\Resources\V1\ProductResource;
 use App\Models\Product;
 use Illuminate\Http\Request;
 use Illuminate\Http\Resources\Json\AnonymousResourceCollection;
+use Illuminate\Support\Str;
 use Illuminate\Validation\Rule;
 
 class ProductController extends Controller
@@ -56,14 +57,17 @@ class ProductController extends Controller
     }
 
     /**
-     * Show an available product by slug.
+     * Show an available product by slug (an id is also accepted, for old links).
      *
      * @unauthenticated
      */
     public function show(string $slug): ProductResource
     {
         return new ProductResource(
-            Product::available()->with(['category', 'images'])->where('slug', $slug)->firstOrFail()
+            Product::available()->with(['category', 'images'])
+                // Old storefront URLs used the id: /products/{uuid}. Clients redirect to the slug.
+                ->where(fn ($q) => Str::isUuid($slug) ? $q->whereKey($slug) : $q->where('slug', $slug))
+                ->firstOrFail()
         );
     }
 }

@@ -131,3 +131,9 @@ test('catalog responses are publicly cacheable', function () {
         expect($cache)->toContain('public')->toContain('max-age=60')->toContain('s-maxage=300');
     }
 });
+
+test('a product can also be fetched by id (old storefront links)', function () {
+    $product = Product::factory()->create();
+
+    $this->getJson("/api/v1/products/{$product->id}")->assertOk()->assertJsonPath('data.slug', $product->slug);
+});

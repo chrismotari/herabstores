@@ -1690,7 +1690,7 @@
         "/products/{slug}": {
             "get": {
                 "operationId": "v1.products.show",
-                "summary": "Show an available product by slug",
+                "summary": "Show an available product by slug (an id is also accepted, for old links)",
                 "tags": [
                     "Product"
                 ],

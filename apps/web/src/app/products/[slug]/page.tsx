@@ -1,7 +1,7 @@
 import { formatPrice } from "@herabs/shared";
 import type { Metadata } from "next";
 import Link from "next/link";
-import { notFound } from "next/navigation";
+import { notFound, permanentRedirect } from "next/navigation";
 import { Breadcrumb } from "@/components/Breadcrumb";
 import { AddToCart } from "@/components/cart/AddToCart";
 import { JsonLd } from "@/components/JsonLd";
@@ -47,6 +47,8 @@ export default async function ProductPage(props: PageProps<"/products/[slug]">) 
   const { slug } = await props.params;
   const product = await getProduct(slug);
   if (!product) notFound();
+  // Old storefront links used the product id: send them to the canonical slug URL.
+  if (product.slug !== slug) permanentRedirect(`/products/${product.slug}`);
 
   const images = [product.image_url, ...(product.images ?? [])].filter((src): src is string => Boolean(src));
   const category = product.category;

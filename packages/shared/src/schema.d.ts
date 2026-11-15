@@ -437,7 +437,7 @@ export interface paths {
             path?: never;
             cookie?: never;
         };
-        /** Show an available product by slug */
+        /** Show an available product by slug (an id is also accepted, for old links) */
         get: operations["v1.products.show"];
         put?: never;
         post?: never;
