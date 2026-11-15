@@ -1,5 +1,6 @@
 <?php
 
+use App\Enums\OrderStatus;
 use App\Models\Cart;
 use App\Models\CartItem;
 use App\Models\Contact;
@@ -47,7 +48,7 @@ test('guest can place a pay-on-delivery order', function () {
     expect($order->user_id)->toBeNull()
         ->and((float) $order->total)->toBe(300.0)
         ->and((float) $order->shipping_fee)->toBe(200.0)
-        ->and($order->status)->toBe('new')
+        ->and($order->status)->toBe(OrderStatus::New)
         ->and($order->payment_method)->toBe('cash_on_delivery')
         ->and($order->fname)->toBe('Jane')
         ->and($order->order_items[0]['price'])->toEqual(150)

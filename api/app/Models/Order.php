@@ -2,11 +2,13 @@
 
 namespace App\Models;
 
+use App\Enums\OrderStatus;
 use App\Traits\UUID;
 use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Database\Eloquent\Model;
 use Illuminate\Support\Collection;
 use Illuminate\Support\Str;
+use Illuminate\Validation\ValidationException;
 
 class Order extends Model
 {
@@ -62,6 +64,8 @@ class Order extends Model
         'address',
         'city',
         'shipping_fee',
+        'courier_id',
+        'store_id',
         'delivery_zone',
         'ref_id',
         'country_id',
@@ -71,6 +75,12 @@ class Order extends Model
 
     protected $casts = [
         'order_items' => 'array',
+        'status' => OrderStatus::class,
+        'shipped_at' => 'datetime',
+        'delivered_at' => 'datetime',
+        'canceled_at' => 'datetime',
+        'paid_at' => 'datetime',
+        'completed_at' => 'datetime',
     ];
 
     public function user()
@@ -140,5 +150,31 @@ class Order extends Model
     public function deliveryZone()
     {
         return $this->belongsTo(DeliveryZone::class, 'delivery_zone');
+    }
+
+    public function courier()
+    {
+        return $this->belongsTo(Courier::class);
+    }
+
+    public function store()
+    {
+        return $this->belongsTo(Store::class);
+    }
+
+    /**
+     * @throws ValidationException when the move isn't allowed
+     */
+    public function transitionTo(OrderStatus $next): void
+    {
+        $current = $this->status ?? OrderStatus::New;
+
+        if (! $current->canTransitionTo($next)) {
+            throw ValidationException::withMessages([
+                'status' => "A {$current->value} order can't be marked {$next->value}.",
+            ]);
+        }
+
+        $this->status = $next;
     }
 }

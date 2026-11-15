@@ -10,6 +10,8 @@
                 <label for="order_number" class="form-label">Order Number</label>
                 <input type="text" class="form-control" disabled placeholder="Order Number" aria-label="order_number"
                     value="{{ old('order_number', $selected_order->order_number ?? '') }}" name="order_number">
+                {{-- the visible field is disabled (not submitted), so send the number separately --}}
+                <input type="hidden" name="order_number" value="{{ $selected_order->order_number }}">
                 <x-input-error :messages="$errors->get('order_number')" class="mt-2 text-danger" />
             </div>
 

@@ -3,6 +3,7 @@
 namespace App\Actions\Orders;
 
 use App\Actions\Cart\EnsureAvailable;
+use App\Enums\OrderStatus;
 use App\Models\Basket;
 use App\Models\Cart;
 use App\Models\Contact;
@@ -61,7 +62,7 @@ class PlaceOrder
                 'user_id' => $user?->id,
                 'total' => $items->sum(fn ($item) => $lineItem($item)->price * $item->quantity),
                 'shipping_fee' => $zone->delivery_fees,
-                'status' => 'new',
+                'status' => OrderStatus::New,
                 'payment_method' => 'cash_on_delivery',
                 'payment_status' => 'pending',
                 'fname' => $data['fname'],

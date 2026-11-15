@@ -25,7 +25,7 @@
                                 <td class="wspace-no">{{$order->estate?->name}}</td>
                                 <td>KSHS {{$order->total}}</td>
                                 <td>{{count($order->order_items)}}</td>
-                                <td><span class="badge badge-success badge-lg light">{{$order->status}}</span></td>
+                                <td><span class="badge badge-success badge-lg light">{{ $order->status?->getLabel() }}</span></td>
                                 <td>
                                     <div class="action-buttons d-flex justify-content-end">
                                         <a href="{{ route('orders.show', $order) }}" class="btn btn-success light mr-2">

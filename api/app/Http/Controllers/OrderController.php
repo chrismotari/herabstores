@@ -2,11 +2,14 @@
 
 namespace App\Http\Controllers;
 
+use App\Actions\Orders\DispatchOrder;
 use App\Actions\Orders\PlaceOrder;
 use App\Http\Requests\PlaceOrderRequest;
 use App\Models\Country;
+use App\Models\Courier;
 use App\Models\Order;
 use App\Models\Ref;
+use App\Models\Store;
 use App\Services\CartService;
 use Illuminate\Http\Request;
 use Illuminate\Routing\Controllers\Middleware;
@@ -104,21 +107,26 @@ class OrderController extends Controller
 
     }
 
-    public function dispatch(Request $request, Order $order = new Order)
+    public function dispatch(Request $request, DispatchOrder $dispatch, ?Order $order = null)
     {
         if ($request->isMethod('get')) {
             return view('orders.dispatch', ['selected_order' => $order]);
-        } elseif ($request->isMethod('post')) {
-            $order->update([
-                'status' => 'dispatched',
-                'courier_id' => $request->courier_id,
-                'store_id' => $request->store_id,
-                // 'dispatched_at' => now(),
-            ]);
-
-            return redirect()->route('orders.show', $order)->with('success', 'Order has been dispatched successfully');
         }
 
+        $data = $request->validate([
+            'order_number' => ['required', 'string', 'exists:orders,order_number'],
+            'courier_id' => ['required', 'uuid', 'exists:couriers,id'],
+            'store_id' => ['nullable', 'uuid', 'exists:stores,id'],
+        ]);
+        $order = Order::where('order_number', $data['order_number'])->firstOrFail();
+
+        try {
+            $dispatch($order, Courier::findOrFail($data['courier_id']), isset($data['store_id']) ? Store::find($data['store_id']) : null);
+        } catch (ValidationException $e) {
+            return back()->withErrors($e->errors());
+        }
+
+        return redirect()->route('orders.show', $order)->with('success', 'Order has been dispatched successfully');
     }
 
     /**

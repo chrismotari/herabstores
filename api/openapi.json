@@ -2148,11 +2148,15 @@
                         "type": "string"
                     },
                     "status": {
-                        "type": [
-                            "string",
-                            "null"
-                        ],
-                        "description": "new, processing, in transit, completed, canceled, ..."
+                        "anyOf": [
+                            {
+                                "description": "new, processing, in transit, completed, canceled, ...",
+                                "$ref": "#/components/schemas/OrderStatus"
+                            },
+                            {
+                                "type": "null"
+                            }
+                        ]
                     },
                     "payment_method": {
                         "type": [
@@ -2302,10 +2306,16 @@
                         ]
                     },
                     "shipped_at": {
-                        "type": "null"
+                        "type": [
+                            "string",
+                            "null"
+                        ]
                     },
                     "delivered_at": {
-                        "type": "null"
+                        "type": [
+                            "string",
+                            "null"
+                        ]
                     }
                 },
                 "required": [
@@ -2324,6 +2334,17 @@
                     "delivered_at"
                 ],
                 "title": "OrderResource"
+            },
+            "OrderStatus": {
+                "type": "string",
+                "description": "new \u2192 dispatched \u2192 delivered; new/dispatched \u2192 canceled.\n",
+                "enum": [
+                    "new",
+                    "dispatched",
+                    "delivered",
+                    "canceled"
+                ],
+                "title": "OrderStatus"
             },
             "PlaceOrderRequest": {
                 "type": "object",

@@ -121,4 +121,9 @@ class User extends Authenticatable implements FilamentUser, HasName
     {
         return trim("{$this->fname} {$this->lname}") ?: $this->email;
     }
+
+    public function deliveryZone()
+    {
+        return $this->belongsTo(DeliveryZone::class);
+    }
 }

@@ -182,7 +182,7 @@
                                     </li>
                                     <li class="cart-total-amount"><span>Total Price</span> <span class="amount">KSH {{ $selected_order->total + $selected_order->shipping_fee }}</span></li>
                                 </ul>
-                                @if (Str::lower($selected_order->status) === 'new')
+                                @if ($selected_order->status === \App\Enums\OrderStatus::New)
                                     <a class="btn btn-primary" href="{{route('orders.dispatch', $selected_order)}}" >Dispatch order</a>
                                 @else
                                     <a class="btn btn-primary" href="{{route("orders.track", $selected_order)}}" class="btn">Track order</a>
