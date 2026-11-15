@@ -4,7 +4,7 @@ Legend: `[ ]` todo · `[~]` in progress · `[x]` done (with date) · `[-]` dropp
 
 ## Current focus
 
-**Phase 6 → task 6.1**: Expo app. Open from 5.11: re-run Lighthouse on catalog pages once real product photos are uploaded.
+**Phase 6 → task 6.2**: mobile auth (Sanctum token in secure store). Open from 5.11: re-run Lighthouse on catalog pages once real product photos are uploaded.
 
 ## Goal
 
@@ -25,7 +25,7 @@ sharing one generated TypeScript client (`packages/shared`). Payments: **pay on 
 | 3. REST API v1 | done |
 | 4. Filament admin | done |
 | 5. Next.js storefront | in progress |
-| 6. React Native app | todo |
+| 6. React Native app | in progress |
 | 7. Cut-over and cleanup | todo |
 
 ---
@@ -148,7 +148,8 @@ sharing one generated TypeScript client (`packages/shared`). Payments: **pay on 
 
 ## Phase 6: React Native app (`apps/mobile`)
 
-- [ ] 6.1 Expo app (TypeScript, Expo Router) in the workspace, using `packages/shared`.
+- [x] 6.1 Expo app (TypeScript, Expo Router) in the workspace, using `packages/shared`. *2026-11-15*: Expo SDK 58 (RN 0.88, React 19.3) in `apps/mobile` as `@herabs/mobile`, pnpm isolated installs (no hoisting needed). Native tabs (Home/Shop/Cart/Account, SF Symbols + Material icons), brand colours, TanStack Query, `src/lib/api.ts` (bearer + cart token from `expo-secure-store`). Home lists categories from the API. CI: typecheck, `expo lint`, iOS+Android bundle export. Checked in Expo web against the local API.
+  - Note for 6.3: API image URLs are built from `APP_URL` (`localhost`), which a phone can't reach. Serve images from a reachable host in dev (set `APP_URL` to the LAN IP) or rewrite them in the app.
 - [ ] 6.2 Auth with a Sanctum token stored in `expo-secure-store`.
 - [ ] 6.3 Catalog: home, categories, product list/search, product detail.
 - [ ] 6.4 Cart and checkout (pay on delivery), with a guest cart token persisted locally.
@@ -173,6 +174,8 @@ sharing one generated TypeScript client (`packages/shared`). Payments: **pay on 
 
 | Date | Decision | Why |
 |---|---|---|
+| 2026-11-15 | Mobile data layer: **TanStack Query** over the shared openapi-fetch client; secrets in `expo-secure-store` | Caching, pull-to-refresh and retries for free; tokens stay out of AsyncStorage |
+| 2026-11-15 | Mobile uses **native tabs** (`expo-router/native-tabs`); Expo web is only a dev preview | Native look on iOS/Android; the real website is `apps/web` |
 | 2026-11-15 | Admin moves to **Filament**, not Next.js | Admin needs no SEO, and Filament is far less work |
 | 2026-11-15 | Monorepo: Laravel in `api/`, JS apps in `apps/*`, shared code in `packages/*` | Clean boundaries, one repo, shared TS client |
 | 2026-11-15 | **Pay on delivery** only for v1 | No payment integration exists. M-Pesa etc. can come later as a new phase |

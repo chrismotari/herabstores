@@ -12,7 +12,6 @@ We are migrating from a Laravel + Blade monolith to:
 - `apps/mobile`: **React Native (Expo)** customer app
 - `packages/shared`: TypeScript API client and types generated from the API's OpenAPI spec
 
-`apps/` and `packages/` don't exist yet. They are created by tasks in `spec.md`.
 
 ## Read spec.md first
 
@@ -47,11 +46,14 @@ Seeded logins: `admin@mail.com` / `password` (admin), `user@mail.com` / `passwor
 corepack enable --install-directory ~/.local/bin pnpm   # once, if `pnpm` isn't found
 pnpm install
 pnpm dev:web          # Next.js storefront on :3000 (needs the API on :8000)
+pnpm dev:mobile       # Expo dev server (scan the QR with a dev build / Expo Go; API via `php artisan serve --host 0.0.0.0`)
 pnpm api:types        # regenerate packages/shared/src/schema.d.ts from api/openapi.json (CI checks it)
 pnpm typecheck && pnpm lint && pnpm build:web
 ```
 
 - **Next.js 16 is newer than your training data.** Before writing Next code, read the relevant guide in `apps/web/node_modules/next/dist/docs/` (see `apps/web/AGENTS.md`). `cacheComponents` is on.
+- **Expo SDK 58 is newer than your training data too.** Read `apps/mobile/AGENTS.md` and the versioned docs before touching Expo/RN APIs. Add native deps with `npx expo install` (from `apps/mobile`), never plain `pnpm add`. CI type-checks, lints and exports the iOS/Android bundles.
+- Mobile API base URL: `EXPO_PUBLIC_API_URL` (`apps/mobile/.env.local`); unset in dev means the Expo host on port 8000. Native apps send the bearer token and `X-Cart-Token` (see `apps/mobile/src/lib/api.ts`), not cookies.
 - Call the API only through `@herabs/shared` (`createApiClient`), never with hand-written fetch URLs or types.
 - Server-side API calls send `X-Storefront-Key` (`API_SERVER_KEY` in `apps/web/.env.local`, same value as `STOREFRONT_SERVER_KEY` in `api/.env`); without it, builds can hit the API's per-IP rate limit.
 - **Theme CSS is purged at build time.** Edit `apps/web/theme/theme.full.css` (the full theme); `scripts/build-theme-css.mjs` writes the slimmed, gitignored `public/theme/css/theme.css` before `dev`/`build`. Classes toggled at runtime or built from strings need adding to `SAFELIST` in that script; rules using attribute selectors (`[class*=…]`) need a `/* purgecss ignore */` comment before them in the source. After changing styling, compare screenshots: a missing class fails silently.

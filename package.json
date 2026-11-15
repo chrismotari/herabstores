@@ -8,6 +8,7 @@
   "scripts": {
     "dev:web": "pnpm --filter @herabs/web dev",
     "build:web": "pnpm --filter @herabs/web build",
+    "dev:mobile": "pnpm --filter @herabs/mobile start",
     "api:types": "pnpm --filter @herabs/shared generate",
     "lint": "pnpm -r lint",
     "typecheck": "pnpm -r typecheck"

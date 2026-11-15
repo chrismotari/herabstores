@@ -41,3 +41,5 @@ jobs:
       - run: pnpm typecheck
       - run: pnpm lint
       - run: pnpm build:web
+      - name: Mobile bundles (iOS + Android)
+        run: pnpm --filter @herabs/mobile exec expo export --platform ios --platform android --output-dir /tmp/mobile-export
